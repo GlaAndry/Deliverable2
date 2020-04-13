@@ -1,0 +1,4 @@
+Il recupero dei ticket da jira ha avuto successo, sfortunatamente, però, non possiamo utlizzare
+queste informazioni, in quanto i commit degli sviluppatori non sono esaustivi per permettere un
+collegamento di tipo ticket-->classe.
+Per questo motivo, nella determinazione della difettività di una classe, considereremo solamente la data del blame.
