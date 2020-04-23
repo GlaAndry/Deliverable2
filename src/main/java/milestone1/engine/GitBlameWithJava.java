@@ -24,7 +24,7 @@ public class GitBlameWithJava {
      * di vita del progetto), allora possiamo classificare la classe come defective.
      */
 
-    private static final Logger LOGGER = Logger.getLogger(DownloadCommit.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GitBlameWithJava.class.getName());
 
     static String path = "";
     static String classesPath = "";
@@ -41,8 +41,8 @@ public class GitBlameWithJava {
 
         importResources();
         //new GitBlameWithJava().blame();
-        //new GitBlameWithJava().changeDate();
-        new GitBlameWithJava().removeDuplicates();
+        new GitBlameWithJava().changeDate();
+        //new GitBlameWithJava().removeDuplicates();
 
     }
 
@@ -102,22 +102,17 @@ public class GitBlameWithJava {
 
             for (String[] str : blmWithDup) {
 
-                if (!hashMap.containsValue(str[0]+str[1])) {
-                    record = str[0]+str[1];
-                    hashMap.put(index, str[0]+str[1]);
+                if (!hashMap.containsValue(str[0]+str[1]+str[2])) {
+                    hashMap.put(index, str[0]+str[1]+str[2]);
                 } else {
-                    if(record != (str[0] + str[1])){
-                        index++;
-                    }
+                    index++;
                 }
 
             }
 
             //scrivo nel csv finale
             for (Map.Entry<Integer, String> entry : hashMap.entrySet()) {
-
-                writer.writeNext(new String[]{entry.getValue().substring(0,10),entry.getValue().substring(10)});
-
+                writer.writeNext(new String[]{entry.getValue().substring(0,10),entry.getValue().substring(10,62),entry.getValue().substring(62)});
             }
 
             writer.flush();
@@ -217,7 +212,7 @@ public class GitBlameWithJava {
                 if(((anno.contains("2016")) || (anno.contains("2017")) || (anno.contains("2018")) || (anno.contains("2019")) || (anno.contains("2020")))){
                     System.out.println("Dato da eliminare");
                 } else {
-                    dates.add(new String[]{data,str[1]});
+                    dates.add(new String[]{data,str[1],str[2]});
                 }
 
             }
@@ -237,6 +232,8 @@ public class GitBlameWithJava {
 
 
         File dir = new File(path);
+        int counter = 0;
+        String result = "";
 
         if (!dir.exists()) {
             LOGGER.info("Comando: Clone Repository\nProcedo con il Download...");
@@ -270,10 +267,23 @@ public class GitBlameWithJava {
 
                 int size = blameResult.getResultContents().size();
                 for( int i = 0; i < size; i++ ) {
-                    wrt.add(new String[]{blameResult.getSourceAuthor(i).getWhen().toString(), record[2]});
+                    /**
+                     * Aggiungiamo al CSV la data, la classe associata ed il Tree. IL Tree è necessario in quanto così
+                     * possiamo possiamo riferirci al file commits.
+                     */
+                    if(counter == 0){
+                        result = blameResult.getSourceAuthor(i).getWhen().toString()+ blameResult.getSourceCommit(i).getTree().toString()+record[2];
+                        wrt.add(new String[]{blameResult.getSourceAuthor(i).getWhen().toString(), blameResult.getSourceCommit(i).getTree().toString(), record[2]});
+                        counter++;
+                    } else {
+                        if(!result.equals(blameResult.getSourceAuthor(i).getWhen().toString()+ blameResult.getSourceCommit(i).getTree().toString()+record[2])){
+                            counter = 0;
+                        }
+                    }
                 }
             }
 
+            csvWriter.flush();
             csvWriter.writeAll(wrt);
             csvWriter.flush();
 

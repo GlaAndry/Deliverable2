@@ -1,4 +1,4 @@
-package milestone1.engine;
+package milestone1.restandgit;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +30,11 @@ public class GetReleaseInfo {
     public static Integer numVersions;
 
     public static void main(String[] args) throws IOException, JSONException {
+
+        /**
+         *
+         * out --> ProjVersionInfo.csv
+         */
 
         String projName ="BOOKKEEPER";
         //Fills the arraylist with releases dates and orders them

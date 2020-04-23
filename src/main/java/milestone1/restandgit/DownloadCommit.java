@@ -1,5 +1,6 @@
-package milestone1.engine;
+package milestone1.restandgit;
 
+import com.opencsv.CSVWriter;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
@@ -10,6 +11,7 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -25,6 +27,14 @@ public class DownloadCommit {
     String gitUrl = "";
 
     public void getAllCommits() throws GitAPIException {
+
+        /**
+         * Questo metodo prende tutti i commit del progetto e crea un file CSV contenente
+         * Data, Albero e Ticket.
+         *
+         * out --> commits.csv
+         */
+
 
         ////////////////carico i dati da config.properties
         try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config.properties")) {
@@ -57,6 +67,7 @@ public class DownloadCommit {
         }
 
         try(FileWriter fileWriter = new FileWriter(commitPath)){
+
             //Impostazione di Git e della repo.
             Git git = Git.open(new File(completePath));
 
@@ -75,21 +86,40 @@ public class DownloadCommit {
 
             for (RevCommit revCommit : commits) { //itero tutti i commit.
 
-                fileWriter.append("\n");
-                fileWriter.append("COMMIT:");
-                fileWriter.append(revCommit.getFullMessage()); //Scrittura del commit message.
-                fileWriter.append("\n");
-                fileWriter.append("TREE:");
-                //fileWriter.append(revCommit.);
-                fileWriter.append("\n");
+                //commit.add(revCommit.getFullMessage());
 
-                fileWriter.append("TIME:");
                 //cast della data per scriverla all'interno del file...
                 String pattern = "MM/dd/yyyy HH:mm:ss";
                 DateFormat df = new SimpleDateFormat(pattern);
                 String date = df.format(revCommit.getAuthorIdent().getWhen());
-                fileWriter.append(date);
-                fileWriter.append("\n"); //Scrittura della data eseguita
+
+
+                if(revCommit.getFullMessage().length() < 15) {
+                    fileWriter.append(date);
+                    fileWriter.append(",");
+                    fileWriter.append(revCommit.getTree().toString());
+                    fileWriter.append(",");
+                    fileWriter.append("NONE");
+                    fileWriter.append("\n");
+
+                } else {
+                    if(revCommit.getFullMessage().substring(0,15).contains("BOOKKEEPER-")){
+                        fileWriter.append(date);
+                        fileWriter.append(",");
+                        fileWriter.append(revCommit.getTree().toString());
+                        fileWriter.append(",");
+                        if(revCommit.getFullMessage().substring(0,15).contains(":"))  {
+                            fileWriter.append(revCommit.getFullMessage().substring(0,15).replace(":",""));
+                        } else if (revCommit.getFullMessage().substring(0,15).contains(" ")){
+                            fileWriter.append(revCommit.getFullMessage().substring(0,15).replace(" ",""));
+                        } else{
+                            fileWriter.append(revCommit.getFullMessage().substring(0,15));
+                        }
+                        fileWriter.append("\n");
+
+                    }
+                }
+
             }
 
         } catch (IOException e){

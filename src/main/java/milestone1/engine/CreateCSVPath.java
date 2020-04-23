@@ -17,7 +17,7 @@ public class CreateCSVPath {
      * Useremo poi questi dati per andare ad eseguire git Blame.
      */
 
-    private static final Logger LOGGER = Logger.getLogger(DownloadCommit.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CreateCSVPath.class.getName());
 
 
     static String path = "";
@@ -48,6 +48,8 @@ public class CreateCSVPath {
 
         /**funzione ricorsiva che ricostruisce il path di tutti i file ".java" all'interno della cartella
          * git.
+         *
+         * out --> classes.csv
          */
 
         if (!folder.isDirectory()) {

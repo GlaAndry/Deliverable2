@@ -49,7 +49,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -60,6 +60,7 @@
       <recent name="writer" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Alessio Mazzola\Desktop\Prove ISW2\Deliverable2" />
       <recent name="C:\Users\Alessio Mazzola\Desktop\Prove ISW2\Deliverable2\src\main\java\milestone1\engine" />
       <recent name="C:\Users\Alessio Mazzola\Desktop\Prove ISW2\Deliverable2\src\main\java\milestone1" />
     </key>
@@ -70,25 +71,12 @@
     </option>
   </component>
   <component name="RunManager" selected="Application.GetDefectedClasses">
-    <configuration name="CreateCSVPath" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="milestone1.engine.CreateCSVPath" />
+    <configuration name="AssociationJiraGit" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="milestone1.restandgit.AssociationJiraGit" />
       <module name="Deliverable2" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="milestone1.engine.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="DownloadCommit" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="milestone1.engine.DownloadCommit" />
-      <module name="Deliverable2" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="milestone1.engine.*" />
+          <option name="PATTERN" value="milestone1.restandgit.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -97,11 +85,11 @@
       </method>
     </configuration>
     <configuration name="GetAffectedVersionFromJira" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="milestone1.engine.GetAffectedVersionFromJira" />
+      <option name="MAIN_CLASS_NAME" value="milestone1.restandgit.GetAffectedVersionFromJira" />
       <module name="Deliverable2" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="milestone1.engine.*" />
+          <option name="PATTERN" value="milestone1.restandgit.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -122,12 +110,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PropertiesWriter" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="writer.PropertiesWriter" />
+    <configuration name="GetReleaseInfo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="milestone1.restandgit.GetReleaseInfo" />
       <module name="Deliverable2" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="writer.*" />
+          <option name="PATTERN" value="milestone1.restandgit.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="VersionDivisor" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="milestone1.engine.VersionDivisor" />
+      <module name="Deliverable2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="milestone1.engine.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -138,10 +139,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.GetDefectedClasses" />
-        <item itemvalue="Application.PropertiesWriter" />
+        <item itemvalue="Application.AssociationJiraGit" />
         <item itemvalue="Application.GetAffectedVersionFromJira" />
-        <item itemvalue="Application.CreateCSVPath" />
-        <item itemvalue="Application.DownloadCommit" />
+        <item itemvalue="Application.VersionDivisor" />
+        <item itemvalue="Application.GetReleaseInfo" />
       </list>
     </recent_temporary>
   </component>
@@ -159,7 +160,18 @@
       <workItem from="1586595597889" duration="22093000" />
       <workItem from="1586626227811" duration="12347000" />
       <workItem from="1586681360638" duration="14548000" />
-      <workItem from="1586784085020" duration="6244000" />
+      <workItem from="1586784085020" duration="8122000" />
+      <workItem from="1586942082167" duration="3996000" />
+      <workItem from="1586959544105" duration="16036000" />
+      <workItem from="1587025217624" duration="5581000" />
+      <workItem from="1587130911119" duration="10826000" />
+      <workItem from="1587198850496" duration="26001000" />
+      <workItem from="1587302271195" duration="24000" />
+      <workItem from="1587308352854" duration="2173000" />
+      <workItem from="1587311993510" duration="8907000" />
+      <workItem from="1587369621299" duration="7487000" />
+      <workItem from="1587562718629" duration="14190000" />
+      <workItem from="1587628987361" duration="5843000" />
     </task>
     <servers />
   </component>
@@ -171,61 +183,78 @@
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
     <state x="3645" y="409" key="#com.intellij.ide.util.MemberChooser/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586637056707" />
-    <state x="3620" y="454" key="FileChooserDialogImpl" timestamp="1586595695717">
+    <state x="3620" y="454" key="FileChooserDialogImpl" timestamp="1587302281448">
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
-    <state x="3620" y="454" key="FileChooserDialogImpl/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586595695717" />
-    <state width="2517" height="340" key="GridCell.Tab.0.bottom" timestamp="1586788544273">
+    <state x="3620" y="454" key="FileChooserDialogImpl/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1587302281448" />
+    <state width="2517" height="292" key="GridCell.Tab.0.bottom" timestamp="1587635321105">
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="340" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586788544273" />
-    <state width="2517" height="340" key="GridCell.Tab.0.center" timestamp="1586788544273">
+    <state width="2517" height="297" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1586971085542" />
+    <state width="2517" height="292" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1587635321105" />
+    <state width="2517" height="292" key="GridCell.Tab.0.center" timestamp="1587635321105">
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="340" key="GridCell.Tab.0.center/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586788544273" />
-    <state width="2517" height="340" key="GridCell.Tab.0.left" timestamp="1586788544273">
+    <state width="2517" height="297" key="GridCell.Tab.0.center/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1586971085541" />
+    <state width="2517" height="292" key="GridCell.Tab.0.center/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1587635321105" />
+    <state width="2517" height="292" key="GridCell.Tab.0.left" timestamp="1587635321105">
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="340" key="GridCell.Tab.0.left/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586788544273" />
-    <state width="2517" height="340" key="GridCell.Tab.0.right" timestamp="1586788544273">
+    <state width="2517" height="297" key="GridCell.Tab.0.left/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1586971085541" />
+    <state width="2517" height="292" key="GridCell.Tab.0.left/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1587635321105" />
+    <state width="2517" height="292" key="GridCell.Tab.0.right" timestamp="1587635321105">
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="340" key="GridCell.Tab.0.right/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586788544273" />
-    <state width="2517" height="492" key="GridCell.Tab.1.bottom" timestamp="1586642243656">
+    <state width="2517" height="297" key="GridCell.Tab.0.right/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1586971085541" />
+    <state width="2517" height="292" key="GridCell.Tab.0.right/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1587635321105" />
+    <state width="2517" height="323" key="GridCell.Tab.1.bottom" timestamp="1587632390792">
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="492" key="GridCell.Tab.1.bottom/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586642243656" />
-    <state width="2517" height="492" key="GridCell.Tab.1.center" timestamp="1586642243656">
+    <state width="2517" height="323" key="GridCell.Tab.1.bottom/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1587632390792" />
+    <state width="2517" height="323" key="GridCell.Tab.1.center" timestamp="1587632390792">
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="492" key="GridCell.Tab.1.center/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586642243656" />
-    <state width="2517" height="492" key="GridCell.Tab.1.left" timestamp="1586642243656">
+    <state width="2517" height="323" key="GridCell.Tab.1.center/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1587632390792" />
+    <state width="2517" height="323" key="GridCell.Tab.1.left" timestamp="1587632390791">
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="492" key="GridCell.Tab.1.left/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586642243656" />
-    <state width="2517" height="492" key="GridCell.Tab.1.right" timestamp="1586642243656">
+    <state width="2517" height="323" key="GridCell.Tab.1.left/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1587632390791" />
+    <state width="2517" height="323" key="GridCell.Tab.1.right" timestamp="1587632390792">
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="492" key="GridCell.Tab.1.right/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586642243656" />
-    <state x="3320" y="274" key="SettingsEditor" timestamp="1586459976936">
-      <screen x="2560" y="0" width="2560" height="1400" />
-    </state>
-    <state x="3320" y="274" key="SettingsEditor/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586459976936" />
-    <state x="3536" y="523" key="com.intellij.ide.util.TipDialog" timestamp="1586784090032">
-      <screen x="2560" y="0" width="2560" height="1400" />
-    </state>
-    <state x="3536" y="523" key="com.intellij.ide.util.TipDialog/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586784090032" />
-    <state x="861" y="-15" width="1356" height="1020" key="dock-window-1" timestamp="1586681864385">
+    <state width="2517" height="323" key="GridCell.Tab.1.right/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1587632390792" />
+    <state x="760" y="274" key="SettingsEditor" timestamp="1586962119252">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="861" y="-15" width="1356" height="1020" key="dock-window-1/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586681864385" />
-    <state x="3496" y="330" width="672" height="677" key="run.anything.popup" timestamp="1586722046175">
+    <state x="760" y="274" key="SettingsEditor/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1586962119252" />
+    <state x="3320" y="274" key="SettingsEditor/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586459976936" />
+    <state x="3536" y="523" key="com.intellij.ide.util.TipDialog" timestamp="1587629014774">
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
-    <state x="3496" y="330" width="672" height="677" key="run.anything.popup/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586722046175" />
-    <state x="3503" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1586621241891">
+    <state x="3536" y="523" key="com.intellij.ide.util.TipDialog/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1587629014774" />
+    <state x="288" y="-16" width="1294" height="1407" key="dock-window-1" timestamp="1587635500379">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="2553" y="0" width="1294" height="1407" key="dock-window-1/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1586963749131" />
+    <state x="288" y="-16" width="1294" height="1407" key="dock-window-1/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1587635500379" />
+    <state x="1273" y="0" width="1294" height="1407" key="dock-window-2" timestamp="1587199029815">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="3833" y="0" width="1294" height="1407" key="dock-window-2/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1586964671869" />
+    <state x="1273" y="0" width="1294" height="1407" key="dock-window-2/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1587199029815" />
+    <state x="3075" y="-16" width="1184" height="1063" maximized="true" key="dock-window-3" timestamp="1586987012729">
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
-    <state x="3503" y="315" width="672" height="678" key="search.everywhere.popup/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586621241891" />
+    <state x="3075" y="-16" width="1184" height="1063" maximized="true" key="dock-window-3/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1586976979262" />
+    <state x="3075" y="-16" width="1184" height="1063" maximized="true" key="dock-window-3/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586987012729" />
+    <state x="3496" y="330" width="672" height="677" key="run.anything.popup" timestamp="1587567079410">
+      <screen x="2560" y="0" width="2560" height="1400" />
+    </state>
+    <state x="936" y="330" width="672" height="677" key="run.anything.popup/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1586971085568" />
+    <state x="3496" y="330" width="672" height="677" key="run.anything.popup/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1587567079410" />
+    <state x="3503" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1587634326356">
+      <screen x="2560" y="0" width="2560" height="1400" />
+    </state>
+    <state x="3503" y="315" width="672" height="678" key="search.everywhere.popup/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1587634326356" />
   </component>
 </project>

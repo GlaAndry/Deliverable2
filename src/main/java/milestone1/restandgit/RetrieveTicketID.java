@@ -1,4 +1,4 @@
-package milestone1.engine;
+package milestone1.restandgit;
 
 import java.io.*;
 import java.net.URL;
@@ -79,6 +79,13 @@ public class RetrieveTicketID {
 
     public void retreive(){
 
+        /**
+         * Questo metodo restituisce un file CSV contenente tutti i ticket Bug restituiti dalla
+         * query.
+         *
+         * out --> BugTicket.csv
+         */
+
         importResources();
         LOGGER.info("Scrivo i file su CSV!");
         File file = new File(path);
@@ -133,7 +140,7 @@ public class RetrieveTicketID {
          * La classe crea un file CSV e scrive all'interno tutti i ticket del progetto che rispettano la query:
          * Type == “Bug” AND (status == “Closed” OR status == “Resolved”) AND
          * Resolution == “Fixed”
-         * I ticket vengono presi da Jira.
+         * I ticket vengono presi da Jira sfruttando le REST API.
          */
 
         new RetrieveTicketID().retreive();

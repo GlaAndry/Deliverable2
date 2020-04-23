@@ -20,7 +20,7 @@ public class PropertiesWriter {
             // set the properties value
             prop.setProperty("gitDirBOOKPath", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\GitDirBook");
             prop.setProperty("gitDirTAJOPath", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\GitDirTajo");
-            prop.setProperty("commitPath", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\commits.txt");
+            prop.setProperty("commitPath", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\commits.csv");
             prop.setProperty("gitPathBOOK", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\GitDirBook\\.git");
             prop.setProperty("BugTicketFromJira", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\BugTicket.csv");
             prop.setProperty("resourcePath", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources");
@@ -34,6 +34,11 @@ public class PropertiesWriter {
             prop.setProperty("versionInfoBOOK", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\BOOKKEEPERVersionInfo.csv");
             prop.setProperty("blameFinal", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\blameFinal.csv");
             prop.setProperty("buggyPath", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\buggy.csv");
+            prop.setProperty("AssCB", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\AssociationCommitBlame.csv");
+            prop.setProperty("AssAB", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\AssociationAVBlame.csv");
+            prop.setProperty("BugTicketAV", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\BugAV.csv");
+            prop.setProperty("variables", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\var.csv");
+
 
             // save properties to project root folder
             prop.store(output, null);

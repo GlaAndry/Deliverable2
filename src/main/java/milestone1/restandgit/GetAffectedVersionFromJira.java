@@ -1,4 +1,4 @@
-package milestone1.engine;
+package milestone1.restandgit;
 
 import com.opencsv.CSVWriter;
 import org.json.JSONArray;
@@ -23,14 +23,15 @@ public class GetAffectedVersionFromJira {
      */
 
 
-    private static final Logger LOGGER = Logger.getLogger(DownloadCommit.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GetAffectedVersionFromJira.class.getName());
     static String AVpath = "";
 
 
     public static void main(String[] args) throws IOException, JSONException {
 
         importResources();
-        new GetAffectedVersionFromJira().retrieveFromJira();
+        //new GetAffectedVersionFromJira().retrieveFromJira();
+        new GetAffectedVersionFromJira().retriveOnlyFixFromJira();
     }
 
     private static void importResources(){
@@ -51,11 +52,13 @@ public class GetAffectedVersionFromJira {
         }
     }
 
-    private void retrieveFromJira() throws IOException {
+    private void retriveOnlyFixFromJira() throws IOException {
 
         /**
-         * La limitazione del metodo è dovuta a Jira in quanto il massimo numero di risultati restituiti
-         * dalla query JQL è 50.
+         * La limitazione dei 50 elementi è state eliminata attraverso la stringa
+         * ",created&startAt=0&maxResults=1000" presente all'interno dell'url
+         *
+         * out: FV.csv
          */
 
         List<String[]> lista = new ArrayList<>();
@@ -64,7 +67,71 @@ public class GetAffectedVersionFromJira {
 
         //String url = "https://issues.apache.org/jira/rest/api/2/project/" + projName;
         String urlAffectedVersion = "https://issues.apache.org/jira/rest/api/2/search?jql=project%20=%20BOOKKEEPER%20AND%20" +
-                "fixVersion%20!=%20null%20AND%20affectedVersion%20!=%20null%20ORDER%20BY%20fixVersion,affectedVersion%20ASC";
+                "fixVersion%20!=%20null%20ORDER%20BY%20fixVersion%20ASC"
+                +",created&startAt=0&maxResults=1000";
+
+        JSONObject json = readJsonFromUrl(urlAffectedVersion);
+        JSONArray issues = json.getJSONArray("issues");
+
+        int z,h;
+        Integer counter = 0;
+
+        lista.add(new String[]{"Index", "Ticket", "FixVersion"});
+
+        for (z = 0;z < issues.length(); z++) {
+
+            String ticket = issues.getJSONObject(z).get("key").toString();
+            /**
+             * Questi ulteriri array JSON sono stati necessari per accedere alle sottoliste presenti all'interno
+             * di issues, cioè filed, che contiene sia FixVersions che version per determinare AV e FV.
+             */
+            JSONArray FV = issues.getJSONObject(z).getJSONObject("fields").getJSONArray("fixVersions");
+            //JSONArray AV = issues.getJSONObject(z).getJSONObject("fields").getJSONArray("versions");
+
+            String fixVersion = "";
+            //String affectedVersion = "";
+
+
+            //affectedVersion = AV.getJSONObject(0).get("name").toString();
+
+            /**
+             * Il ciclo è necessario in quanto alcuni ticket possiedono molteplici fixed-version. In questo
+             * modo li includiamo all'interno del file e manteniamo l'index corretto sfruttando la variabile
+             * counter.
+             */
+
+            for (h = 0; h < FV.length(); h++) {
+                counter++;
+                fixVersion = FV.getJSONObject(h).get("name").toString();
+                lista.add(new String[]{counter.toString(), ticket, fixVersion});
+
+            }
+        }
+        try (FileWriter fileWriter = new FileWriter("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\FV.csv");
+             CSVWriter csvWriter = new CSVWriter(fileWriter)) {
+
+            csvWriter.writeAll(lista);
+        }
+
+    }
+
+    private void retrieveFromJira() throws IOException {
+
+        /**
+         * La limitazione dei 50 elementi è state eliminata attraverso la stringa
+         * ",created&startAt=0&maxResults=1000" presente all'interno dell'url
+         *
+         * out: AV.csv
+         */
+
+        List<String[]> lista = new ArrayList<>();
+
+        String projName = "BOOKKEEPER";
+
+        //String url = "https://issues.apache.org/jira/rest/api/2/project/" + projName;
+        String urlAffectedVersion = "https://issues.apache.org/jira/rest/api/2/search?jql=project%20=%20BOOKKEEPER%20AND%20" +
+                "fixVersion%20!=%20null%20AND%20affectedVersion%20!=%20null%20ORDER%20BY%20fixVersion,affectedVersion%20ASC"
+                +",created&startAt=0&maxResults=1000";
 
         JSONObject json = readJsonFromUrl(urlAffectedVersion);
         JSONArray issues = json.getJSONArray("issues");
