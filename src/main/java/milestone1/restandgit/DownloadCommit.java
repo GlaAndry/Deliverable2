@@ -93,7 +93,6 @@ public class DownloadCommit {
                 DateFormat df = new SimpleDateFormat(pattern);
                 String date = df.format(revCommit.getAuthorIdent().getWhen());
 
-
                 if(revCommit.getFullMessage().length() < 15) {
                     fileWriter.append(date);
                     fileWriter.append(",");

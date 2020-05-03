@@ -38,6 +38,7 @@ public class PropertiesWriter {
             prop.setProperty("AssAB", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\AssociationAVBlame.csv");
             prop.setProperty("BugTicketAV", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\BugAV.csv");
             prop.setProperty("variables", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\var.csv");
+            prop.setProperty("outLocClasses", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\outLocClasses.csv");
 
 
             // save properties to project root folder
