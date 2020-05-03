@@ -1,6 +1,5 @@
-package milestone1.restandgit;
+package milestone.uno.restandgit;
 
-import com.opencsv.CSVWriter;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
@@ -11,7 +10,6 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -21,21 +19,16 @@ public class DownloadCommit {
 
     private static final Logger LOGGER = Logger.getLogger(DownloadCommit.class.getName());
 
-    String path = "";
-    String commitPath = "";
-    String completePath = "";
-    String gitUrl = "";
+    static String path = "";
+    static String commitPath = "";
+    static String completePath = "";
+    static String gitUrl = "";
 
-    public void getAllCommits() throws GitAPIException {
-
+    private static void importResources(){
         /**
-         * Questo metodo prende tutti i commit del progetto e crea un file CSV contenente
-         * Data, Albero e Ticket.
-         *
-         * out --> commits.csv
+         * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
+         * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
          */
-
-
         ////////////////carico i dati da config.properties
         try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config.properties")) {
 
@@ -52,6 +45,17 @@ public class DownloadCommit {
             LOGGER.log(Level.WARNING, String.valueOf(ex));
         }
         ///////////////////////////////////////
+
+    }
+
+    public void getAllCommits() throws GitAPIException {
+
+        /**
+         * Questo metodo prende tutti i commit del progetto e crea un file CSV contenente
+         * Data, Albero e Ticket.
+         *
+         * out --> commits.csv
+         */
 
         File dir = new File(path);
 
@@ -85,8 +89,6 @@ public class DownloadCommit {
             Iterable<RevCommit> commits = git.log().all().call();
 
             for (RevCommit revCommit : commits) { //itero tutti i commit.
-
-                //commit.add(revCommit.getFullMessage());
 
                 //cast della data per scriverla all'interno del file...
                 String pattern = "MM/dd/yyyy HH:mm:ss";
@@ -129,6 +131,7 @@ public class DownloadCommit {
 
     public static void main(String[] args) throws GitAPIException {
 
+        importResources();
         LOGGER.info( "Scrivo tutti i commit eseguiti fino a questo momento all'interno del file.\n");
         new DownloadCommit().getAllCommits();
         LOGGER.info("Fatto!!\n");

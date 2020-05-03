@@ -70,20 +70,7 @@
       <command value="mvn clean install" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.MetricsCalc">
-    <configuration name="AssociationJiraGit" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="milestone1.restandgit.AssociationJiraGit" />
-      <module name="Deliverable2" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="milestone1.restandgit.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Application.RetrieveTicketID">
     <configuration name="GetAffectedVersionFromJira" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="milestone1.restandgit.GetAffectedVersionFromJira" />
       <module name="Deliverable2" />
@@ -97,12 +84,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GetDefectedClasses" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="milestone1.engine.GetDefectedClasses" />
+    <configuration name="GetReleaseInfo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="milestone1.restandgit.GetReleaseInfo" />
       <module name="Deliverable2" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="milestone1.engine.*" />
+          <option name="PATTERN" value="milestone1.restandgit.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -123,12 +110,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PropertiesWriter" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="writer.PropertiesWriter" />
+    <configuration name="RetrieveTicketID" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="milestone.uno.restandgit.RetrieveTicketID" />
       <module name="Deliverable2" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="writer.*" />
+          <option name="PATTERN" value="milestone.uno.restandgit.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="VersionDivisor" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="milestone1.engine.VersionDivisor" />
+      <module name="Deliverable2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="milestone1.engine.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -138,11 +138,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.MetricsCalc" />
-        <item itemvalue="Application.PropertiesWriter" />
-        <item itemvalue="Application.GetDefectedClasses" />
-        <item itemvalue="Application.AssociationJiraGit" />
+        <item itemvalue="Application.RetrieveTicketID" />
+        <item itemvalue="Application.GetReleaseInfo" />
         <item itemvalue="Application.GetAffectedVersionFromJira" />
+        <item itemvalue="Application.VersionDivisor" />
+        <item itemvalue="Application.MetricsCalc" />
       </list>
     </recent_temporary>
   </component>
@@ -181,6 +181,7 @@
       <workItem from="1588233588593" duration="6550000" />
       <workItem from="1588256653542" duration="1527000" />
       <workItem from="1588344789120" duration="12460000" />
+      <workItem from="1588516640682" duration="12391000" />
     </task>
     <servers />
   </component>
@@ -192,30 +193,30 @@
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
     <state x="3645" y="409" key="#com.intellij.ide.util.MemberChooser/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586637056707" />
-    <state x="1060" y="454" key="FileChooserDialogImpl" timestamp="1587635566052">
+    <state x="1060" y="454" key="FileChooserDialogImpl" timestamp="1588516835999">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="1060" y="454" key="FileChooserDialogImpl/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1587635566052" />
+    <state x="1060" y="454" key="FileChooserDialogImpl/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1588516835999" />
     <state x="3620" y="454" key="FileChooserDialogImpl/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1587302281448" />
-    <state width="2517" height="292" key="GridCell.Tab.0.bottom" timestamp="1588369842355">
-      <screen x="2560" y="0" width="2560" height="1400" />
+    <state width="2517" height="292" key="GridCell.Tab.0.bottom" timestamp="1588530136675">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="323" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1587679215812" />
+    <state width="2517" height="292" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1588530136675" />
     <state width="2517" height="292" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1588369842355" />
-    <state width="2517" height="292" key="GridCell.Tab.0.center" timestamp="1588369842355">
-      <screen x="2560" y="0" width="2560" height="1400" />
+    <state width="2517" height="292" key="GridCell.Tab.0.center" timestamp="1588530136675">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="323" key="GridCell.Tab.0.center/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1587679215812" />
+    <state width="2517" height="292" key="GridCell.Tab.0.center/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1588530136675" />
     <state width="2517" height="292" key="GridCell.Tab.0.center/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1588369842355" />
-    <state width="2517" height="292" key="GridCell.Tab.0.left" timestamp="1588369842355">
-      <screen x="2560" y="0" width="2560" height="1400" />
+    <state width="2517" height="292" key="GridCell.Tab.0.left" timestamp="1588530136675">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="323" key="GridCell.Tab.0.left/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1587679215812" />
+    <state width="2517" height="292" key="GridCell.Tab.0.left/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1588530136675" />
     <state width="2517" height="292" key="GridCell.Tab.0.left/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1588369842355" />
-    <state width="2517" height="292" key="GridCell.Tab.0.right" timestamp="1588369842355">
-      <screen x="2560" y="0" width="2560" height="1400" />
+    <state width="2517" height="292" key="GridCell.Tab.0.right" timestamp="1588530136675">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="323" key="GridCell.Tab.0.right/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1587679215812" />
+    <state width="2517" height="292" key="GridCell.Tab.0.right/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1588530136675" />
     <state width="2517" height="292" key="GridCell.Tab.0.right/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1588369842355" />
     <state width="2517" height="323" key="GridCell.Tab.1.bottom" timestamp="1587914680942">
       <screen x="2560" y="0" width="2560" height="1400" />
@@ -251,10 +252,10 @@
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
     <state x="3402" y="302" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1588180516820" />
-    <state x="338" y="186" width="1274" height="1068" maximized="true" key="dock-window-1" timestamp="1588365900165">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state x="2953" y="22" width="1367" height="1388" key="dock-window-1" timestamp="1588530154722">
+      <screen x="2560" y="0" width="2560" height="1400" />
     </state>
-    <state x="535" y="-18" width="1294" height="1407" key="dock-window-1/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1587823323889" />
+    <state x="2953" y="22" width="1367" height="1388" key="dock-window-1/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1588530154722" />
     <state x="338" y="186" width="1274" height="1068" maximized="true" key="dock-window-1/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1588365900165" />
     <state x="1273" y="0" width="1294" height="1407" key="dock-window-2" timestamp="1587199029815">
       <screen x="0" y="0" width="2560" height="1400" />

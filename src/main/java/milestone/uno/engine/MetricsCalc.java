@@ -1,4 +1,4 @@
-package milestone1.engine;
+package milestone.uno.engine;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -41,15 +41,19 @@ public class MetricsCalc {
     static String assCoBlm = "";
     static String outLoc = "";
 
-    public static void main(String[] args) throws IOException {
+    static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+    static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+
+    public static void main(String[] args) {
 
 
         importResources();
-        new MetricsCalc().sizeAndAgeOfClasses(); //fatto
+        //new MetricsCalc().sizeAndAgeOfClasses(); //fatto
         //new MetricsCalc().locTouched();
-        //List<String[]> lista = new MetricsCalc().numberOfRevisionsAndAuthors(); //fatto
+        //new MetricsCalc().numberOfRevisionsAndAuthors(); //fatto
         //new MetricsCalc().numberOfBugFixes(); //fatto
-        //new MetricsCalc().locMetrics();
+        new MetricsCalc().locMetrics();
 
 
     }
@@ -76,7 +80,7 @@ public class MetricsCalc {
         }
     }
 
-    private List<String[]> numberOfBugFixes() throws IOException {
+    private void numberOfBugFixes() throws IOException {
         /**
          * in --> classes.csv, AssociationCommitBlame.csv, versionInfo.csv
          *
@@ -86,18 +90,13 @@ public class MetricsCalc {
          * out --> Csv con colonne [INDEX VERSION,CLASSE,BUGFIXNUM]
          */
 
-        //TODO forse è da usare assAvBlame.
-
         List<String[]> cls = new ArrayList<>();
         List<String[]> ver = new ArrayList<>();
         List<String[]> ver2 = new ArrayList<>();
         List<String[]> assCommBlm = new ArrayList<>();
         List<String[]> bugFixNum = new ArrayList<>();
 
-
         int commitCounter = 0;
-
-        Git git = new Git(new FileRepository(gitPath));
 
         try (FileReader fileReader = new FileReader(classPath);
              CSVReader csvReader = new CSVReader(fileReader);
@@ -117,23 +116,14 @@ public class MetricsCalc {
             Date versionDate;
             Date assCommBlmDate;
 
-
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-
             for (String[] strings : ver2) {
                 versionDate = formatter.parse(strings[3]);
                 for (String[] str : cls) {
                     for (String[] str2 : assCommBlm) {
                         assCommBlmDate = format.parse(str2[0]);
-                        if (versionDate.compareTo(assCommBlmDate) > 0) { //controllo sulla data della versione
-                            if (str2[2].equals(str[2])) { //controllo se la classe coincide
-                                commitCounter++;
-                            }
+                        if (versionDate.compareTo(assCommBlmDate) > 0 && str2[2].equals(str[2])) { //controllo sulla data della versione e controllo se la classe coincide
+                            commitCounter++;
                         }
-
-
                     }
                     bugFixNum.add(new String[]{strings[0], str[2], Integer.toString(commitCounter)});
                     commitCounter = 0;
@@ -146,9 +136,6 @@ public class MetricsCalc {
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-
-
-        return bugFixNum;
     }
 
 
@@ -196,9 +183,6 @@ public class MetricsCalc {
 
             ver2 = ver.subList(1, ver.size());
 
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-
-
             for (String[] strings : ver2) {
 
                 versionDate = formatter.parse(strings[3]);
@@ -210,20 +194,14 @@ public class MetricsCalc {
                             .setFilePath(str[1].substring(1));
 
                     BlameResult blameResult = blameCommand.call();
-
-
                     size = blameResult.getResultContents().size();
-
-                    System.out.println(str[2]);
 
                     for (int i = 0; i < size; i++) {
 
                         commitDate = blameResult.getSourceAuthor(i).getWhen();
 
-                        if (commitDate2 != null) {
-                            if (commitDate.compareTo(commitDate2) == 0) {
-                                continue;
-                            }
+                        if (commitDate2 != null && commitDate.compareTo(commitDate2) == 0) {
+                            continue;
                         }
                         if (versionDate.compareTo(commitDate) > 0) {
                             commitDate2 = blameResult.getSourceAuthor(i).getWhen();
@@ -267,6 +245,28 @@ public class MetricsCalc {
 
     }
 
+    private List<String[]> sortByDate(List<String[]> list) {
+        /**
+         * Questo metodo esegue il sorting della lista
+         * andando a considerare la data.
+         * Return list sorted.
+         */
+
+        list.sort((strings, t1) -> {
+            Date date1 = new Date();
+            Date date2 = new Date();
+            try {
+                date1 = format.parse(strings[0]);
+                date2 = format.parse(t1[0]);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return date1.compareTo(date2);
+        });
+
+        return list;
+    }
+
     private void locMetrics() {
 
         /**
@@ -290,9 +290,6 @@ public class MetricsCalc {
 
         int lock = 0; //semaforo
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-
         Date dateVer;
         Date date;
 
@@ -313,27 +310,7 @@ public class MetricsCalc {
             outL = csvReader2.readAll();
 
 
-            /**
-             * sorting della lista outLoc
-             * in Base alla data, così da avere
-             * un risultato corretto.
-             */
-
-            outL.sort(new Comparator<String[]>() {
-                @Override
-                public int compare(String[] strings, String[] t1) {
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date1 = new Date();
-                    Date date2 = new Date();
-                    try {
-                        date1 = format.parse(strings[0]);
-                        date2 = format.parse(t1[0]);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    return date1.compareTo(date2);
-                }
-            });
+            sortByDate(outL); // sorting della lista
 
             int max = 0;
             List<Integer> maxList = new ArrayList<>();
@@ -484,11 +461,6 @@ public class MetricsCalc {
         Date commitTime;
         Date verTime;
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-
-        int lock = 0;
-
         Git git = new Git(new FileRepository(gitPath));
 
         try (FileReader fileReader = new FileReader(classPath);
@@ -518,12 +490,12 @@ public class MetricsCalc {
 
                     DateTime cmtTime = new DateTime(commitTime);
                     weeks = Weeks.weeksBetween(versionTime, cmtTime).getWeeks();
-                    if(weeks < 0){
-                        weeks = 0; //poniamo a 0 il numero di settimane se la data del commit è precedente alla data della versione(?)
+                    if (weeks < 0) {
+                        weeks = 0; //poniamo a 0 il numero di settimane se la data del commit
+                        // è precedente alla data della versione, questo infatti significa che la
+                        // classe, prima di quella versione, non esisteva.
                     }
-                    //TODO da rivedere un attimo i risultati ma ci siamo, solo setup tajo e code smells
                     ret.add(new String[]{strings[0], str[2], Integer.toString(size), Integer.toString(weeks)});
-
                 }
             }
 

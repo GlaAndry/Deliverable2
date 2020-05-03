@@ -1,4 +1,4 @@
-package milestone1.engine;
+package milestone.uno.engine;
 
 import com.opencsv.CSVWriter;
 
@@ -90,8 +90,8 @@ public class CreateCSVPath {
          * Scrive gli elementi nella lista in formato CSV.
          */
 
-        String path = "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\Classes.csv";
-        try(FileWriter fileWriter = new FileWriter(path);
+        //String path = "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\Classes.csv";
+        try(FileWriter fileWriter = new FileWriter(classes);
             CSVWriter csvWriter = new CSVWriter(fileWriter)) {
 
             csvWriter.writeAll(list);

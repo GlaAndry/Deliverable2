@@ -1,4 +1,4 @@
-package milestone1.restandgit;
+package milestone.uno.restandgit;
 
 import com.opencsv.CSVWriter;
 import org.json.JSONArray;
@@ -24,7 +24,7 @@ public class GetAffectedVersionFromJira {
 
 
     private static final Logger LOGGER = Logger.getLogger(GetAffectedVersionFromJira.class.getName());
-    static String AVpath = "";
+    static String avPath = "";
 
 
     public static void main(String[] args) throws IOException, JSONException {
@@ -45,7 +45,7 @@ public class GetAffectedVersionFromJira {
             // load a properties file
             prop.load(input);
 
-            AVpath = prop.getProperty("AVpath");
+            avPath = prop.getProperty("AVpath");
 
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, String.valueOf(e));
@@ -73,7 +73,8 @@ public class GetAffectedVersionFromJira {
         JSONObject json = readJsonFromUrl(urlAffectedVersion);
         JSONArray issues = json.getJSONArray("issues");
 
-        int z,h;
+        int z;
+        int h;
         Integer counter = 0;
 
         lista.add(new String[]{"Index", "Ticket", "FixVersion"});
@@ -86,13 +87,7 @@ public class GetAffectedVersionFromJira {
              * di issues, cioè filed, che contiene sia FixVersions che version per determinare AV e FV.
              */
             JSONArray FV = issues.getJSONObject(z).getJSONObject("fields").getJSONArray("fixVersions");
-            //JSONArray AV = issues.getJSONObject(z).getJSONObject("fields").getJSONArray("versions");
-
             String fixVersion = "";
-            //String affectedVersion = "";
-
-
-            //affectedVersion = AV.getJSONObject(0).get("name").toString();
 
             /**
              * Il ciclo è necessario in quanto alcuni ticket possiedono molteplici fixed-version. In questo
@@ -170,22 +165,18 @@ public class GetAffectedVersionFromJira {
 
             }
         }
-        try (FileWriter fileWriter = new FileWriter(AVpath);
+        try (FileWriter fileWriter = new FileWriter(avPath);
              CSVWriter csvWriter = new CSVWriter(fileWriter)) {
 
             csvWriter.writeAll(lista);
         }
     }
 
-    public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
-        InputStream is = new URL(url).openStream();
-        try {
+    public static JSONObject readJsonFromUrl(String url) throws IOException {
+        try (InputStream is = new URL(url).openStream()) {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             String jsonText = readAll(rd);
-            JSONObject json = new JSONObject(jsonText);
-            return json;
-        } finally {
-            is.close();
+            return new JSONObject(jsonText);
         }
     }
 

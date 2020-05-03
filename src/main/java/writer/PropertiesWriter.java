@@ -30,6 +30,7 @@ public class PropertiesWriter {
             prop.setProperty("gitUrlTAJO", "https://github.com/apache/bookkeeper");
             prop.setProperty("classesPath", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\Classes.csv");
             prop.setProperty("blameRes", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\blame.csv");
+            prop.setProperty("blameNew", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\blameNew.csv");
             prop.setProperty("AVpath", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\AV.csv");
             prop.setProperty("versionInfoBOOK", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\BOOKKEEPERVersionInfo.csv");
             prop.setProperty("blameFinal", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\blameFinal.csv");

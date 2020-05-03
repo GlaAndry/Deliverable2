@@ -1,4 +1,4 @@
-package milestone1.restandgit;
+package milestone.uno.restandgit;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -95,7 +95,6 @@ public class AssociationJiraGit {
                      * abbiamo una associazione.
                      */
                     if(str[3].equals(str2[1])){
-                        //System.out.println(str2[1]);
                         res.add(new String[]{str[0], str[1], str[2], str2[1], str2[2]});
                         //data, albero, classe, ticket, OV//
                     }
@@ -143,7 +142,6 @@ public class AssociationJiraGit {
                      * abbiamo una associazione.
                      */
                     if(str[3].equals(str2[0])){
-                        //System.out.println(str2[1]);
                         res.add(new String[]{str[0], str[1], str[2], str2[0], str2[1], str2[2]});
                         //data, albero, classe, ticket, fixversion, affectedversion//
                     }

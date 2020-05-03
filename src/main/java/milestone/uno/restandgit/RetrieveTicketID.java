@@ -1,4 +1,4 @@
-package milestone1.restandgit;
+package milestone.uno.restandgit;
 
 import java.io.*;
 import java.net.URL;

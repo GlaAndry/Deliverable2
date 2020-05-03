@@ -1,4 +1,4 @@
-package milestone1.engine;
+package milestone.uno.engine;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -9,9 +9,6 @@ import org.eclipse.jgit.blame.BlameResult;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 
 import java.io.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,17 +24,14 @@ public class GitBlameWithJava {
     private static final Logger LOGGER = Logger.getLogger(GitBlameWithJava.class.getName());
 
     static String path = "";
-    static String classesPath = "";
+    static String commitPath = "";
     static String completePath = "";
     static String gitUrl = "";
-    static String blameRes = "";
-    //static String blamePath = "";
-    String blamePath = "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\blame.csv";
-    String blameNew = "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\blameNew.csv";
-    String finalBlames = "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\blameFinal.csv";
-    String sortedBlames = "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\blameSorted.csv";
+    static String blamePath = "";
+    static String blameNew = "";
+    static String finalBlames = "";
 
-    public static void main(String[] args) throws GitAPIException, IOException {
+    public static void main(String[] args) {
 
         importResources();
         //new GitBlameWithJava().blame();
@@ -46,7 +40,7 @@ public class GitBlameWithJava {
 
     }
 
-    private static void importResources(){
+    private static void importResources() {
         /**
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
@@ -58,10 +52,12 @@ public class GitBlameWithJava {
             prop.load(input);
 
             path = prop.getProperty("gitDirBOOKPath");
-            classesPath = prop.getProperty("commitPath");
+            commitPath = prop.getProperty("commitPath");
             completePath = prop.getProperty("gitPathBOOK");
             gitUrl = prop.getProperty("gitUrlBOOK");
-            blameRes = prop.getProperty("blameRes");
+            blamePath = prop.getProperty("blameRes");
+            blameNew = prop.getProperty("blameNew");
+            finalBlames = prop.getProperty("blameFinal");
 
 
         } catch (IOException e) {
@@ -84,9 +80,6 @@ public class GitBlameWithJava {
              CSVWriter writer = new CSVWriter(fileWriter)) {
 
             List<String[]> blmWithDup = csvReader.readAll();
-            List<String[]> blm = new ArrayList<>();
-
-            String record = "";
 
             /**
              * Sfruttiamo un Hasmap in quanto non è possibile avere delle coppie chiave valore che siano
@@ -102,8 +95,8 @@ public class GitBlameWithJava {
 
             for (String[] str : blmWithDup) {
 
-                if (!hashMap.containsValue(str[0]+str[1]+str[2])) {
-                    hashMap.put(index, str[0]+str[1]+str[2]);
+                if (!hashMap.containsValue(str[0] + str[1] + str[2])) {
+                    hashMap.put(index, str[0] + str[1] + str[2]);
                 } else {
                     index++;
                 }
@@ -112,13 +105,13 @@ public class GitBlameWithJava {
 
             //scrivo nel csv finale
             for (Map.Entry<Integer, String> entry : hashMap.entrySet()) {
-                writer.writeNext(new String[]{entry.getValue().substring(0,10),entry.getValue().substring(10,62),entry.getValue().substring(62)});
+                writer.writeNext(new String[]{entry.getValue().substring(0, 10), entry.getValue().substring(10, 62), entry.getValue().substring(62)});
             }
 
             writer.flush();
 
 
-        } catch (ConcurrentModificationException e){
+        } catch (ConcurrentModificationException e) {
             e.printStackTrace();
         }
 
@@ -147,7 +140,9 @@ public class GitBlameWithJava {
 
             for (String[] str : blames) {
 
-                String anno,mese,giorno;
+                String anno;
+                String mese;
+                String giorno;
 
                 if (str[0].length() == 27) {
                     anno = str[0].substring(25) + "-";
@@ -157,40 +152,40 @@ public class GitBlameWithJava {
                 switch (str[0].substring(4, 7)) {
 
                     case ("Jan"):
-                        mese =  "01-";
+                        mese = "01-";
                         break;
                     case ("Feb"):
-                        mese =  "02-";
+                        mese = "02-";
                         break;
                     case ("Mar"):
-                        mese =  "03-";
+                        mese = "03-";
                         break;
                     case ("Apr"):
-                        mese =  "04-";
+                        mese = "04-";
                         break;
                     case ("May"):
-                        mese =  "05-";
+                        mese = "05-";
                         break;
                     case ("Jun"):
-                        mese =  "06-";
+                        mese = "06-";
                         break;
                     case ("Jul"):
-                        mese =  "07-";
+                        mese = "07-";
                         break;
                     case ("Aug"):
-                        mese =  "08-";
+                        mese = "08-";
                         break;
                     case ("Sep"):
-                        mese =  "09-";
+                        mese = "09-";
                         break;
                     case ("Oct"):
-                        mese =  "10-";
+                        mese = "10-";
                         break;
                     case ("Nov"):
-                        mese =  "11-";
+                        mese = "11-";
                         break;
                     case ("Dec"):
-                        mese =  "12-";
+                        mese = "12-";
                         break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + str[0].substring(4, 7));
@@ -198,9 +193,9 @@ public class GitBlameWithJava {
 
                 giorno = str[0].substring(8, 10);
 
-                data = anno+mese+giorno;
+                data = anno + mese + giorno;
 
-                if(data.contains(" ")){
+                if (data.contains(" ")) {
                     data = data.substring(1); //elimino lo spazio presente all'inizio di alcune date all'interno del set.
                 }
 
@@ -209,10 +204,10 @@ public class GitBlameWithJava {
                  * per andare ad effettuare la stima.
                  */
 
-                if(((anno.contains("2016")) || (anno.contains("2017")) || (anno.contains("2018")) || (anno.contains("2019")) || (anno.contains("2020")))){
-                    System.out.println("Dato da eliminare");
+                if (((anno.contains("2016")) || (anno.contains("2017")) || (anno.contains("2018")) || (anno.contains("2019")) || (anno.contains("2020")))) {
+                    LOGGER.info("Dato da Eliminare");
                 } else {
-                    dates.add(new String[]{data,str[1],str[2]});
+                    dates.add(new String[]{data, str[1], str[2]});
                 }
 
             }
@@ -220,12 +215,11 @@ public class GitBlameWithJava {
             writer.writeAll(dates);
             writer.flush();
 
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
-
 
 
     public void blame() throws GitAPIException {
@@ -246,19 +240,18 @@ public class GitBlameWithJava {
             LOGGER.info("Eseguire nuovamente per scaricare tutti i commit.\n");
         }
 
-        try(FileReader fileReader = new FileReader("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\BugLab\\src\\main\\resources\\Classes.csv");
-            CSVReader csvReader = new CSVReader(fileReader);
-            FileWriter fileWriter = new FileWriter(blameRes);
-            CSVWriter csvWriter = new CSVWriter(fileWriter)) {
+        try (FileReader fileReader = new FileReader("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\BugLab\\src\\main\\resources\\Classes.csv");
+             CSVReader csvReader = new CSVReader(fileReader);
+             FileWriter fileWriter = new FileWriter(blamePath);
+             CSVWriter csvWriter = new CSVWriter(fileWriter)) {
 
             ArrayList<String[]> wrt = new ArrayList<>();
 
             List<String[]> classi = csvReader.readAll();
             Git git = new Git(new FileRepository(completePath));
 
-            for(String[] record: classi){
+            for (String[] record : classi) {
 
-                System.out.println(record[1]);
                 BlameCommand blameCommand = git.blame()
                         .setStartCommit(git.getRepository().resolve("HEAD"))
                         .setFilePath(record[1]);
@@ -266,17 +259,17 @@ public class GitBlameWithJava {
                 BlameResult blameResult = blameCommand.call();
 
                 int size = blameResult.getResultContents().size();
-                for( int i = 0; i < size; i++ ) {
+                for (int i = 0; i < size; i++) {
                     /**
                      * Aggiungiamo al CSV la data, la classe associata ed il Tree. IL Tree è necessario in quanto così
                      * possiamo possiamo riferirci al file commits.
                      */
-                    if(counter == 0){
-                        result = blameResult.getSourceAuthor(i).getWhen().toString()+ blameResult.getSourceCommit(i).getTree().toString()+record[2];
+                    if (counter == 0) {
+                        result = blameResult.getSourceAuthor(i).getWhen().toString() + blameResult.getSourceCommit(i).getTree().toString() + record[2];
                         wrt.add(new String[]{blameResult.getSourceAuthor(i).getWhen().toString(), blameResult.getSourceCommit(i).getTree().toString(), record[2]});
                         counter++;
                     } else {
-                        if(!result.equals(blameResult.getSourceAuthor(i).getWhen().toString()+ blameResult.getSourceCommit(i).getTree().toString()+record[2])){
+                        if (!result.equals(blameResult.getSourceAuthor(i).getWhen().toString() + blameResult.getSourceCommit(i).getTree().toString() + record[2])) {
                             counter = 0;
                         }
                     }
@@ -288,7 +281,7 @@ public class GitBlameWithJava {
             csvWriter.flush();
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
