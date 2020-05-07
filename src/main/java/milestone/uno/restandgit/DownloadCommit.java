@@ -78,13 +78,6 @@ public class DownloadCommit {
             Repository repository = FileRepositoryBuilder.create(new File(completePath));
             String repo = String.valueOf(repository);
             LOGGER.info(repo);
-            List<Ref> branches = git.branchList().call();
-            for (Ref ref : branches)
-            {
-
-                LOGGER.info(ref.getName());
-
-            }
 
             Iterable<RevCommit> commits = git.log().all().call();
 

@@ -25,6 +25,7 @@ public class GetAffectedVersionFromJira {
 
     private static final Logger LOGGER = Logger.getLogger(GetAffectedVersionFromJira.class.getName());
     static String avPath = "";
+    final String campo = "fields";
 
 
     public static void main(String[] args) throws IOException, JSONException {
@@ -86,7 +87,7 @@ public class GetAffectedVersionFromJira {
              * Questi ulteriri array JSON sono stati necessari per accedere alle sottoliste presenti all'interno
              * di issues, cioè filed, che contiene sia FixVersions che version per determinare AV e FV.
              */
-            JSONArray FV = issues.getJSONObject(z).getJSONObject("fields").getJSONArray("fixVersions");
+            JSONArray fv = issues.getJSONObject(z).getJSONObject(campo).getJSONArray("fixVersions");
             String fixVersion = "";
 
             /**
@@ -95,9 +96,9 @@ public class GetAffectedVersionFromJira {
              * counter.
              */
 
-            for (h = 0; h < FV.length(); h++) {
+            for (h = 0; h < fv.length(); h++) {
                 counter++;
-                fixVersion = FV.getJSONObject(h).get("name").toString();
+                fixVersion = fv.getJSONObject(h).get("name").toString();
                 lista.add(new String[]{counter.toString(), ticket, fixVersion});
 
             }
@@ -143,14 +144,14 @@ public class GetAffectedVersionFromJira {
              * Questi ulteriri array JSON sono stati necessari per accedere alle sottoliste presenti all'interno
              * di issues, cioè filed, che contiene sia FixVersions che version per determinare AV e FV.
              */
-            JSONArray FV = issues.getJSONObject(z).getJSONObject("fields").getJSONArray("fixVersions");
-            JSONArray AV = issues.getJSONObject(z).getJSONObject("fields").getJSONArray("versions");
+            JSONArray fv = issues.getJSONObject(z).getJSONObject(campo).getJSONArray("fixVersions");
+            JSONArray av = issues.getJSONObject(z).getJSONObject(campo).getJSONArray("versions");
 
             String fixVersion = "";
             String affectedVersion = "";
 
 
-            affectedVersion = AV.getJSONObject(0).get("name").toString();
+            affectedVersion = av.getJSONObject(0).get("name").toString();
 
             /**
              * Il ciclo è necessario in quanto alcuni ticket possiedono molteplici fixed-version. In questo
@@ -158,9 +159,9 @@ public class GetAffectedVersionFromJira {
              * counter.
              */
 
-            for (h = 0; h < FV.length(); h++) {
+            for (h = 0; h < fv.length(); h++) {
                 counter++;
-                fixVersion = FV.getJSONObject(h).get("name").toString();
+                fixVersion = fv.getJSONObject(h).get("name").toString();
                 lista.add(new String[]{counter.toString(), ticket, fixVersion, affectedVersion});
 
             }

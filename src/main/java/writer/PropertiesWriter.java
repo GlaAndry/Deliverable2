@@ -27,7 +27,7 @@ public class PropertiesWriter {
             prop.setProperty("projectNameBOOK", "BOOKKEEPER");
             prop.setProperty("projectNameTAJO", "TAJO");
             prop.setProperty("gitUrlBOOK", "https://github.com/apache/bookkeeper");
-            prop.setProperty("gitUrlTAJO", "https://github.com/apache/bookkeeper");
+            prop.setProperty("gitUrlTAJO", "https://github.com/apache/tajo");
             prop.setProperty("classesPath", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\Classes.csv");
             prop.setProperty("blameRes", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\blame.csv");
             prop.setProperty("blameNew", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\blameNew.csv");

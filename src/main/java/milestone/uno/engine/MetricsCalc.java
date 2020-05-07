@@ -44,16 +44,15 @@ public class MetricsCalc {
     static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
     static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
 
         importResources();
         //new MetricsCalc().sizeAndAgeOfClasses(); //fatto
         //new MetricsCalc().locTouched();
-        //new MetricsCalc().numberOfRevisionsAndAuthors(); //fatto
+        new MetricsCalc().numberOfRevisionsAndAuthors(); //fatto
         //new MetricsCalc().numberOfBugFixes(); //fatto
-        new MetricsCalc().locMetrics();
+        //new MetricsCalc().locMetrics();
 
 
     }
@@ -199,12 +198,14 @@ public class MetricsCalc {
                     for (int i = 0; i < size; i++) {
 
                         commitDate = blameResult.getSourceAuthor(i).getWhen();
-
+/*
                         if (commitDate2 != null && commitDate.compareTo(commitDate2) == 0) {
                             continue;
                         }
+
+ */
                         if (versionDate.compareTo(commitDate) > 0) {
-                            commitDate2 = blameResult.getSourceAuthor(i).getWhen();
+                            //commitDate2 = blameResult.getSourceAuthor(i).getWhen();
                             /**
                              * Aumento il contatore solamente quando sono sicuro che il commit considerato
                              * non è gia' stato considerato anche in precedenza.
@@ -327,11 +328,9 @@ public class MetricsCalc {
                                 max = Integer.max(max, z);
                                 average = max / Integer.parseInt(str[0]);
                             }
-                            if (date.compareTo(dateVer) > 0) {
-                                if (lock == 0) {
-                                    lock++;
-                                    ret.add(new String[]{str[0], str2[2], str3[2], str3[3], str3[4], Integer.toString(max), Double.toString(average)});
-                                }
+                            if (date.compareTo(dateVer) > 0 && lock == 0) {
+                                lock++;
+                                ret.add(new String[]{str[0], str2[2], str3[2], str3[3], str3[4], Integer.toString(max), Double.toString(average)});
                             }
                         }
                     }
@@ -369,8 +368,6 @@ public class MetricsCalc {
         int linesAdded = 0;
         int linesDeleted = 0;
         int linesTouched = 0;
-
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
         //setup della repo
         Git git = new Git(new FileRepository(gitPath));

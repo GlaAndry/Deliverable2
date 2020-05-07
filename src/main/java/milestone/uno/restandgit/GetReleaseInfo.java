@@ -26,10 +26,10 @@ public class GetReleaseInfo {
     private static final Logger LOGGER = Logger.getLogger(GetReleaseInfo.class.getName());
 
 
-    public static Map<LocalDateTime, String> releaseNames;
-    public static Map<LocalDateTime, String> releaseID;
-    public static List<LocalDateTime> releases;
-    public static Integer numVersions;
+    private static Map<LocalDateTime, String> releaseNames;
+    private static Map<LocalDateTime, String> releaseID;
+    private static List<LocalDateTime> releases;
+    private static Integer numVersions;
 
     public static void main(String[] args) throws IOException {
 
@@ -66,7 +66,6 @@ public class GetReleaseInfo {
         String outname = projName + "VersionInfo.csv";
         if (releases.size() < 6)
             return;
-        //FileWriter fileWriter = null;
         try (FileWriter fileWriter = new FileWriter(outname);){
 
             fileWriter.append("Index,Version ID,Version Name,DateStart,DateEnd");
@@ -103,7 +102,7 @@ public class GetReleaseInfo {
     }
 
 
-    public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+    public static JSONObject readJsonFromUrl(String url) throws IOException {
         try (InputStream is = new URL(url).openStream()) {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             String jsonText = readAll(rd);

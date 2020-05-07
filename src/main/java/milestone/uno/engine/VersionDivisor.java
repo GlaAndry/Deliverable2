@@ -118,8 +118,6 @@ public class VersionDivisor {
         HashMap<Integer, String> hashMap = new HashMap<>();
         Integer index = 0;
 
-        int x = 0; //Intero necessario per prendere la versione precedente.
-
         try (FileReader fileReader = new FileReader(outRM);
              CSVReader csvReader = new CSVReader(fileReader);
              FileReader fileReader1 = new FileReader(version);
@@ -135,18 +133,13 @@ public class VersionDivisor {
             ver2 = versionInfo.subList(1, versionInfo.size()); // salto la prima riga
             association = csvReader2.readAll();
 
-            //int counter = 0;
-
             out = adjustingList(association, bugAV); //sfrutto una nuova lista contente il ticket con la data
             //e le versioni di fix version ed affected version in modo da sfruttarla per determinare IV,OV ed FV.
 
 
-
-
+            //out --> Data, Ticket, FV, IV
             for (String[] str : out) {
                 for (String[] strings : ver2) {
-
-                    //if (counter > 0) {
 
                     dateEnd = formatter.parse(strings[4]);
                     dateStart = formatter.parse(strings[3]);
@@ -154,19 +147,20 @@ public class VersionDivisor {
 
                     /**
                      * Il controllo sulla data è necessario per determinare in quale verisione ci troviamo.
-                     * Andiamo a prendere il la versione e togliamo -1 altrimenti per OV andremmo a prendere
-                     * la versione successiva!
                      */
 
                     if (dateTicket.after(dateStart) && dateTicket.before(dateEnd)) {
                         ov = strings[0];
                     }
+
                     if (strings[2].equals(str[2])) {
                         fv = strings[0];
                     }
                     if (strings[2].equals(str[3])) {
                         iv = strings[0];
                     }
+
+
                     if (!fv.equals("") && !iv.equals("") && !ov.equals("")) {
 
                         /**

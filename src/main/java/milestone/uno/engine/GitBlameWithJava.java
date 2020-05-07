@@ -7,7 +7,6 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.blame.BlameResult;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
-
 import java.io.*;
 import java.util.*;
 import java.util.logging.Level;

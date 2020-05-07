@@ -37,8 +37,8 @@ public class GetDefectedClasses {
         importResources();
         //new GetDefectedClasses().determineDefectiveFromBlame();
         double p = new GetDefectedClasses().calculateProportion();
-        System.out.println("Valore di P:" + p);
-        new GetDefectedClasses().determineDefectiveClasses(p);
+        LOGGER.info("Valore di P:" + p);
+        new GetDefectedClasses().determineDefectiveWithProportion(p);
     }
 
     private static void importResources() {
@@ -96,8 +96,8 @@ public class GetDefectedClasses {
                 fv = Double.parseDouble(str[2]);
                 iv = Double.parseDouble(str[3]);
 
-                if ((fv - iv) != 0) {
-                    p += ((fv - iv) / (fv - ov));
+                if ((fv - ov) != 0) {
+                    p = p + ((fv - iv) / (fv - ov));
                 }
             }
 
@@ -186,8 +186,69 @@ public class GetDefectedClasses {
 
     }
 
+    private List<String[]> determineJiraDefective() {
 
-    private void determineDefectiveClasses(double p) {
+        /**
+         * Attraverso questo metodo andiamo a determinare se una classe è defective o meno per una determinata
+         * release sfruttando solamente i dati forniti da Jira.
+         *
+         * Ticket Jira AV --> AssociationAVBlame.csv
+         * Ticket Jira OV --> AssociationOVBlame.csv
+         * Ticket con AV e FV --> BugAV.csv
+         * Release --> ProjVersionInfo.csv
+         * P = calculateProportion()
+         * Classi java --> Classes.csv
+         */
+
+        List<String[]> avblm = new ArrayList<>();
+        List<String[]> classes = new ArrayList<>();
+        List<String[]> vers = new ArrayList<>();
+        List<String[]> vers2 = new ArrayList<>();
+        List<String[]> bug = new ArrayList<>();
+        List<String[]> bugIndexed = new ArrayList<>();
+
+        try (FileReader fileReader = new FileReader(assBlameAV);
+             CSVReader csvReader = new CSVReader(fileReader);
+             FileReader fileReader1 = new FileReader(classPath);
+             CSVReader csvReader1 = new CSVReader(fileReader1);
+             FileReader fileReader2 = new FileReader(versionInfo);
+             CSVReader csvReader2 = new CSVReader(fileReader2)) {
+
+            avblm = csvReader.readAll();
+            classes = csvReader1.readAll();
+            vers = csvReader2.readAll();
+            vers2 = vers.subList(1, vers.size());
+
+            /**
+             * In questo modo andiamo a trasformare le versioni negli Index, in modo tale da
+             * poterle confrontare.
+             */
+
+            bugIndexed = new GetDefectedClasses().indexingList(avblm, vers2); //Indexing della lista
+
+            Integer affVer = 0;
+
+            for (String[] strings : vers2) {
+                for (String[] strings1 : classes) {
+                    for (String[] strings2 : bugIndexed) {
+                        if (strings1[2].equals(strings2[1])) { //controllo se la classe è presente negli AV registrati
+                            affVer = Integer.parseInt(strings2[4]);
+                            if (affVer == Integer.parseInt(strings[0])) {
+                                bug.add(new String[]{strings[0], strings1[2], "YES"});
+                            }
+                        }
+                    }
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return bug;
+    }
+
+    private void determineDefectiveWithProportion(double p) {
 
         /**
          * Attraverso questo metodo andiamo a determinare se una classe è defective o meno per una determinata
@@ -202,25 +263,23 @@ public class GetDefectedClasses {
          * Classi java --> Classes.csv
          */
 
-        List<String[]> avblm = new ArrayList<>();
         List<String[]> ovBlame = new ArrayList<>();
         List<String[]> ovBlameInd = new ArrayList<>();
         List<String[]> classes = new ArrayList<>();
         List<String[]> vers = new ArrayList<>();
         List<String[]> vers2 = new ArrayList<>();
-        List<String[]> bug = new ArrayList<>();
-        List<String[]> bugIndexed = new ArrayList<>();
 
-        try (FileReader fileReader = new FileReader(assBlameAV);
-             CSVReader csvReader = new CSVReader(fileReader);
-             FileReader fileReader1 = new FileReader(classPath);
+        /////////
+        List<String[]> bug = determineJiraDefective();  //prima determino i bug da jira
+        ////////
+
+        try (FileReader fileReader1 = new FileReader(classPath);
              CSVReader csvReader1 = new CSVReader(fileReader1);
              FileReader fileReader2 = new FileReader(versionInfo);
              CSVReader csvReader2 = new CSVReader(fileReader2);
              FileReader fileReader3 = new FileReader("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\associationOVBlame.csv");
              CSVReader csvReader3 = new CSVReader(fileReader3)) {
 
-            avblm = csvReader.readAll();
             classes = csvReader1.readAll();
             vers = csvReader2.readAll();
             vers2 = vers.subList(1, vers.size());
@@ -232,36 +291,26 @@ public class GetDefectedClasses {
              * poterle confrontare.
              */
 
-            bugIndexed = new GetDefectedClasses().indexingList(avblm, vers2); //Indexing della lista
             ovBlameInd = new GetDefectedClasses().indexingListWithDate(ovBlame, vers2); //Indexing della lista con la data
 
 
-            Integer affVer = 0;
             Double predictedAffVer = 0.0;
             int s = 0;
-
             int fv;
             int ovInt;
 
+            /**
+             * In questo caso andiamo a sfruttare il metodo Proportion.
+             * Come sappiamo, attraverso il metodo proportion possiamo andare a determinare
+             * l'affected version sfruttando l'equazione:
+             *
+             * IV = FV - (FV-OV)*P --> IV infatti rappresenta la più vecchia versione tra le
+             * affected version.
+             *
+             */
+
             for (String[] strings : vers2) {
                 for (String[] strings1 : classes) {
-                    for (String[] strings2 : bugIndexed) {
-                        if (strings1[2].equals(strings2[1])) { //controllo se la classe è presente negli AV registrati
-                            affVer = Integer.parseInt(strings2[4]);
-                            if (affVer == Integer.parseInt(strings[0])) {
-                                bug.add(new String[]{strings[0], strings1[2], "YES"});
-                            }
-                        }
-                    }
-                    /**
-                     * In questo caso andiamo a sfruttare il metodo Proportion.
-                     * Come sappiamo, attraverso il metodo proportion possiamo andare a determinare
-                     * l'affected version sfruttando l'equazione:
-                     *
-                     * IV = FV - (FV-OV)*P --> IV infatti rappresenta la più vecchia versione tra le
-                     * affected version.
-                     *
-                     */
                     for (String[] strings3 : ovBlameInd) {
                         if (strings1[2].equals(strings3[1])) { //controllo se la classe è uguale
                             if (!strings3[4].equals("") && !strings3[3].equals("")) {
@@ -283,7 +332,7 @@ public class GetDefectedClasses {
             }
 
             //richiamo la funzione per creare il file CSV
-            createDefectiveCSV(vers2, classes, bugIndexed);
+            createDefectiveCSV(vers2, classes, bug);
 
 
         } catch (IOException | ParseException e) {

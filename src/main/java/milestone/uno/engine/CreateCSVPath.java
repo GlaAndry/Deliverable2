@@ -88,9 +88,9 @@ public class CreateCSVPath {
 
         /**
          * Scrive gli elementi nella lista in formato CSV.
+         * le colonne del file saranno formate dal path completo, path ridotto e nome
+         * della classe java.
          */
-
-        //String path = "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\Classes.csv";
         try(FileWriter fileWriter = new FileWriter(classes);
             CSVWriter csvWriter = new CSVWriter(fileWriter)) {
 
