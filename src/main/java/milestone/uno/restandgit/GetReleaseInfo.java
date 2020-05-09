@@ -38,7 +38,7 @@ public class GetReleaseInfo {
          * out --> ProjVersionInfo.csv
          */
 
-        String projName ="BOOKKEEPER";
+        String projName ="TAJO"; //Change in "BOOKKEEPER" for other project.
         //Fills the arraylist with releases dates and orders them
         //Ignores releases with missing dates
         releases = new ArrayList<>();

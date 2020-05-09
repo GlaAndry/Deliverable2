@@ -2,5 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/src/main/resources/GitDirBook" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/main/resources/GitDirTajo" vcs="Git" />
   </component>
 </project>

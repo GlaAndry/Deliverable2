@@ -23,7 +23,14 @@ public class RetrieveTicketID {
     public static  String proj ="";
 
 
-    private static void importResources(){
+    private static void importResources(int value){
+        /**
+         * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
+         * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
+         *
+         * 0 --> BOOKKEEPER
+         * 1 --> TAJO
+         */
         ////////////////carico i dati da config.properties
         try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config.properties")) {
 
@@ -31,9 +38,14 @@ public class RetrieveTicketID {
             // load a properties file
             prop.load(input);
 
-            path = prop.getProperty("BugTicketFromJira");
-            proj = prop.getProperty("projectNameBOOK");
-
+            if(value == 0){
+                path = prop.getProperty("BugTicketFromJira");
+                proj = prop.getProperty("projectNameBOOK");
+            }
+            if (value == 1){
+                path = prop.getProperty("BugTicketFromJiraTAJO");
+                proj = prop.getProperty("projectNameTAJO");
+            }
 
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, String.valueOf(e));
@@ -86,7 +98,6 @@ public class RetrieveTicketID {
          * out --> BugTicket.csv
          */
 
-        importResources();
         LOGGER.info("Scrivo i file su CSV!");
         File file = new File(path);
         List<String[]> data = new ArrayList<>();
@@ -142,7 +153,7 @@ public class RetrieveTicketID {
          * Resolution == “Fixed”
          * I ticket vengono presi da Jira sfruttando le REST API.
          */
-
+        importResources(1);
         new RetrieveTicketID().retreive();
 
     }

@@ -28,18 +28,20 @@ public class AssociationJiraGit {
     static String bugTicket = "";
     static String outAssAB = "";
     static String bugAV = "";
+    static String outAssOV = "";
+    static String fvPath = "";
 
 
     public static void main(String[] args){
 
-        importResources();
+        importResources(1);
         //new AssociationJiraGit().associateCommitsAndBlame();
         //new AssociationJiraGit().associateAVAndBlame();
         new AssociationJiraGit().associateFixAndBlame();
 
     }
 
-    private static void importResources(){
+    private static void importResources(int value){
         /**
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
@@ -50,13 +52,31 @@ public class AssociationJiraGit {
             // load a properties file
             prop.load(input);
 
-            blame = prop.getProperty("blameFinal");
-            comm = prop.getProperty("commitPath");
-            av = prop.getProperty("AVpath");
-            outAssCB = prop.getProperty("AssCB");
-            bugTicket = prop.getProperty("BugTicketFromJira");
-            outAssAB = prop.getProperty("AssAB");
-            bugAV = prop.getProperty("BugTicketAV");
+            if(value == 0){
+                blame = prop.getProperty("blameFinal");
+                comm = prop.getProperty("commitPath");
+                av = prop.getProperty("AVpath");
+                outAssCB = prop.getProperty("AssCB");
+                bugTicket = prop.getProperty("BugTicketFromJira");
+                outAssAB = prop.getProperty("AssAB");
+                bugAV = prop.getProperty("BugTicketAV");
+                outAssOV = prop.getProperty("AssOV");
+                fvPath = prop.getProperty("FVpath");
+            }
+            if(value == 1){
+                blame = prop.getProperty("blameFinalTAJO");
+                comm = prop.getProperty("commitPathTAJO");
+                av = prop.getProperty("AVpathTAJO");
+                outAssCB = prop.getProperty("AssCBTAJO");
+                bugTicket = prop.getProperty("BugTicketFromJiraTAJO");
+                outAssAB = prop.getProperty("AssABTAJO");
+                bugAV = prop.getProperty("BugTicketAVTAJO");
+                outAssOV = prop.getProperty("AssOVTAJO");
+                fvPath = prop.getProperty("FVpathTAJO");
+
+
+            }
+
 
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, String.valueOf(e));
@@ -79,9 +99,9 @@ public class AssociationJiraGit {
 
         try(FileReader b = new FileReader(outAssCB);
             CSVReader csvReader = new CSVReader(b);
-            FileReader c = new FileReader("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\FV.csv");
+            FileReader c = new FileReader(fvPath);
             CSVReader csvReader1 = new CSVReader(c);
-            FileWriter fileWriter = new FileWriter("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\associationOVBlame.csv");
+            FileWriter fileWriter = new FileWriter(outAssOV);
             CSVWriter csvWriter = new CSVWriter(fileWriter)){
 
 

@@ -24,10 +24,13 @@ public class CreateCSVPath {
     static String classes = "";
     static ArrayList<String[]> pathAndName = new ArrayList<>();
 
-    private static void importResources(){
+    private static void importResources(int value){
         /**
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
+         *
+         * 0 --> BOOK
+         * 1 --> TAJO
          */
         try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config.properties")) {
 
@@ -35,8 +38,15 @@ public class CreateCSVPath {
             // load a properties file
             prop.load(input);
 
-            path = prop.getProperty("gitDirBOOKPath");
-            classes = prop.getProperty("classesPath");
+            if(value == 0){
+                path = prop.getProperty("gitDirBOOKPath");
+                classes = prop.getProperty("classesPath");
+            }
+            if(value == 1){
+                path = prop.getProperty("gitDirTAJOPath");
+                classes = prop.getProperty("classesPathTAJO");
+            }
+
 
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, String.valueOf(e));
@@ -107,7 +117,7 @@ public class CreateCSVPath {
 
     public static void main(String[] args){
 
-        importResources();
+        importResources(1);
         File dir = new File(path);
         StringBuilder sb = new StringBuilder();
         StringBuilder sb1 = new StringBuilder();

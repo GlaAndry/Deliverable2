@@ -34,14 +34,13 @@ public class GetDefectedClasses {
 
     public static void main(String[] args) {
 
-        importResources();
-        //new GetDefectedClasses().determineDefectiveFromBlame();
+        importResources(1);
         double p = new GetDefectedClasses().calculateProportion();
         LOGGER.info("Valore di P:" + p);
         new GetDefectedClasses().determineDefectiveWithProportion(p);
     }
 
-    private static void importResources() {
+    private static void importResources(int value) {
         /**
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
@@ -52,13 +51,27 @@ public class GetDefectedClasses {
             // load a properties file
             prop.load(input);
 
-            versionInfo = prop.getProperty("versionInfoBOOK");
-            assBlameComm = prop.getProperty("AssCB");
-            assBlameAV = prop.getProperty("AssAB");
-            buggyPath = prop.getProperty("buggyPath");
-            classPath = prop.getProperty("classesPath");
-            varP = prop.getProperty("variables");
-            bAV = prop.getProperty("BugTicketAV");
+            if(value == 0){
+                versionInfo = prop.getProperty("versionInfoBOOK");
+                assBlameComm = prop.getProperty("AssCB");
+                assBlameAV = prop.getProperty("AssAB");
+                buggyPath = prop.getProperty("buggyPath");
+                classPath = prop.getProperty("classesPath");
+                varP = prop.getProperty("variables");
+                bAV = prop.getProperty("BugTicketAV");
+
+            }
+            if(value == 1){
+                versionInfo = prop.getProperty("versionInfoTAJO");
+                assBlameComm = prop.getProperty("AssCBTAJO");
+                assBlameAV = prop.getProperty("AssABTAJO");
+                buggyPath = prop.getProperty("buggyPathTAJO");
+                classPath = prop.getProperty("classesPathTAJO");
+                varP = prop.getProperty("variablesTAJO");
+                bAV = prop.getProperty("BugTicketAVTAJO");
+
+            }
+
 
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, String.valueOf(e));

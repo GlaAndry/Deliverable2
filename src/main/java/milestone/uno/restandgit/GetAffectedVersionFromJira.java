@@ -25,17 +25,19 @@ public class GetAffectedVersionFromJira {
 
     private static final Logger LOGGER = Logger.getLogger(GetAffectedVersionFromJira.class.getName());
     static String avPath = "";
+    static String fvPath = "";
+    static String projName = "";
     final String campo = "fields";
 
 
     public static void main(String[] args) throws IOException, JSONException {
 
-        importResources();
-        //new GetAffectedVersionFromJira().retrieveFromJira();
-        new GetAffectedVersionFromJira().retriveOnlyFixFromJira();
+        importResources(1);
+        new GetAffectedVersionFromJira().retrieveFromJira();
+        //new GetAffectedVersionFromJira().retriveOnlyFixFromJira();
     }
 
-    private static void importResources(){
+    private static void importResources(int value) {
         /**
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
@@ -46,7 +48,16 @@ public class GetAffectedVersionFromJira {
             // load a properties file
             prop.load(input);
 
-            avPath = prop.getProperty("AVpath");
+            if (value == 0) {
+                avPath = prop.getProperty("AVpath");
+                fvPath = prop.getProperty("FVpath");
+                projName = prop.getProperty("projectNameBOOK");
+            }
+            if (value == 1) {
+                avPath = prop.getProperty("AVpathTAJO");
+                fvPath = prop.getProperty("FVpathTAJO");
+                projName = prop.getProperty("projectNameTAJO");
+            }
 
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, String.valueOf(e));
@@ -64,12 +75,9 @@ public class GetAffectedVersionFromJira {
 
         List<String[]> lista = new ArrayList<>();
 
-        String projName = "BOOKKEEPER";
-
-        //String url = "https://issues.apache.org/jira/rest/api/2/project/" + projName;
-        String urlAffectedVersion = "https://issues.apache.org/jira/rest/api/2/search?jql=project%20=%20BOOKKEEPER%20AND%20" +
+        String urlAffectedVersion = "https://issues.apache.org/jira/rest/api/2/search?jql=project%20=%20"+projName+"%20AND%20" +
                 "fixVersion%20!=%20null%20ORDER%20BY%20fixVersion%20ASC"
-                +",created&startAt=0&maxResults=1000";
+                + ",created&startAt=0&maxResults=1000";
 
         JSONObject json = readJsonFromUrl(urlAffectedVersion);
         JSONArray issues = json.getJSONArray("issues");
@@ -80,7 +88,7 @@ public class GetAffectedVersionFromJira {
 
         lista.add(new String[]{"Index", "Ticket", "FixVersion"});
 
-        for (z = 0;z < issues.length(); z++) {
+        for (z = 0; z < issues.length(); z++) {
 
             String ticket = issues.getJSONObject(z).get("key").toString();
             /**
@@ -103,7 +111,7 @@ public class GetAffectedVersionFromJira {
 
             }
         }
-        try (FileWriter fileWriter = new FileWriter("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\FV.csv");
+        try (FileWriter fileWriter = new FileWriter(fvPath);
              CSVWriter csvWriter = new CSVWriter(fileWriter)) {
 
             csvWriter.writeAll(lista);
@@ -122,22 +130,19 @@ public class GetAffectedVersionFromJira {
 
         List<String[]> lista = new ArrayList<>();
 
-        String projName = "BOOKKEEPER";
-
-        //String url = "https://issues.apache.org/jira/rest/api/2/project/" + projName;
-        String urlAffectedVersion = "https://issues.apache.org/jira/rest/api/2/search?jql=project%20=%20BOOKKEEPER%20AND%20" +
+        String urlAffectedVersion = "https://issues.apache.org/jira/rest/api/2/search?jql=project%20=%20"+projName+"%20AND%20" +
                 "fixVersion%20!=%20null%20AND%20affectedVersion%20!=%20null%20ORDER%20BY%20fixVersion,affectedVersion%20ASC"
-                +",created&startAt=0&maxResults=1000";
+                + ",created&startAt=0&maxResults=1000";
 
         JSONObject json = readJsonFromUrl(urlAffectedVersion);
         JSONArray issues = json.getJSONArray("issues");
 
-        int z,h;
+        int z, h;
         Integer counter = 0;
 
         lista.add(new String[]{"Index", "Ticket", "FixVersion", "AffectedVersion"});
 
-        for (z = 0;z < issues.length(); z++) {
+        for (z = 0; z < issues.length(); z++) {
 
             String ticket = issues.getJSONObject(z).get("key").toString();
             /**

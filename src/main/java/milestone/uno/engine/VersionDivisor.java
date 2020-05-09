@@ -29,17 +29,18 @@ public class VersionDivisor {
     static String outRM = "";
     static String version = "";
     static String varCal = "";
+    static int lenght;
 
 
     public static void main(String[] args) {
 
-        importResources();
+        importResources(0);
         //new VersionDivisor().avTicketOnly();
         new VersionDivisor().determineVar();
 
     }
 
-    private static void importResources() {
+    private static void importResources(int value) {
         /**
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
@@ -50,12 +51,27 @@ public class VersionDivisor {
             // load a properties file
             prop.load(input);
 
-            avPath = prop.getProperty("AVpath");
-            bugPath = prop.getProperty("BugTicketFromJira");
-            outRM = prop.getProperty("BugTicketAV");
-            version = prop.getProperty("versionInfoBOOK");
-            varCal = prop.getProperty("variables");
-            assAVB = prop.getProperty("AssAB");
+            if(value == 0){
+                avPath = prop.getProperty("AVpath");
+                bugPath = prop.getProperty("BugTicketFromJira");
+                outRM = prop.getProperty("BugTicketAV");
+                version = prop.getProperty("versionInfoBOOK");
+                varCal = prop.getProperty("variables");
+                assAVB = prop.getProperty("AssAB");
+                lenght = Integer.parseInt(prop.getProperty("nameLenghtBOOK"));
+
+            }
+            if(value == 1){
+                avPath = prop.getProperty("AVpathTAJO");
+                bugPath = prop.getProperty("BugTicketFromJiraTAJO");
+                outRM = prop.getProperty("BugTicketAVTAJO");
+                version = prop.getProperty("versionInfoTAJO");
+                varCal = prop.getProperty("variablesTAJO");
+                assAVB = prop.getProperty("AssABTAJO");
+                lenght = Integer.parseInt(prop.getProperty("nameLenghtTAJO"));
+
+            }
+
 
 
         } catch (IOException e) {
@@ -186,7 +202,7 @@ public class VersionDivisor {
 
             //scrivo nel csv finale
             for (Map.Entry<Integer, String> entry : hashMap.entrySet()) {
-                csvWriter.writeNext(new String[]{entry.getValue().substring(0, 1), entry.getValue().substring(1, 15), entry.getValue().substring(15, 16), entry.getValue().substring(16)});
+                csvWriter.writeNext(new String[]{entry.getValue().substring(0, 1), entry.getValue().substring(1, lenght), entry.getValue().substring(lenght, lenght+1), entry.getValue().substring(lenght+1)});
             }
 
         } catch (IOException | ParseException e) {

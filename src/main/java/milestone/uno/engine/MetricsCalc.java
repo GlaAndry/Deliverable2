@@ -41,23 +41,28 @@ public class MetricsCalc {
     static String assCoBlm = "";
     static String outLoc = "";
 
+    static String nBugFixPath=""; //prova2
+    static String nRevAndAuthPath = ""; //prova
+    static String locMetricsPath = ""; //prova3
+    static String sizeAndAgePath = ""; //prova4
+
     static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
     static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
     public static void main(String[] args) throws IOException {
 
 
-        importResources();
+        importResources(1);
         //new MetricsCalc().sizeAndAgeOfClasses(); //fatto
-        //new MetricsCalc().locTouched();
-        new MetricsCalc().numberOfRevisionsAndAuthors(); //fatto
+        //new MetricsCalc().numberOfRevisionsAndAuthors(); //fatto
         //new MetricsCalc().numberOfBugFixes(); //fatto
-        //new MetricsCalc().locMetrics();
+        //new MetricsCalc().retrieveLocFromTrees(); //ci mette almeno 3.5 ore per Tajo e 1 ora per Book
+        new MetricsCalc().locMetrics();
 
 
     }
 
-    private static void importResources() {
+    private static void importResources(int value) {
         /**
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
@@ -68,11 +73,32 @@ public class MetricsCalc {
             // load a properties file
             prop.load(input);
 
-            classPath = prop.getProperty("classesPath");
-            gitPath = prop.getProperty("gitPathBOOK");
-            version = prop.getProperty("versionInfoBOOK");
-            assCoBlm = prop.getProperty("AssCB");
-            outLoc = prop.getProperty("outLocClasses");
+            if(value == 0){
+                classPath = prop.getProperty("classesPath");
+                gitPath = prop.getProperty("gitPathBOOK");
+                version = prop.getProperty("versionInfoBOOK");
+                assCoBlm = prop.getProperty("AssCB");
+                outLoc = prop.getProperty("outLocClasses");
+
+                nBugFixPath = prop.getProperty("numBugFix");
+                nRevAndAuthPath = prop.getProperty("numRevAuth");
+                locMetricsPath = prop.getProperty("locMetrics");
+                sizeAndAgePath = prop.getProperty("sizeAndAge");
+
+            }
+            if(value == 1){
+                classPath = prop.getProperty("classesPathTAJO");
+                gitPath = prop.getProperty("gitPathTAJO");
+                version = prop.getProperty("versionInfoTAJO");
+                assCoBlm = prop.getProperty("AssCBTAJO");
+                outLoc = prop.getProperty("outLocClassesTAJO");
+
+                nBugFixPath = prop.getProperty("numBugFixTAJO");
+                nRevAndAuthPath = prop.getProperty("numRevAuthTAJO");
+                locMetricsPath = prop.getProperty("locMetricsTAJO");
+                sizeAndAgePath = prop.getProperty("sizeAndAgeTAJO");
+            }
+
 
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, String.valueOf(e));
@@ -103,7 +129,7 @@ public class MetricsCalc {
              CSVReader csvReader1 = new CSVReader(fileReader1);
              FileReader fileReader2 = new FileReader(assCoBlm);
              CSVReader csvReader2 = new CSVReader(fileReader2);
-             FileWriter fileWriter = new FileWriter("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\prova2.csv");
+             FileWriter fileWriter = new FileWriter(nBugFixPath);
              CSVWriter csvWriter = new CSVWriter(fileWriter)) {
 
             cls = csvReader.readAll();
@@ -174,7 +200,7 @@ public class MetricsCalc {
              CSVReader csvReader = new CSVReader(fileReader);
              FileReader fileReader1 = new FileReader(version);
              CSVReader csvReader1 = new CSVReader(fileReader1);
-             FileWriter fileWriter = new FileWriter("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\prova.csv");
+             FileWriter fileWriter = new FileWriter(nRevAndAuthPath);
              CSVWriter csvWriter = new CSVWriter(fileWriter)) {
 
             cls = csvReader.readAll();
@@ -287,8 +313,6 @@ public class MetricsCalc {
 
         List<String[]> ret = new ArrayList<>();
 
-        String out = "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\prova3.csv";
-
         int lock = 0; //semaforo
 
         Date dateVer;
@@ -301,7 +325,7 @@ public class MetricsCalc {
              CSVReader csvReader1 = new CSVReader(fileReader1);
              FileReader fileReader2 = new FileReader(outLoc);
              CSVReader csvReader2 = new CSVReader(fileReader2);
-             FileWriter fileWriter = new FileWriter(out);
+             FileWriter fileWriter = new FileWriter(locMetricsPath);
              CSVWriter csvWriter = new CSVWriter(fileWriter)) {
 
             ver = csvReader.readAll();
@@ -450,8 +474,6 @@ public class MetricsCalc {
         List<String[]> ver = new ArrayList<>();
         List<String[]> ver2 = new ArrayList<>();
 
-        String out = "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\prova4.csv";
-
         List<String[]> ret = new ArrayList<>();
         Integer size;
         int weeks = 0;
@@ -464,7 +486,7 @@ public class MetricsCalc {
              CSVReader csvReader = new CSVReader(fileReader);
              FileReader fileReader1 = new FileReader(version);
              CSVReader csvReader1 = new CSVReader(fileReader1);
-             FileWriter fileWriter = new FileWriter(out);
+             FileWriter fileWriter = new FileWriter(sizeAndAgePath);
              CSVWriter csvWriter = new CSVWriter(fileWriter)) {
 
             cls = csvReader.readAll();

@@ -29,20 +29,24 @@ public class GitBlameWithJava {
     static String blamePath = "";
     static String blameNew = "";
     static String finalBlames = "";
+    static String classesPath = "";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws GitAPIException, IOException {
 
-        importResources();
+        importResources(1);
         //new GitBlameWithJava().blame();
-        new GitBlameWithJava().changeDate();
-        //new GitBlameWithJava().removeDuplicates();
+        //new GitBlameWithJava().changeDate();
+        new GitBlameWithJava().removeDuplicates();
 
     }
 
-    private static void importResources() {
+    private static void importResources(int value) {
         /**
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
+         *
+         * 0 --> BOOKKEEPER
+         * 1 --> TAJO
          */
         try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config.properties")) {
 
@@ -50,13 +54,29 @@ public class GitBlameWithJava {
             // load a properties file
             prop.load(input);
 
-            path = prop.getProperty("gitDirBOOKPath");
-            commitPath = prop.getProperty("commitPath");
-            completePath = prop.getProperty("gitPathBOOK");
-            gitUrl = prop.getProperty("gitUrlBOOK");
-            blamePath = prop.getProperty("blameRes");
-            blameNew = prop.getProperty("blameNew");
-            finalBlames = prop.getProperty("blameFinal");
+
+            if(value == 0){
+                path = prop.getProperty("gitDirBOOKPath");
+                commitPath = prop.getProperty("commitPath");
+                completePath = prop.getProperty("gitPathBOOK");
+                gitUrl = prop.getProperty("gitUrlBOOK");
+                blamePath = prop.getProperty("blameRes");
+                blameNew = prop.getProperty("blameNew");
+                finalBlames = prop.getProperty("blameFinal");
+                classesPath = prop.getProperty("classesPath");
+            }
+            if(value == 1){
+                path = prop.getProperty("gitDirTAJOPath");
+                commitPath = prop.getProperty("commitPathTAJO");
+                completePath = prop.getProperty("gitPathTAJO");
+                gitUrl = prop.getProperty("gitUrlTAJO");
+                blamePath = prop.getProperty("blameResTAJO");
+                blameNew = prop.getProperty("blameNewTAJO");
+                finalBlames = prop.getProperty("blameFinalTAJO");
+                classesPath = prop.getProperty("classesPathTAJO");
+
+            }
+
 
 
         } catch (IOException e) {
@@ -239,7 +259,7 @@ public class GitBlameWithJava {
             LOGGER.info("Eseguire nuovamente per scaricare tutti i commit.\n");
         }
 
-        try (FileReader fileReader = new FileReader("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\BugLab\\src\\main\\resources\\Classes.csv");
+        try (FileReader fileReader = new FileReader(classesPath);
              CSVReader csvReader = new CSVReader(fileReader);
              FileWriter fileWriter = new FileWriter(blamePath);
              CSVWriter csvWriter = new CSVWriter(fileWriter)) {
@@ -253,7 +273,7 @@ public class GitBlameWithJava {
 
                 BlameCommand blameCommand = git.blame()
                         .setStartCommit(git.getRepository().resolve("HEAD"))
-                        .setFilePath(record[1]);
+                        .setFilePath(record[1].substring(1));
 
                 BlameResult blameResult = blameCommand.call();
 

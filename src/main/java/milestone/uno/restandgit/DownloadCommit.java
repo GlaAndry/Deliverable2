@@ -2,7 +2,6 @@ package milestone.uno.restandgit;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
@@ -10,7 +9,6 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,15 +17,20 @@ public class DownloadCommit {
 
     private static final Logger LOGGER = Logger.getLogger(DownloadCommit.class.getName());
 
+    static String projName = "";
     static String path = "";
     static String commitPath = "";
     static String completePath = "";
     static String gitUrl = "";
+    static int lenght;
 
-    private static void importResources(){
+    private static void importResources(int value){
         /**
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
+         *
+         * 0 --> BOOKKEEPER
+         * 1 --> TAJO
          */
         ////////////////carico i dati da config.properties
         try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config.properties")) {
@@ -36,10 +39,22 @@ public class DownloadCommit {
             // load a properties file
             prop.load(input);
 
-            path = prop.getProperty("gitDirBOOKPath");
-            commitPath = prop.getProperty("commitPath");
-            completePath = prop.getProperty("gitPathBOOK");
-            gitUrl = prop.getProperty("gitUrlBOOK");
+            if(value == 0){
+                path = prop.getProperty("gitDirBOOKPath");
+                commitPath = prop.getProperty("commitPath");
+                completePath = prop.getProperty("gitPathBOOK");
+                gitUrl = prop.getProperty("gitUrlBOOK");
+                projName = prop.getProperty("projectNameBOOK");
+                lenght = Integer.parseInt(prop.getProperty("nameLenghtBOOK"));
+            }
+            if (value == 1) {
+                path = prop.getProperty("gitDirTAJOPath");
+                commitPath = prop.getProperty("commitPathTAJO");
+                completePath = prop.getProperty("gitPathTAJO");
+                gitUrl = prop.getProperty("gitUrlTAJO");
+                projName = prop.getProperty("projectNameTAJO");
+                lenght = Integer.parseInt(prop.getProperty("nameLenghtTAJO"));
+            }
 
         } catch (IOException ex) {
             LOGGER.log(Level.WARNING, String.valueOf(ex));
@@ -88,7 +103,7 @@ public class DownloadCommit {
                 DateFormat df = new SimpleDateFormat(pattern);
                 String date = df.format(revCommit.getAuthorIdent().getWhen());
 
-                if(revCommit.getFullMessage().length() < 15) {
+                if(revCommit.getFullMessage().length() < lenght) {
                     fileWriter.append(date);
                     fileWriter.append(",");
                     fileWriter.append(revCommit.getTree().toString());
@@ -97,17 +112,17 @@ public class DownloadCommit {
                     fileWriter.append("\n");
 
                 } else {
-                    if(revCommit.getFullMessage().substring(0,15).contains("BOOKKEEPER-")){
+                    if(revCommit.getFullMessage().substring(0,lenght).contains(projName+"-")){
                         fileWriter.append(date);
                         fileWriter.append(",");
                         fileWriter.append(revCommit.getTree().toString());
                         fileWriter.append(",");
-                        if(revCommit.getFullMessage().substring(0,15).contains(":"))  {
-                            fileWriter.append(revCommit.getFullMessage().substring(0,15).replace(":",""));
-                        } else if (revCommit.getFullMessage().substring(0,15).contains(" ")){
-                            fileWriter.append(revCommit.getFullMessage().substring(0,15).replace(" ",""));
+                        if(revCommit.getFullMessage().substring(0,lenght).contains(":"))  {
+                            fileWriter.append(revCommit.getFullMessage().substring(0,lenght).replace(":",""));
+                        } else if (revCommit.getFullMessage().substring(0,lenght).contains(" ")){
+                            fileWriter.append(revCommit.getFullMessage().substring(0,lenght).replace(" ",""));
                         } else{
-                            fileWriter.append(revCommit.getFullMessage().substring(0,15));
+                            fileWriter.append(revCommit.getFullMessage().substring(0,lenght));
                         }
                         fileWriter.append("\n");
 
@@ -124,7 +139,7 @@ public class DownloadCommit {
 
     public static void main(String[] args) throws GitAPIException {
 
-        importResources();
+        importResources(1);
         LOGGER.info( "Scrivo tutti i commit eseguiti fino a questo momento all'interno del file.\n");
         new DownloadCommit().getAllCommits();
         LOGGER.info("Fatto!!\n");

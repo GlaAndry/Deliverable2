@@ -2,13 +2,14 @@ package writer;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import milestone.uno.engine.MetricsCalc;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class OutputWriterMilestoneUnoDevDue {
     /**
@@ -21,8 +22,59 @@ public class OutputWriterMilestoneUnoDevDue {
      * prova4 --> Size, Age (in weeks)
      *
      */
+    private static final Logger LOGGER = Logger.getLogger(OutputWriterMilestoneUnoDevDue.class.getName());
 
 
+    static String nBugFixPath=""; //prova2
+    static String nRevAndAuthPath = ""; //prova
+    static String locMetricsPath = ""; //prova3
+    static String sizeAndAgePath = ""; //prova4
+    static String bugPath = "";
+    static String output = "";
+
+
+    static List<String[]> lista1 = new ArrayList<>();
+    static List<String[]> lista2 = new ArrayList<>();
+    static List<String[]> lista3 = new ArrayList<>();
+    static List<String[]> lista4 = new ArrayList<>();
+    static List<String[]> lista5 = new ArrayList<>();
+
+    private static void importResources(int value) {
+        /**
+         * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
+         * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
+         */
+        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config.properties")) {
+
+            Properties prop = new Properties();
+            // load a properties file
+            prop.load(input);
+
+            if(value == 0){
+
+                nBugFixPath = prop.getProperty("numBugFix");
+                nRevAndAuthPath = prop.getProperty("numRevAuth");
+                locMetricsPath = prop.getProperty("locMetrics");
+                sizeAndAgePath = prop.getProperty("sizeAndAge");
+                bugPath = prop.getProperty("buggyPath");
+                output = prop.getProperty("outBOOK");
+            }
+            if(value == 1){
+
+                nBugFixPath = prop.getProperty("numBugFixTAJO");
+                nRevAndAuthPath = prop.getProperty("numRevAuthTAJO");
+                locMetricsPath = prop.getProperty("locMetricsTAJO");
+                sizeAndAgePath = prop.getProperty("sizeAndAgeTAJO");
+                bugPath = prop.getProperty("buggyPathTAJO");
+                output = prop.getProperty("outTAJO");
+
+            }
+
+
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, String.valueOf(e));
+        }
+    }
 
     private void mergeCSV(List<String[]> list, List<String[]> list2, List<String[]> list3, List<String[]> list4, List<String[]> list5) throws IOException {
 
@@ -46,7 +98,7 @@ public class OutputWriterMilestoneUnoDevDue {
                     , list5.get(i)[2]});
         }
 
-        try(FileWriter fileWriter = new FileWriter("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\bookkeeper\\M1D2.csv");
+        try(FileWriter fileWriter = new FileWriter(output);
             CSVWriter csvWriter = new CSVWriter(fileWriter)){
 
             csvWriter.flush();
@@ -59,17 +111,13 @@ public class OutputWriterMilestoneUnoDevDue {
     public static void main(String[] args) throws IOException {
 
 
-        List<String[]> lista1 = new ArrayList<>();
-        List<String[]> lista2 = new ArrayList<>();
-        List<String[]> lista3 = new ArrayList<>();
-        List<String[]> lista4 = new ArrayList<>();
-        List<String[]> lista5 = new ArrayList<>();
+        importResources(1);
 
-        try(FileReader fileReader = new FileReader("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\prova2.csv");
-            FileReader fileReader1 = new FileReader("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\prova.csv");
-            FileReader fileReader2 = new FileReader("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\prova3.csv");
-            FileReader fileReader3 = new FileReader("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\prova4.csv");
-            FileReader fileReader4 = new FileReader("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\buggy.csv");
+        try(FileReader fileReader = new FileReader(nBugFixPath);
+            FileReader fileReader1 = new FileReader(nRevAndAuthPath);
+            FileReader fileReader2 = new FileReader(locMetricsPath);
+            FileReader fileReader3 = new FileReader(sizeAndAgePath);
+            FileReader fileReader4 = new FileReader(bugPath);
             CSVReader csvReader = new CSVReader(fileReader);
             CSVReader csvReader1 = new CSVReader(fileReader1);
             CSVReader csvReader2 = new CSVReader(fileReader2);
