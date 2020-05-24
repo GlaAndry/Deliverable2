@@ -45,6 +45,8 @@ public class PropertiesWriter {
             prop.setProperty("locMetrics", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\fileBOOK\\locMetrics.csv");
             prop.setProperty("sizeAndAge", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\fileBOOK\\sizeAndAge.csv");
             prop.setProperty("outBOOK", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\bookkeeper\\M1D2.csv");
+            prop.setProperty("pValueBOOK", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\fileBOOK\\valueOfP.csv");
+
 
 
             //set the properties value for TAJO Project
@@ -74,6 +76,8 @@ public class PropertiesWriter {
             prop.setProperty("locMetricsTAJO", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\fileTAJO\\locMetricsTAJO.csv");
             prop.setProperty("sizeAndAgeTAJO", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\fileTAJO\\sizeAndAgeTAJO.csv");
             prop.setProperty("outTAJO", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\tajo\\M1D2TAJO.csv");
+            prop.setProperty("pValueTAJO", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\fileTAJO\\valueOfPTAJO.csv");
+
 
             // save properties to project root folder
             prop.store(output, null);

@@ -23,21 +23,24 @@ public class GetDefectedClasses {
 
     private static final Logger LOGGER = Logger.getLogger(GetDefectedClasses.class.getName());
 
+    static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+    static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
 
     static String versionInfo = "";
     static String assBlameComm = "";
     static String assBlameAV = "";
+    static String assBlameOV = "";
     static String buggyPath = "";
     static String classPath = "";
     static String varP = "";
     static String bAV = "";
+    static String pValue = "";
 
     public static void main(String[] args) {
 
         importResources(1);
-        double p = new GetDefectedClasses().calculateProportion();
-        LOGGER.info("Valore di P:" + p);
-        new GetDefectedClasses().determineDefectiveWithProportion(p);
+        new GetDefectedClasses().determineDefectiveWithProportion(new GetDefectedClasses().calculateProportion());
     }
 
     private static void importResources(int value) {
@@ -59,6 +62,8 @@ public class GetDefectedClasses {
                 classPath = prop.getProperty("classesPath");
                 varP = prop.getProperty("variables");
                 bAV = prop.getProperty("BugTicketAV");
+                pValue = prop.getProperty("pValueBOOK");
+                assBlameOV = prop.getProperty("AssOV");
 
             }
             if(value == 1){
@@ -69,6 +74,9 @@ public class GetDefectedClasses {
                 classPath = prop.getProperty("classesPathTAJO");
                 varP = prop.getProperty("variablesTAJO");
                 bAV = prop.getProperty("BugTicketAVTAJO");
+                pValue = prop.getProperty("pValueTAJO");
+                assBlameOV = prop.getProperty("AssOVTAJO");
+
 
             }
 
@@ -78,7 +86,7 @@ public class GetDefectedClasses {
         }
     }
 
-    private double calculateProportion() {
+    private List<String[]> calculateProportion() {
         /**
          * Questo metodo ha lo scopo di andare a calcolare il valore proportion. In particolare
          * andiamo a sfruttare il metodo standard, imponendo quindi l'equazione:
@@ -94,30 +102,71 @@ public class GetDefectedClasses {
         double p = 0.0;
 
         List<String[]> variables = new ArrayList<>();
+        List<String[]> version = new ArrayList<>();
+        List<String[]> ver2 = new ArrayList<>();
+
+        List<String[]> out = new ArrayList<>();
 
         Double iv = 0.0;
         Double ov = 0.0;
         Double fv = 0.0;
 
-        try (FileReader fileReader = new FileReader(varP);
-             CSVReader csvReader = new CSVReader(fileReader)) {
+        Double value = 0.0;
 
+        int count = 0;
+
+        Date dateVar;
+        Date dateIn;
+        Date dateFin;
+
+        try (FileReader fileReader = new FileReader(varP);
+             CSVReader csvReader = new CSVReader(fileReader);
+             FileReader fileReader1 = new FileReader(versionInfo);
+             CSVReader csvReader1 = new CSVReader(fileReader1);
+             FileWriter fileWriter = new FileWriter(pValue);
+             CSVWriter csvWriter = new CSVWriter(fileWriter);) {
+
+            version = csvReader1.readAll();
+            ver2 = version.subList(1, version.size());
             variables = csvReader.readAll();
 
-            for (String[] str : variables) {
-                ov = Double.parseDouble(str[0]);
-                fv = Double.parseDouble(str[2]);
-                iv = Double.parseDouble(str[3]);
+            for(String[] strings : ver2){
+                dateIn = formatter.parse(strings[3]);
+                dateFin = formatter.parse(strings[4]);
+                for (String[] str : variables) {
 
-                if ((fv - ov) != 0) {
-                    p = p + ((fv - iv) / (fv - ov));
+                    dateVar = format.parse(str[4]);
+
+                    if(dateVar.after(dateIn) && dateVar.before(dateFin)){
+                        count ++;
+                        ov = Double.parseDouble(str[0]);
+                        fv = Double.parseDouble(str[2]);
+                        iv = Double.parseDouble(str[3]);
+
+                        if ((fv - ov) != 0) {
+                            p = p + ((fv - iv) / (fv - ov));
+                        }
+                    }
+
                 }
+                value = p / count;
+                if(value.isNaN()){
+                    value = 0.0;
+                }
+                out.add(new String[]{strings[0], Double.toString(value)});
+                count = 0;
+                p = 0;
             }
 
-        } catch (IOException e) {
+
+            csvWriter.writeAll(out);
+            csvWriter.flush();
+
+
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-        return p / variables.size();
+        return out;
     }
 
     private List<String[]> indexingList(List<String[]> list, List<String[]> version) {
@@ -261,7 +310,7 @@ public class GetDefectedClasses {
         return bug;
     }
 
-    private void determineDefectiveWithProportion(double p) {
+    private void determineDefectiveWithProportion(List<String[]> list) {
 
         /**
          * Attraverso questo metodo andiamo a determinare se una classe è defective o meno per una determinata
@@ -290,7 +339,7 @@ public class GetDefectedClasses {
              CSVReader csvReader1 = new CSVReader(fileReader1);
              FileReader fileReader2 = new FileReader(versionInfo);
              CSVReader csvReader2 = new CSVReader(fileReader2);
-             FileReader fileReader3 = new FileReader("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\associationOVBlame.csv");
+             FileReader fileReader3 = new FileReader(assBlameOV);
              CSVReader csvReader3 = new CSVReader(fileReader3)) {
 
             classes = csvReader1.readAll();
@@ -308,6 +357,7 @@ public class GetDefectedClasses {
 
 
             Double predictedAffVer = 0.0;
+            double p = 0.0;
             int s = 0;
             int fv;
             int ovInt;
@@ -323,23 +373,28 @@ public class GetDefectedClasses {
              */
 
             for (String[] strings : vers2) {
-                for (String[] strings1 : classes) {
-                    for (String[] strings3 : ovBlameInd) {
-                        if (strings1[2].equals(strings3[1])) { //controllo se la classe è uguale
-                            if (!strings3[4].equals("") && !strings3[3].equals("")) {
-                                fv = Integer.parseInt(strings3[3]);
-                                ovInt = Integer.parseInt(strings3[4]);
-                                predictedAffVer = (fv - (fv - ovInt) * p);
-                                s = predictedAffVer.intValue();
-                            } else {
-                                s = 0;
+                for(String[] str : list){
+                    if(str[0].equals(strings[0])){
+                        p = Double.parseDouble(str[1]);
+                    }
+                    for (String[] strings1 : classes) {
+                        for (String[] strings3 : ovBlameInd) {
+                            if (strings1[2].equals(strings3[1])) { //controllo se la classe è uguale
+                                if (!strings3[4].equals("") && !strings3[3].equals("")) {
+                                    fv = Integer.parseInt(strings3[3]);
+                                    ovInt = Integer.parseInt(strings3[4]);
+                                    predictedAffVer = (fv - (fv - ovInt) * p);
+                                    s = predictedAffVer.intValue();
+                                } else {
+                                    s = 0;
+                                }
+
+                                if (s == Integer.parseInt(strings[0])) {
+                                    bug.add(new String[]{strings[0], strings1[2], "YES"});
+                                }
                             }
 
-                            if (s == Integer.parseInt(strings[0])) {
-                                bug.add(new String[]{strings[0], strings1[2], "YES"});
-                            }
                         }
-
                     }
                 }
             }

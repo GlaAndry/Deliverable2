@@ -34,7 +34,7 @@ public class VersionDivisor {
 
     public static void main(String[] args) {
 
-        importResources(0);
+        importResources(1);
         //new VersionDivisor().avTicketOnly();
         new VersionDivisor().determineVar();
 
@@ -51,7 +51,7 @@ public class VersionDivisor {
             // load a properties file
             prop.load(input);
 
-            if(value == 0){
+            if (value == 0) {
                 avPath = prop.getProperty("AVpath");
                 bugPath = prop.getProperty("BugTicketFromJira");
                 outRM = prop.getProperty("BugTicketAV");
@@ -61,7 +61,7 @@ public class VersionDivisor {
                 lenght = Integer.parseInt(prop.getProperty("nameLenghtBOOK"));
 
             }
-            if(value == 1){
+            if (value == 1) {
                 avPath = prop.getProperty("AVpathTAJO");
                 bugPath = prop.getProperty("BugTicketFromJiraTAJO");
                 outRM = prop.getProperty("BugTicketAVTAJO");
@@ -71,7 +71,6 @@ public class VersionDivisor {
                 lenght = Integer.parseInt(prop.getProperty("nameLenghtTAJO"));
 
             }
-
 
 
         } catch (IOException e) {
@@ -186,8 +185,8 @@ public class VersionDivisor {
                          */
 
                         if (Integer.parseInt(fv) > Integer.parseInt(iv)) {
-                            if (!hashMap.containsValue(ov + str[1] + fv + iv)) {
-                                hashMap.put(index, ov + str[1] + fv + iv);
+                            if (!hashMap.containsValue(ov + str[1] + fv + iv + str[0])) {
+                                hashMap.put(index, ov + str[1] + fv + iv + str[0]);
                             } else {
                                 index++;
                             }
@@ -202,7 +201,8 @@ public class VersionDivisor {
 
             //scrivo nel csv finale
             for (Map.Entry<Integer, String> entry : hashMap.entrySet()) {
-                csvWriter.writeNext(new String[]{entry.getValue().substring(0, 1), entry.getValue().substring(1, lenght), entry.getValue().substring(lenght, lenght+1), entry.getValue().substring(lenght+1)});
+                csvWriter.writeNext(new String[]{entry.getValue().substring(0, 1), entry.getValue().substring(1, lenght), entry.getValue().substring(lenght, lenght + 1), entry.getValue().substring(lenght + 1, lenght+2)
+                        , entry.getValue().substring(lenght + 2)});
             }
 
         } catch (IOException | ParseException e) {

@@ -52,12 +52,12 @@ public class MetricsCalc {
     public static void main(String[] args) throws IOException {
 
 
-        importResources(1);
+        importResources(0);
         //new MetricsCalc().sizeAndAgeOfClasses(); //fatto
         //new MetricsCalc().numberOfRevisionsAndAuthors(); //fatto
-        //new MetricsCalc().numberOfBugFixes(); //fatto
+        new MetricsCalc().numberOfBugFixes(); //fatto
         //new MetricsCalc().retrieveLocFromTrees(); //ci mette almeno 3.5 ore per Tajo e 1 ora per Book
-        new MetricsCalc().locMetrics();
+        //new MetricsCalc().locMetrics();
 
 
     }
@@ -150,7 +150,7 @@ public class MetricsCalc {
                             commitCounter++;
                         }
                     }
-                    bugFixNum.add(new String[]{strings[0], str[2], Integer.toString(commitCounter)});
+                    bugFixNum.add(new String[]{strings[0], str[1], Integer.toString(commitCounter)});
                     commitCounter = 0;
                 }
             }
