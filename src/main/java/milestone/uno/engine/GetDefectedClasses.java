@@ -240,9 +240,6 @@ public class GetDefectedClasses {
          */
         List<String[]> out = new ArrayList<>();
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-
         String fixVer2 = "";
         String ov = "";
 
@@ -289,9 +286,9 @@ public class GetDefectedClasses {
          * Classi java --> Classes.csv
          */
 
-        List<String[]> vers2 = new ArrayList<>();
+        List<String[]> vers2;
         List<String[]> bug = new ArrayList<>();
-        List<String[]> bugIndexed = new ArrayList<>();
+        List<String[]> bugIndexed;
 
 
         vers2 = vers.subList(1, vers.size());
@@ -338,7 +335,7 @@ public class GetDefectedClasses {
          * Classi java --> Classes.csv
          */
 
-        List<String[]> ovBlameInd = new ArrayList<>();
+        List<String[]> ovBlameInd;
         List<String[]> vers2 = vers.subList(1, vers.size());
 
         /////////
@@ -352,12 +349,7 @@ public class GetDefectedClasses {
          */
 
         ovBlameInd = new GetDefectedClasses().indexingListWithDate(ovBlame, vers2); //Indexing della lista con la data
-
-        Double predictedAffVer = 0.0;
         double p = 0.0;
-        int s = 0;
-        int fv;
-        int ovInt;
 
         /**
          * In questo caso andiamo a sfruttare il metodo Proportion.
@@ -401,7 +393,7 @@ public class GetDefectedClasses {
         int s = 0;
         int fv;
         int ovInt;
-        Double predictedAffVer = 0.0;
+        Double predictedAffVer;
 
         if (className.equals(className2)) { //controllo se la classe è uguale
             if (!ov.equals("") && !fvString.equals("")) {

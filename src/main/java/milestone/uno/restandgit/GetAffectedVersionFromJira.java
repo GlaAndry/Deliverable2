@@ -27,14 +27,14 @@ public class GetAffectedVersionFromJira {
     static String avPath = "";
     static String fvPath = "";
     static String projName = "";
-    final String campo = "fields";
+    static final String campo = "fields";
 
 
     public static void main(String[] args) throws IOException, JSONException {
 
         importResources(1);
         new GetAffectedVersionFromJira().retrieveFromJira();
-        //new GetAffectedVersionFromJira().retriveOnlyFixFromJira();
+        new GetAffectedVersionFromJira().retriveOnlyFixFromJira();
     }
 
     private static void importResources(int value) {
@@ -137,7 +137,8 @@ public class GetAffectedVersionFromJira {
         JSONObject json = readJsonFromUrl(urlAffectedVersion);
         JSONArray issues = json.getJSONArray("issues");
 
-        int z, h;
+        int z;
+        int h;
         Integer counter = 0;
 
         lista.add(new String[]{"Index", "Ticket", "FixVersion", "AffectedVersion"});

@@ -35,7 +35,7 @@ public class VersionDivisor {
     public static void main(String[] args) {
 
         importResources(1);
-        //new VersionDivisor().avTicketOnly();
+        new VersionDivisor().avTicketOnly();
         new VersionDivisor().determineVar();
 
     }
@@ -115,20 +115,23 @@ public class VersionDivisor {
          * Out: var.csv
          */
 
-        List<String[]> bugAV = new ArrayList<>();
-        List<String[]> versionInfo = new ArrayList<>();
-        List<String[]> ver2 = new ArrayList<>();
-        List<String[]> association = new ArrayList<>();
+        List<String[]> bugAV;
+        List<String[]> versionInfo;
+        List<String[]> ver2;
+        List<String[]> association;
 
-        List<String[]> out = new ArrayList<>();
+        List<String[]> out;
 
         Date dateStart;
         Date dateEnd;
         Date dateTicket;
 
-        String fv = ""; //Lo prendo direttamente dal file
-        String iv = ""; //Rappresenta la più vecchia versione tra le AV di un determinato ticket.
-        String ov = ""; //Lo determino attraverso la "traduzione" della data del ticket in versione.
+        String[] values = {"", "", ""}; //OV, FV, IV
+        /**
+         *   FV-->Lo prendo direttamente dal file
+         *   IV-->Rappresenta la più vecchia versione tra le AV di un determinato ticket.
+         *   OV-->Lo determino attraverso la "traduzione" della data del ticket in versione.
+         */
 
         HashMap<Integer, String> hashMap = new HashMap<>();
         Integer index = 0;
@@ -164,44 +167,32 @@ public class VersionDivisor {
                      * Il controllo sulla data è necessario per determinare in quale verisione ci troviamo.
                      */
 
-                    if (dateTicket.after(dateStart) && dateTicket.before(dateEnd)) {
-                        ov = strings[0];
-                    }
-
-                    if (strings[2].equals(str[2])) {
-                        fv = strings[0];
-                    }
-                    if (strings[2].equals(str[3])) {
-                        iv = strings[0];
-                    }
+                    returnValues(dateStart, dateEnd, dateTicket, strings[0], strings[2], str[2], str[3], values);
 
 
-                    if (!fv.equals("") && !iv.equals("") && !ov.equals("")) {
-
+                    if (!values[0].equals("") && !values[1].equals("") && !values[2].equals("")) {
                         /**
                          * Controllo sulla qualità dei dati. In particolare accettiamo solamente dati
                          * dove FV > IV, poiché non è possibile che venga rilasciato un Fix ancora prima
                          * di aver riscontrato il BUG
                          */
-
-                        if (Integer.parseInt(fv) > Integer.parseInt(iv)) {
-                            if (!hashMap.containsValue(ov + str[1] + fv + iv + str[0])) {
-                                hashMap.put(index, ov + str[1] + fv + iv + str[0]);
+                        if (Integer.parseInt(values[1]) > Integer.parseInt(values[2])) {
+                            if (!hashMap.containsValue(values[0] + str[1] + values[1] + values[2] + str[0])) {
+                                hashMap.put(index, values[0] + str[1] + values[1] + values[2] + str[0]);
                             } else {
                                 index++;
                             }
                         }
 
-                        ov = "";
-                        fv = "";
-                        iv = "";
+                        values = new String[] {"", "", ""};
                     }
+
                 }
             }
 
             //scrivo nel csv finale
             for (Map.Entry<Integer, String> entry : hashMap.entrySet()) {
-                csvWriter.writeNext(new String[]{entry.getValue().substring(0, 1), entry.getValue().substring(1, lenght), entry.getValue().substring(lenght, lenght + 1), entry.getValue().substring(lenght + 1, lenght+2)
+                csvWriter.writeNext(new String[]{entry.getValue().substring(0, 1), entry.getValue().substring(1, lenght), entry.getValue().substring(lenght, lenght + 1), entry.getValue().substring(lenght + 1, lenght + 2)
                         , entry.getValue().substring(lenght + 2)});
             }
 
@@ -209,6 +200,29 @@ public class VersionDivisor {
             e.printStackTrace();
         }
     }
+
+
+    private String[] returnValues(Date dateStart, Date dateEnd, Date date, String str, String versionName, String fvVersion, String ivVersion, String[] ret) {
+
+        /**
+         * Il controllo sulla data è necessario per determinare in quale verisione ci troviamo.
+         */
+
+        if (date.after(dateStart) && date.before(dateEnd)) {
+            ret[0] = str; //OV
+        }
+        if (versionName.equals(fvVersion)) {
+            ret[1] = str; //FV
+
+        }
+        if (versionName.equals(ivVersion)) {
+            ret[2] = str; //IV
+
+        }
+
+        return ret;
+    }
+
 
     private void avTicketOnly() {
 

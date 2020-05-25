@@ -35,8 +35,8 @@ public class AssociationJiraGit {
     public static void main(String[] args){
 
         importResources(1);
-        //new AssociationJiraGit().associateCommitsAndBlame();
-        //new AssociationJiraGit().associateAVAndBlame();
+        new AssociationJiraGit().associateCommitsAndBlame();
+        new AssociationJiraGit().associateAVAndBlame();
         new AssociationJiraGit().associateFixAndBlame();
 
     }
@@ -73,8 +73,6 @@ public class AssociationJiraGit {
                 bugAV = prop.getProperty("BugTicketAVTAJO");
                 outAssOV = prop.getProperty("AssOVTAJO");
                 fvPath = prop.getProperty("FVpathTAJO");
-
-
             }
 
 
@@ -92,8 +90,8 @@ public class AssociationJiraGit {
          * out --> associationOVBlame.csv
          */
 
-        List<String[]> blmAssCmt = new ArrayList<>();
-        List<String[]> fix = new ArrayList<>();
+        List<String[]> blmAssCmt;
+        List<String[]> fix;
 
         List<String[]> res = new ArrayList<>();
 
@@ -139,8 +137,8 @@ public class AssociationJiraGit {
          * out --> associationAVBlame.csv
          */
 
-        List<String[]> blmAssCmt = new ArrayList<>();
-        List<String[]> bugT = new ArrayList<>();
+        List<String[]> blmAssCmt;
+        List<String[]> bugT;
 
         List<String[]> res = new ArrayList<>();
 
@@ -184,8 +182,8 @@ public class AssociationJiraGit {
          * out --> associationCommitBlame.csv
          */
 
-        List<String[]> blm = new ArrayList<>();
-        List<String[]> cmt = new ArrayList<>();
+        List<String[]> blm;
+        List<String[]> cmt;
 
         List<String[]> res = new ArrayList<>();
 

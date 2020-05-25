@@ -1,7 +1,6 @@
 package milestone.uno.restandgit;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -9,7 +8,10 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,7 +31,6 @@ public class GetReleaseInfo {
     private static Map<LocalDateTime, String> releaseNames;
     private static Map<LocalDateTime, String> releaseID;
     private static List<LocalDateTime> releases;
-    private static Integer numVersions;
 
     public static void main(String[] args) throws IOException {
 
@@ -70,7 +71,7 @@ public class GetReleaseInfo {
 
             fileWriter.append("Index,Version ID,Version Name,DateStart,DateEnd");
             fileWriter.append("\n");
-            numVersions = releases.size();
+
             for ( i = 0; i < (releases.size()/2); i++) { //Considero solamente la prima metà delle versioni.
                 Integer index = i + 1;
                 fileWriter.append(index.toString());

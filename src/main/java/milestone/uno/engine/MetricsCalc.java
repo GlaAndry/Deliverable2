@@ -41,7 +41,7 @@ public class MetricsCalc {
     static String assCoBlm = "";
     static String outLoc = "";
 
-    static String nBugFixPath=""; //prova2
+    static String nBugFixPath = ""; //prova2
     static String nRevAndAuthPath = ""; //prova
     static String locMetricsPath = ""; //prova3
     static String sizeAndAgePath = ""; //prova4
@@ -53,11 +53,38 @@ public class MetricsCalc {
 
 
         importResources(0);
-        //new MetricsCalc().sizeAndAgeOfClasses(); //fatto
-        //new MetricsCalc().numberOfRevisionsAndAuthors(); //fatto
+
+        List<String[]> classes;
+        List<String[]> versions;
+        List<String[]> outL;
+        List<String[]> assCoBlame;
+
+
+        try (FileReader fileReader = new FileReader(classPath);
+             CSVReader csvReader = new CSVReader(fileReader);
+             FileReader fileReader1 = new FileReader(version);
+             CSVReader csvReader1 = new CSVReader(fileReader1);
+             FileReader fileReader2 = new FileReader(outLoc);
+             CSVReader csvReader2 = new CSVReader(fileReader2);
+             FileReader fileReader3 = new FileReader(assCoBlm);
+             CSVReader csvReader3 = new CSVReader(fileReader3)) {
+
+            classes = csvReader.readAll();
+            versions = csvReader1.readAll();
+            outL = csvReader2.readAll();
+            assCoBlame = csvReader3.readAll();
+
+            new MetricsCalc().numberOfRevisionsAndAuthors(classes, versions); //fatto
+            new MetricsCalc().locMetrics(versions, classes, outL);
+            new MetricsCalc().retrieveLocFromTrees(assCoBlame); //ci mette almeno 3.5 ore per Tajo e 1 ora per Book
+
+        } catch (ParseException | GitAPIException e) {
+            e.printStackTrace();
+        }
+
+
+        new MetricsCalc().sizeAndAgeOfClasses(); //fatto
         new MetricsCalc().numberOfBugFixes(); //fatto
-        //new MetricsCalc().retrieveLocFromTrees(); //ci mette almeno 3.5 ore per Tajo e 1 ora per Book
-        //new MetricsCalc().locMetrics();
 
 
     }
@@ -73,7 +100,7 @@ public class MetricsCalc {
             // load a properties file
             prop.load(input);
 
-            if(value == 0){
+            if (value == 0) {
                 classPath = prop.getProperty("classesPath");
                 gitPath = prop.getProperty("gitPathBOOK");
                 version = prop.getProperty("versionInfoBOOK");
@@ -86,7 +113,7 @@ public class MetricsCalc {
                 sizeAndAgePath = prop.getProperty("sizeAndAge");
 
             }
-            if(value == 1){
+            if (value == 1) {
                 classPath = prop.getProperty("classesPathTAJO");
                 gitPath = prop.getProperty("gitPathTAJO");
                 version = prop.getProperty("versionInfoTAJO");
@@ -103,6 +130,17 @@ public class MetricsCalc {
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, String.valueOf(e));
         }
+    }
+
+    private void writeOnCSV(List<String[]> list, String path) throws IOException {
+
+        try (FileWriter fileWriter = new FileWriter(path);
+             CSVWriter csvWriter = new CSVWriter(fileWriter)) {
+
+            csvWriter.writeAll(list);
+            csvWriter.flush();
+        }
+
     }
 
     private void numberOfBugFixes() throws IOException {
@@ -164,7 +202,7 @@ public class MetricsCalc {
     }
 
 
-    private List<String[]> numberOfRevisionsAndAuthors() throws IOException {
+    private List<String[]> numberOfRevisionsAndAuthors(List<String[]> cls, List<String[]> ver) throws IOException, ParseException, GitAPIException {
         /**
          * in --> classes.csv, versionInfo.csv
          *
@@ -175,98 +213,70 @@ public class MetricsCalc {
          * out --> Csv con colonne [INDEX VERSION,CLASSE,REVNUM, AUTHNUM]
          */
 
-        List<String[]> cls = new ArrayList<>();
-        List<String[]> ver = new ArrayList<>();
-        List<String[]> ver2 = new ArrayList<>();
+        List<String[]> ver2;
         List<String[]> revNum = new ArrayList<>();
 
         ///
-        HashMap<Integer, String> hashMap = new HashMap<>();
+        List<String[]> authorList = new ArrayList<>();
+        int lock = 0;
         String authName;
-        int index = 0;
         ///
 
 
         Integer size;
         Date commitDate;
-        Date commitDate2 = null;
         Date versionDate;
 
         int commitCounter = 0;
 
         Git git = new Git(new FileRepository(gitPath));
 
-        try (FileReader fileReader = new FileReader(classPath);
-             CSVReader csvReader = new CSVReader(fileReader);
-             FileReader fileReader1 = new FileReader(version);
-             CSVReader csvReader1 = new CSVReader(fileReader1);
-             FileWriter fileWriter = new FileWriter(nRevAndAuthPath);
-             CSVWriter csvWriter = new CSVWriter(fileWriter)) {
 
-            cls = csvReader.readAll();
-            ver = csvReader1.readAll();
+        ver2 = ver.subList(1, ver.size());
 
-            ver2 = ver.subList(1, ver.size());
+        for (String[] strings : ver2) {
 
-            for (String[] strings : ver2) {
+            versionDate = formatter.parse(strings[3]);
 
-                versionDate = formatter.parse(strings[3]);
+            for (String[] str : cls) {
 
-                for (String[] str : cls) {
+                BlameCommand blameCommand = git.blame()
+                        .setStartCommit(git.getRepository().resolve("HEAD"))
+                        .setFilePath(str[1].substring(1));
 
-                    BlameCommand blameCommand = git.blame()
-                            .setStartCommit(git.getRepository().resolve("HEAD"))
-                            .setFilePath(str[1].substring(1));
+                BlameResult blameResult = blameCommand.call();
+                size = blameResult.getResultContents().size();
 
-                    BlameResult blameResult = blameCommand.call();
-                    size = blameResult.getResultContents().size();
+                for (int i = 0; i < size; i++) {
 
-                    for (int i = 0; i < size; i++) {
+                    commitDate = blameResult.getSourceAuthor(i).getWhen();
 
-                        commitDate = blameResult.getSourceAuthor(i).getWhen();
-/*
-                        if (commitDate2 != null && commitDate.compareTo(commitDate2) == 0) {
-                            continue;
+                    if (versionDate.compareTo(commitDate) > 0) {
+                        /**
+                         * Aumento il contatore dei commit e aggiungiamo anche gli autori.
+                         */
+                        authName = blameResult.getSourceAuthor(i).getName();
+                        if (lock == 0) {
+                            lock++;
+                            authorList.add(new String[]{authName});
                         }
-
- */
-                        if (versionDate.compareTo(commitDate) > 0) {
-                            //commitDate2 = blameResult.getSourceAuthor(i).getWhen();
-                            /**
-                             * Aumento il contatore solamente quando sono sicuro che il commit considerato
-                             * non è gia' stato considerato anche in precedenza.
-                             */
-                            /// aggiungiamo gli autori del commit in modo tale da determinarne il numero
-                            authName = blameResult.getSourceAuthor(i).getName();
-
-                            if (!hashMap.containsValue(authName)) {
-                                hashMap.put(index, authName);
-                            } else {
-                                index++;
-                            }
-                            ////
-                            commitCounter++;
-                        }
-
+                        commitCounter++;
                     }
-
-                    revNum.add(new String[]{strings[0], str[2], Integer.toString(commitCounter), Integer.toString(hashMap.size())});
-                    commitCounter = 0;
-                    index = 0;
-                    hashMap = new HashMap<>();
 
                 }
 
+                revNum.add(new String[]{strings[0], str[2], Integer.toString(commitCounter), Integer.toString(authorList.size())});
+                commitCounter = 0;
+                lock = 0;
+                authorList = new ArrayList<>();
 
             }
 
-            csvWriter.flush();
-            csvWriter.writeAll(revNum);
 
-
-        } catch (IOException | GitAPIException | ParseException e) {
-            e.printStackTrace();
         }
+
+        writeOnCSV(revNum, nRevAndAuthPath);
+
 
         return revNum;
 
@@ -294,7 +304,35 @@ public class MetricsCalc {
         return list;
     }
 
-    private void locMetrics() {
+    private int calculateMaxAndAddMetrics(String nameClass1, String nameClass2, Date dateVersion, String numLock,
+                                          String version, String locADD, String locDEL, String locTOUCH,
+                                          Date date, List<Integer> maxList, int lock, List<String[]> ret) {
+
+        /**
+         * Metodo sfruttato da LocMetrics per andare ad effettuare i controlli sul MAXLOCK ed AVERAGE
+         */
+
+        int max = 0;
+        int average = 0;
+
+        if (nameClass1.equals(nameClass2)) {
+            maxList.add(Integer.parseInt(numLock));
+            for (Integer z : maxList) {
+                max = Integer.max(max, z);
+                average = max / Integer.parseInt(version);
+            }
+            if (date.compareTo(dateVersion) > 0 && lock == 0) {
+                lock++;
+                ret.add(new String[]{version, nameClass1, locADD, locDEL, locTOUCH, Integer.toString(max), Double.toString(average)});
+            }
+        }
+
+        return lock;
+
+    }
+
+
+    private void locMetrics(List<String[]> ver, List<String[]> classes, List<String[]> outL) throws IOException, ParseException {
 
         /**
          * Questo metodo prende sfrutta il file CSV creato attraverso locTouched() e va ad eseguire
@@ -305,12 +343,7 @@ public class MetricsCalc {
          *
          */
 
-
-        List<String[]> ver = new ArrayList<>();
-        List<String[]> ver2 = new ArrayList<>();
-        List<String[]> classes = new ArrayList<>();
-        List<String[]> outL = new ArrayList<>();
-
+        List<String[]> ver2;
         List<String[]> ret = new ArrayList<>();
 
         int lock = 0; //semaforo
@@ -318,65 +351,64 @@ public class MetricsCalc {
         Date dateVer;
         Date date;
 
+        ver2 = ver.subList(1, ver.size());
 
-        try (FileReader fileReader = new FileReader(version);
-             CSVReader csvReader = new CSVReader(fileReader);
-             FileReader fileReader1 = new FileReader(classPath);
-             CSVReader csvReader1 = new CSVReader(fileReader1);
-             FileReader fileReader2 = new FileReader(outLoc);
-             CSVReader csvReader2 = new CSVReader(fileReader2);
-             FileWriter fileWriter = new FileWriter(locMetricsPath);
-             CSVWriter csvWriter = new CSVWriter(fileWriter)) {
+        sortByDate(outL); // sorting della lista
 
-            ver = csvReader.readAll();
-            ver2 = ver.subList(1, ver.size());
-
-            classes = csvReader1.readAll();
-            outL = csvReader2.readAll();
+        List<Integer> maxList = new ArrayList<>();
 
 
-            sortByDate(outL); // sorting della lista
+        for (String[] str : ver2) {
+            dateVer = formatter.parse(str[3]);
+            for (String[] str2 : classes) {
+                for (String[] str3 : outL) {
+                    date = format.parse(str3[0]);
 
-            int max = 0;
-            List<Integer> maxList = new ArrayList<>();
-            int average = 0;
+                    lock = calculateMaxAndAddMetrics(str2[2], str3[1], dateVer, str3[2], str[0], str3[2], str3[3], str3[4], date, maxList, lock, ret);
 
-            for (String[] str : ver2) {
-                dateVer = formatter.parse(str[3]);
-                for (String[] str2 : classes) {
-                    for (String[] str3 : outL) {
-                        date = format.parse(str3[0]);
-                        if (str2[2].equals(str3[1])) {
-                            maxList.add(Integer.parseInt(str3[2]));
-                            for (Integer z : maxList) {
-                                max = Integer.max(max, z);
-                                average = max / Integer.parseInt(str[0]);
-                            }
-                            if (date.compareTo(dateVer) > 0 && lock == 0) {
-                                lock++;
-                                ret.add(new String[]{str[0], str2[2], str3[2], str3[3], str3[4], Integer.toString(max), Double.toString(average)});
-                            }
-                        }
-                    }
-                    if (lock == 0) {
-                        ret.add(new String[]{str[0], str2[2], "0", "0", "0", "0", "0"});
-                    }
-                    maxList = new ArrayList<>();
-                    max = 0;
-                    average = 0;
-                    lock = 0;
                 }
+                if (lock == 0) {
+                    ret.add(new String[]{str[0], str2[2], "0", "0", "0", "0", "0"});
+                }
+                maxList = new ArrayList<>();
+                lock = 0;
             }
-
-            csvWriter.flush();
-            csvWriter.writeAll(ret);
-
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
         }
+
+        writeOnCSV(ret, locMetricsPath);
+
     }
 
-    private void retrieveLocFromTrees() throws IOException {
+    private int[] lines(List<DiffEntry> entries, DiffFormatter diffFormatter) {
+
+        /**
+         * Metodo di supporto a retrieveLocFromTrees per il calcolo delle
+         * Linee di codice aggiunte, eliminate e toccate (cioè somma di linee aggiunte ed
+         * eliminate)
+         * 0--> added
+         * 1--> deleted
+         * 2-->touched
+         */
+
+        int[] ret = new int[3];
+
+        try {
+
+            for (DiffEntry entry : entries) {
+                for (Edit edit : diffFormatter.toFileHeader(entry).toEditList()) {
+                    ret[0] += edit.getEndA() - edit.getBeginA();
+                    ret[1] += edit.getEndB() - edit.getBeginB();
+                    ret[2] = ret[1] + ret[0];
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
+    private void retrieveLocFromTrees(List<String[]> trees) throws IOException, ParseException {
         /**
          * in --> classes.csv, associationCommitBlame.csv
          *
@@ -386,77 +418,55 @@ public class MetricsCalc {
          * out --> outLocClasses.csv [Data, Classe, LocAdded, LocDeleted, LocTouched]
          */
 
-        List<String[]> trees = new ArrayList<>();
         List<String[]> out = new ArrayList<>();
 
-        int linesAdded = 0;
-        int linesDeleted = 0;
-        int linesTouched = 0;
+        int[] line;
 
         //setup della repo
         Git git = new Git(new FileRepository(gitPath));
         Repository repository = git.getRepository();
         /////
 
-        try (FileReader fileReader1 = new FileReader(assCoBlm);
-             CSVReader csvReader1 = new CSVReader(fileReader1);
-             FileWriter fileWriter = new FileWriter(outLoc);
-             CSVWriter csvWriter = new CSVWriter(fileWriter)) {
 
-            trees = csvReader1.readAll();
+        for (int i = 0; i < trees.size(); i++) {
+            for (int x = 0; x < trees.size(); x++) {
 
-            for (int i = 0; i < trees.size(); i++) {
-                for (int x = 0; x < trees.size(); x++) {
+                Date dateTreeI = format.parse(trees.get(i)[0]);
+                Date dateTreeX = format.parse(trees.get(x)[0]);
 
-                    Date dateTreeI = format.parse(trees.get(i)[0]);
-                    Date dateTreeX = format.parse(trees.get(x)[0]);
+                //controllo sul nome della classe
+                if ((trees.get(i)[2].equals(trees.get(x)[2])) && dateTreeX.after(dateTreeI)) {
 
-                    //controllo sul nome della classe
-                    if ((trees.get(i)[2].equals(trees.get(x)[2])) && dateTreeX.after(dateTreeI)) {
+                    //ottenimento degli alberi per attraversare i commit
+                    ObjectReader reader = repository.newObjectReader();
+                    CanonicalTreeParser oldTree = new CanonicalTreeParser();
+                    ObjectId oldCommit = ObjectId.fromString(trees.get(i)[1].substring(5, trees.get(i)[1].length() - 7));
+                    oldTree.reset(reader, oldCommit);
 
-                        //ottenimento degli alberi per attraversare i commit
-                        ObjectReader reader = repository.newObjectReader();
-                        CanonicalTreeParser oldTree = new CanonicalTreeParser();
-                        ObjectId oldCommit = ObjectId.fromString(trees.get(i)[1].substring(5, trees.get(i)[1].length() - 7));
-                        oldTree.reset(reader, oldCommit);
+                    ObjectId newCommit = ObjectId.fromString(trees.get(x)[1].substring(5, trees.get(x)[1].length() - 7)); //!!!!!
+                    CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
+                    newTreeIter.reset(reader, newCommit);
 
-                        ObjectId newCommit = ObjectId.fromString(trees.get(x)[1].substring(5, trees.get(x)[1].length() - 7)); //!!!!!
-                        CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
-                        newTreeIter.reset(reader, newCommit);
+                    // Use a DiffFormatter to compare new and old tree and return a list of changes
+                    DiffFormatter diffFormatter = new DiffFormatter(DisabledOutputStream.INSTANCE);
+                    diffFormatter.setRepository(git.getRepository());
+                    diffFormatter.setContext(0);
+                    List<DiffEntry> entries = diffFormatter.scan(newTreeIter, oldTree);
 
-                        // Use a DiffFormatter to compare new and old tree and return a list of changes
-                        DiffFormatter diffFormatter = new DiffFormatter(DisabledOutputStream.INSTANCE);
-                        diffFormatter.setRepository(git.getRepository());
-                        diffFormatter.setContext(0);
-                        List<DiffEntry> entries = diffFormatter.scan(newTreeIter, oldTree);
+                    line = lines(entries, diffFormatter);
 
-                        for (DiffEntry entry : entries) {
-                            for (Edit edit : diffFormatter.toFileHeader(entry).toEditList()) {
-                                linesDeleted += edit.getEndA() - edit.getBeginA();
-                                linesAdded += edit.getEndB() - edit.getBeginB();
-                                linesTouched = linesAdded + linesDeleted;
-
-                            }
-                        }
-                        out.add(new String[]{trees.get(x)[0], trees.get(i)[2], Integer.toString(linesAdded), Integer.toString(linesDeleted), Integer.toString(linesTouched)});
-                        /// data, classe, locAdded, locDeleted, locTouched
-                        linesAdded = 0;
-                        linesDeleted = 0;
-                        linesTouched = 0;
-                    }
+                    out.add(new String[]{trees.get(x)[0], trees.get(i)[2], Integer.toString(line[0]), Integer.toString(line[1]), Integer.toString(line[2])});
+                    /// data, classe, locAdded, locDeleted, locTouched
 
                 }
 
-
             }
 
-            csvWriter.flush();
-            csvWriter.writeAll(out);
 
-
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
         }
+
+        writeOnCSV(out, outLoc);
+
 
     }
 

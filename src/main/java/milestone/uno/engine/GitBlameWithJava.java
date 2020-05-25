@@ -34,8 +34,8 @@ public class GitBlameWithJava {
     public static void main(String[] args) throws GitAPIException, IOException {
 
         importResources(1);
-        //new GitBlameWithJava().blame();
-        //new GitBlameWithJava().changeDate();
+        new GitBlameWithJava().blame();
+        new GitBlameWithJava().changeDate();
         new GitBlameWithJava().removeDuplicates();
 
     }
