@@ -20,8 +20,8 @@ public class VersionDivisor {
 
     private static final Logger LOGGER = Logger.getLogger(VersionDivisor.class.getName());
 
-    static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-    static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
     static String avPath = "";
     static String bugPath = "";

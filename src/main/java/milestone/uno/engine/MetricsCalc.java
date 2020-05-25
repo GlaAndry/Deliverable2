@@ -46,8 +46,8 @@ public class MetricsCalc {
     static String locMetricsPath = ""; //prova3
     static String sizeAndAgePath = ""; //prova4
 
-    static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-    static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
     public static void main(String[] args) throws IOException {
 
