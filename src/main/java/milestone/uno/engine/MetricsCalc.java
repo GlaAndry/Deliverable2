@@ -74,17 +74,17 @@ public class MetricsCalc {
             outL = csvReader2.readAll();
             assCoBlame = csvReader3.readAll();
 
-            new MetricsCalc().numberOfRevisionsAndAuthors(classes, versions); //fatto
+            //new MetricsCalc().numberOfRevisionsAndAuthors(classes, versions); //fatto
             new MetricsCalc().locMetrics(versions, classes, outL);
-            new MetricsCalc().retrieveLocFromTrees(assCoBlame); //ci mette almeno 3.5 ore per Tajo e 1 ora per Book
+            //new MetricsCalc().retrieveLocFromTrees(assCoBlame); //ci mette almeno 3.5 ore per Tajo e 1 ora per Book
 
-        } catch (ParseException | GitAPIException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 
 
-        new MetricsCalc().sizeAndAgeOfClasses(); //fatto
-        new MetricsCalc().numberOfBugFixes(); //fatto
+        //new MetricsCalc().sizeAndAgeOfClasses(); //fatto
+        //new MetricsCalc().numberOfBugFixes(); //fatto
 
 
     }
@@ -304,9 +304,7 @@ public class MetricsCalc {
         return list;
     }
 
-    private int calculateMaxAndAddMetrics(String nameClass1, String nameClass2, Date dateVersion, String numLock,
-                                          String version, String locADD, String locDEL, String locTOUCH,
-                                          Date date, List<Integer> maxList, int lock, List<String[]> ret) {
+    private int[] calculateMaxAndAverage(String numLock, String version, List<Integer> maxList, int[] returnVal) {
 
         /**
          * Metodo sfruttato da LocMetrics per andare ad effettuare i controlli sul MAXLOCK ed AVERAGE
@@ -315,19 +313,17 @@ public class MetricsCalc {
         int max = 0;
         int average = 0;
 
-        if (nameClass1.equals(nameClass2)) {
-            maxList.add(Integer.parseInt(numLock));
-            for (Integer z : maxList) {
-                max = Integer.max(max, z);
-                average = max / Integer.parseInt(version);
-            }
-            if (date.compareTo(dateVersion) > 0 && lock == 0) {
-                lock++;
-                ret.add(new String[]{version, nameClass1, locADD, locDEL, locTOUCH, Integer.toString(max), Double.toString(average)});
-            }
+        maxList.add(Integer.parseInt(numLock));
+        for (Integer z : maxList) {
+            max = Integer.max(max, z);
+            average = max / Integer.parseInt(version);
         }
 
-        return lock;
+
+        returnVal[0] = max;
+        returnVal[1] = average;
+
+        return returnVal;
 
     }
 
@@ -356,7 +352,7 @@ public class MetricsCalc {
         sortByDate(outL); // sorting della lista
 
         List<Integer> maxList = new ArrayList<>();
-
+        int[] val = new int[2];
 
         for (String[] str : ver2) {
             dateVer = formatter.parse(str[3]);
@@ -364,13 +360,23 @@ public class MetricsCalc {
                 for (String[] str3 : outL) {
                     date = format.parse(str3[0]);
 
-                    lock = calculateMaxAndAddMetrics(str2[2], str3[1], dateVer, str3[2], str[0], str3[2], str3[3], str3[4], date, maxList, lock, ret);
+                    if (str2[2].equals(str3[1])) {
+
+                        calculateMaxAndAverage(str3[2], str[0], maxList, val);
+
+                        if (date.compareTo(dateVer) > 0 && lock == 0) {
+                            lock++;
+                            ret.add(new String[]{str[0], str2[2], str3[2], str3[3], str3[4], Integer.toString(val[0]), Integer.toString(val[1])});
+                            //val[0] = max, val[1]= average
+                        }
+                    }
 
                 }
                 if (lock == 0) {
                     ret.add(new String[]{str[0], str2[2], "0", "0", "0", "0", "0"});
                 }
                 maxList = new ArrayList<>();
+                val = new int[2];
                 lock = 0;
             }
         }
