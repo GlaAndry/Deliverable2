@@ -77,17 +77,17 @@ public class MetricsCalc {
             outL = csvReader2.readAll();
             assCoBlame = csvReader3.readAll();
 
-            //new MetricsCalc().numberOfRevisionsAndAuthors(classes, versions); //fatto
+            new MetricsCalc().numberOfRevisionsAndAuthors(classes, versions); //fatto
             new MetricsCalc().locMetrics(versions, classes, outL);
-            //new MetricsCalc().retrieveLocFromTrees(assCoBlame); //ci mette almeno 3.5 ore per Tajo e 1 ora per Book
+            new MetricsCalc().retrieveLocFromTrees(assCoBlame); //impiega almeno 3.5 ore per Tajo e 2 ore per Book
 
-        } catch (ParseException e) {
+        } catch (ParseException | GitAPIException e) {
             e.printStackTrace();
         }
 
 
-        //new MetricsCalc().sizeAndAgeOfClasses(); //fatto
-        //new MetricsCalc().numberOfBugFixes(); //fatto
+        new MetricsCalc().sizeAndAgeOfClasses();
+        new MetricsCalc().numberOfBugFixes();
 
 
     }
@@ -221,7 +221,7 @@ public class MetricsCalc {
 
         ///
         List<String[]> authorList = new ArrayList<>();
-        int lock = 0;
+        int lock2 = 0;
         String authName;
         ///
 
@@ -259,8 +259,8 @@ public class MetricsCalc {
                          * Aumento il contatore dei commit e aggiungiamo anche gli autori.
                          */
                         authName = blameResult.getSourceAuthor(i).getName();
-                        if (lock == 0) {
-                            lock++;
+                        if (lock2 == 0) {
+                            lock2++;
                             authorList.add(new String[]{authName});
                         }
                         commitCounter++;
@@ -270,7 +270,7 @@ public class MetricsCalc {
 
                 revNum.add(new String[]{strings[0], str[2], Integer.toString(commitCounter), Integer.toString(authorList.size())});
                 commitCounter = 0;
-                lock = 0;
+                lock2 = 0;
                 authorList = new ArrayList<>();
 
             }

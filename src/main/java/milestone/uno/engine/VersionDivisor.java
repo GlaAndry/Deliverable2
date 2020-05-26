@@ -32,6 +32,9 @@ public class VersionDivisor {
     static int lenght;
 
 
+    Integer index = 0;
+
+
     public static void main(String[] args) {
 
         importResources(1);
@@ -134,7 +137,6 @@ public class VersionDivisor {
          */
 
         HashMap<Integer, String> hashMap = new HashMap<>();
-        Integer index = 0;
 
         try (FileReader fileReader = new FileReader(outRM);
              CSVReader csvReader = new CSVReader(fileReader);
@@ -177,16 +179,11 @@ public class VersionDivisor {
                          * di aver riscontrato il BUG
                          */
                         if (Integer.parseInt(values[1]) > Integer.parseInt(values[2])) {
-                            if (!hashMap.containsValue(values[0] + str[1] + values[1] + values[2] + str[0])) {
-                                hashMap.put(index, values[0] + str[1] + values[1] + values[2] + str[0]);
-                            } else {
-                                index++;
-                            }
+                            addOnHashmap(values[0], str[1], values[1], values[2], str[0], hashMap); // da testare.
+
                         }
-
-                        values = new String[] {"", "", ""};
+                        values = new String[]{"", "", ""};
                     }
-
                 }
             }
 
@@ -196,9 +193,21 @@ public class VersionDivisor {
                         , entry.getValue().substring(lenght + 2)});
             }
 
+            index = 0;
+
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    private void addOnHashmap(String str1, String str2, String str3, String str4, String str5, HashMap<Integer, String> hashMap) {
+
+        if (!hashMap.containsValue(str1 + str2 + str3 + str4 + str5)) {
+            hashMap.put(index, str1 + str2 + str3 + str4 + str5);
+        } else {
+            index++;
+        }
+
     }
 
 
