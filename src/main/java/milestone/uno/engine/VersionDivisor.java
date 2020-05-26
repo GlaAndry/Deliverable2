@@ -31,8 +31,10 @@ public class VersionDivisor {
     static String varCal = "";
     static int lenght;
 
-
+    ////Global var necessarie al metodo determineVar();
     Integer index = 0;
+    String[] values = {"", "", ""}; //OV, FV, IV
+    //////////////////////////////////////////////////
 
 
     public static void main(String[] args) {
@@ -129,7 +131,6 @@ public class VersionDivisor {
         Date dateEnd;
         Date dateTicket;
 
-        String[] values = {"", "", ""}; //OV, FV, IV
         /**
          *   FV-->Lo prendo direttamente dal file
          *   IV-->Rappresenta la più vecchia versione tra le AV di un determinato ticket.
@@ -169,7 +170,7 @@ public class VersionDivisor {
                      * Il controllo sulla data è necessario per determinare in quale verisione ci troviamo.
                      */
 
-                    returnValues(dateStart, dateEnd, dateTicket, strings[0], strings[2], str[2], str[3], values);
+                    returnValues(dateStart, dateEnd, dateTicket, strings[0], strings[2], str[2], str[3]);
 
 
                     if (!values[0].equals("") && !values[1].equals("") && !values[2].equals("")) {
@@ -211,25 +212,22 @@ public class VersionDivisor {
     }
 
 
-    private String[] returnValues(Date dateStart, Date dateEnd, Date date, String str, String versionName, String fvVersion, String ivVersion, String[] ret) {
+    private String[] returnValues(Date dateStart, Date dateEnd, Date date, String str, String versionName, String fvVersion, String ivVersion) {
 
         /**
          * Il controllo sulla data è necessario per determinare in quale verisione ci troviamo.
          */
 
         if (date.after(dateStart) && date.before(dateEnd)) {
-            ret[0] = str; //OV
+            values[0] = str; //OV
         }
         if (versionName.equals(fvVersion)) {
-            ret[1] = str; //FV
-
+            values[1] = str; //FV
         }
         if (versionName.equals(ivVersion)) {
-            ret[2] = str; //IV
-
+            values[2] = str; //IV
         }
-
-        return ret;
+        return values;
     }
 
 
@@ -279,8 +277,6 @@ public class VersionDivisor {
             e.printStackTrace();
         }
 
-
     }
-
 
 }
