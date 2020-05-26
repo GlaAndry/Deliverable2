@@ -17,6 +17,8 @@ public class PropertiesWriter {
 
             Properties prop = new Properties();
 
+            ///////MILESTONE 1///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
             // set the properties value for BOOKKEEPER Project
             prop.setProperty("gitDirBOOKPath", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\GitDirBook");
             prop.setProperty("commitPath", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\fileBOOK\\commits.csv");
@@ -78,6 +80,32 @@ public class PropertiesWriter {
             prop.setProperty("outTAJO", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\tajo\\M1D2TAJO.csv");
             prop.setProperty("pValueTAJO", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\fileTAJO\\valueOfPTAJO.csv");
 
+
+            ////////////////////////MILESTONE 2///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            // set the properties value for BOOKKEEPER Project
+            prop.setProperty("M1D2BOOK", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\csvFile\\M1D2BOOK.csv");
+            prop.setProperty("M1D2BOOKARFF", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\arffFile\\M1D2BOOK.arff");
+            prop.setProperty("prefixBOOK", "BOOK");
+            prop.setProperty("M1D2TESTBOOK", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outCSVmethods\\testing");
+            prop.setProperty("M1D2TRAINBOOK", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outCSVmethods\\training");
+            prop.setProperty("OUTBOOK", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outMilestone2\\outM1D2BOOK.csv");
+            prop.setProperty("NUMBOOK", "7");
+            prop.setProperty("BOOKARFFTESTING", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\arffFile\\testing");
+            prop.setProperty("BOOKARFFTRAINING", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\arffFile\\training");
+
+            //set the properties value for TAJO Project
+            prop.setProperty("M1D2TAJO", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\csvFile\\M1D2TAJO.csv");
+            prop.setProperty("M1D2TAJOARFF", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\M1D2BOOK.arff");
+            prop.setProperty("prefixTAJO", "TAJO");
+            prop.setProperty("M1D2TESTTAJO", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outCSVmethods\\testing");
+            prop.setProperty("M1D2TRAINTAJO", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outCSVmethods\\training");
+            prop.setProperty("OUTTAJO", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outMilestone2\\outM1D2TAJO.csv");
+            prop.setProperty("NUMTAJO", "5");
+            prop.setProperty("TAJOARFFTESTING", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\arffFile\\testing");
+            prop.setProperty("TAJOARFFTRAINING", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\arffFile\\training");
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             // save properties to project root folder
             prop.store(output, null);
