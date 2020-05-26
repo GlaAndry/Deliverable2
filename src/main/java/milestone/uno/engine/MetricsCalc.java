@@ -49,6 +49,9 @@ public class MetricsCalc {
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
+    int lock = 0; //semaforo
+
+
     public static void main(String[] args) throws IOException {
 
 
@@ -327,6 +330,26 @@ public class MetricsCalc {
 
     }
 
+    private List<String[]> addMaxAndAverage(String[] ver, String[] cls, String[] outL, List<Integer> maxList, int[] val, List<String[]> ret) throws ParseException {
+
+
+
+        Date dateVer = formatter.parse(ver[3]);
+        Date date = format.parse(outL[0]);
+
+        if (cls[2].equals(outL[1])) {
+
+            calculateMaxAndAverage(outL[2], ver[0], maxList, val);
+
+            if (date.compareTo(dateVer) > 0 && lock == 0) {
+                lock++;
+                ret.add(new String[]{ver[0], cls[2], outL[2], outL[3], outL[4], Integer.toString(val[0]), Integer.toString(val[1])});
+                //val[0] = max, val[1]= average
+            }
+        }
+        return ret;
+    }
+
 
     private void locMetrics(List<String[]> ver, List<String[]> classes, List<String[]> outL) throws IOException, ParseException {
 
@@ -342,11 +365,6 @@ public class MetricsCalc {
         List<String[]> ver2;
         List<String[]> ret = new ArrayList<>();
 
-        int lock = 0; //semaforo
-
-        Date dateVer;
-        Date date;
-
         ver2 = ver.subList(1, ver.size());
 
         sortByDate(outL); // sorting della lista
@@ -355,22 +373,9 @@ public class MetricsCalc {
         int[] val = new int[2];
 
         for (String[] str : ver2) {
-            dateVer = formatter.parse(str[3]);
             for (String[] str2 : classes) {
                 for (String[] str3 : outL) {
-                    date = format.parse(str3[0]);
-
-                    if (str2[2].equals(str3[1])) {
-
-                        calculateMaxAndAverage(str3[2], str[0], maxList, val);
-
-                        if (date.compareTo(dateVer) > 0 && lock == 0) {
-                            lock++;
-                            ret.add(new String[]{str[0], str2[2], str3[2], str3[3], str3[4], Integer.toString(val[0]), Integer.toString(val[1])});
-                            //val[0] = max, val[1]= average
-                        }
-                    }
-
+                    addMaxAndAverage(str, str2, str3, maxList, val, ret);
                 }
                 if (lock == 0) {
                     ret.add(new String[]{str[0], str2[2], "0", "0", "0", "0", "0"});
