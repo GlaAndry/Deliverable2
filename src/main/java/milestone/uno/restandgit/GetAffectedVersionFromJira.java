@@ -27,10 +27,10 @@ public class GetAffectedVersionFromJira {
     static String avPath = "";
     static String fvPath = "";
     static String projName = "";
-    static final String campo = "fields";
+    static final String jsnField = "fields";
 
 
-    public static void main(String[] args) throws IOException, JSONException {
+    public static void main(String[] args) throws IOException {
 
         importResources(1);
         new GetAffectedVersionFromJira().retrieveFromJira();
@@ -95,7 +95,7 @@ public class GetAffectedVersionFromJira {
              * Questi ulteriri array JSON sono stati necessari per accedere alle sottoliste presenti all'interno
              * di issues, cioè filed, che contiene sia FixVersions che version per determinare AV e FV.
              */
-            JSONArray fv = issues.getJSONObject(z).getJSONObject(campo).getJSONArray("fixVersions");
+            JSONArray fv = issues.getJSONObject(z).getJSONObject(jsnField).getJSONArray("fixVersions");
             String fixVersion = "";
 
             /**
@@ -150,8 +150,8 @@ public class GetAffectedVersionFromJira {
              * Questi ulteriri array JSON sono stati necessari per accedere alle sottoliste presenti all'interno
              * di issues, cioè filed, che contiene sia FixVersions che version per determinare AV e FV.
              */
-            JSONArray fv = issues.getJSONObject(z).getJSONObject(campo).getJSONArray("fixVersions");
-            JSONArray av = issues.getJSONObject(z).getJSONObject(campo).getJSONArray("versions");
+            JSONArray fv = issues.getJSONObject(z).getJSONObject(jsnField).getJSONArray("fixVersions");
+            JSONArray av = issues.getJSONObject(z).getJSONObject(jsnField).getJSONArray("versions");
 
             String fixVersion = "";
             String affectedVersion = "";

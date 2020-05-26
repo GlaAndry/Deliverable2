@@ -35,7 +35,6 @@ public class GetReleaseInfo {
     public static void main(String[] args) throws IOException {
 
         /**
-         *
          * out --> ProjVersionInfo.csv
          */
 
@@ -67,7 +66,7 @@ public class GetReleaseInfo {
         String outname = projName + "VersionInfo.csv";
         if (releases.size() < 6)
             return;
-        try (FileWriter fileWriter = new FileWriter(outname);){
+        try (FileWriter fileWriter = new FileWriter(outname)){
 
             fileWriter.append("Index,Version ID,Version Name,DateStart,DateEnd");
             fileWriter.append("\n");

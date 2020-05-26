@@ -49,6 +49,20 @@ public class WekaEngine {
     static String out = "";
     static String numRelease = "";
 
+    static String classi;
+
+    final String rndFrs = "Random Forest";
+    final String nivBay = "Naive Bayes";
+    final String ibk = "IBK";
+
+    final String noFeatureSel = "No Selection";
+    final String featureSel = "Best First";
+
+    final String noSam = "No Sampling";
+    final String underS = "Undersampling";
+    final String overS = "Oversampling";
+    final String smt = "SMOTE";
+
     double defTrain = 0;
     double defTest = 0;
 
@@ -142,14 +156,13 @@ public class WekaEngine {
     private void calculateClassifierNoSampling(Classifier classifier, ConverterUtils.DataSource train, ConverterUtils.DataSource test,
                                                int counter, List<String[]> list, String csvTest, String csvTrain) throws Exception {
 
-        String classi = "";
 
         if (classifier.getClass() == RandomForest.class) {
-            classi = "Random Forest";
+            classi = rndFrs;
         } else if (classifier.getClass() == NaiveBayes.class) {
-            classi = "Naive Bayes";
+            classi = nivBay;
         } else if (classifier.getClass() == IBk.class) {
-            classi = "IBK";
+            classi = ibk;
         }
 
         Instances testing = test.getDataSet();
@@ -177,7 +190,7 @@ public class WekaEngine {
         eval.evaluateModel(classifier, testing);
 
         list.add(new String[]{prefix, Integer.toString(counter), Double.toString(counter / Double.parseDouble(numRelease) * 100), String.valueOf(defTrain), String.valueOf(defTest),
-                classi, "No Sampling", "No Selection", String.valueOf(eval.truePositiveRate(1)),
+                classi, noSam, noFeatureSel, String.valueOf(eval.truePositiveRate(1)),
                 String.valueOf(eval.falsePositiveRate(1)), String.valueOf(eval.trueNegativeRate(1)), String.valueOf(eval.falseNegativeRate(1)), Double.toString(eval.precision(1)),
                 Double.toString(eval.recall(1)), Double.toString(eval.areaUnderROC(1)), Double.toString(eval.kappa())});
 
@@ -205,7 +218,7 @@ public class WekaEngine {
         eval.evaluateModel(classifier, testingFiltered);
 
         list.add(new String[]{prefix, Integer.toString(counter), Double.toString(counter / Double.parseDouble(numRelease) * 100), String.valueOf(defTrain), String.valueOf(defTest),
-                classi, "No Sampling", "Best First", String.valueOf(eval.truePositiveRate(1)),
+                classi, noSam, featureSel, String.valueOf(eval.truePositiveRate(1)),
                 String.valueOf(eval.falsePositiveRate(1)), String.valueOf(eval.trueNegativeRate(1)), String.valueOf(eval.falseNegativeRate(1)), Double.toString(eval.precision(1)),
                 Double.toString(eval.recall(1)), Double.toString(eval.areaUnderROC(1)), Double.toString(eval.kappa())});
 
@@ -215,14 +228,13 @@ public class WekaEngine {
     private void calculateClassifierUndersampling(Classifier classifier, ConverterUtils.DataSource train, ConverterUtils.DataSource test,
                                                   int counter, List<String[]> list, String csvTest, String csvTrain) throws Exception {
 
-        String classi = "";
 
         if (classifier.getClass() == RandomForest.class) {
-            classi = "Random Forest";
+            classi = rndFrs;
         } else if (classifier.getClass() == NaiveBayes.class) {
-            classi = "Naive Bayes";
+            classi = nivBay;
         } else if (classifier.getClass() == IBk.class) {
-            classi = "IBK";
+            classi = ibk;
         }
 
         Instances testing = test.getDataSet();
@@ -262,7 +274,7 @@ public class WekaEngine {
 
         eval.evaluateModel(fc, testing); //sampled
         list.add(new String[]{prefix, Integer.toString(counter), Double.toString(counter / Double.parseDouble(numRelease) * 100), String.valueOf(defTrain), String.valueOf(defTest),
-                classi, "Undersampling", "No Selection", String.valueOf(eval.truePositiveRate(1)),
+                classi, underS, noFeatureSel, String.valueOf(eval.truePositiveRate(1)),
                 String.valueOf(eval.falsePositiveRate(1)), String.valueOf(eval.trueNegativeRate(1)), String.valueOf(eval.falseNegativeRate(1)), Double.toString(eval.precision(1)),
                 Double.toString(eval.recall(1)), Double.toString(eval.areaUnderROC(1)), Double.toString(eval.kappa())});
 
@@ -289,7 +301,7 @@ public class WekaEngine {
         eval.evaluateModel(classifier, testingFiltered);
 
         list.add(new String[]{prefix, Integer.toString(counter), Double.toString(counter / Double.parseDouble(numRelease) * 100), String.valueOf(defTrain), String.valueOf(defTest),
-                classi, "Undersampling", "Best First", String.valueOf(eval.truePositiveRate(1)),
+                classi, underS, featureSel, String.valueOf(eval.truePositiveRate(1)),
                 String.valueOf(eval.falsePositiveRate(1)), String.valueOf(eval.trueNegativeRate(1)), String.valueOf(eval.falseNegativeRate(1)), Double.toString(eval.precision(1)),
                 Double.toString(eval.recall(1)), Double.toString(eval.areaUnderROC(1)), Double.toString(eval.kappa())});
 
@@ -299,14 +311,13 @@ public class WekaEngine {
     private void calculateClassifierOversampling(Classifier classifier, ConverterUtils.DataSource train, ConverterUtils.DataSource test,
                                                  int counter, List<String[]> list, String csvTest, String csvTrain) throws Exception {
 
-        String classi = "";
 
         if (classifier.getClass() == RandomForest.class) {
-            classi = "Random Forest";
+            classi = rndFrs;
         } else if (classifier.getClass() == NaiveBayes.class) {
-            classi = "Naive Bayes";
+            classi = nivBay;
         } else if (classifier.getClass() == IBk.class) {
-            classi = "IBK";
+            classi = ibk;
         }
 
         Instances testing = test.getDataSet();
@@ -347,7 +358,7 @@ public class WekaEngine {
         eval.evaluateModel(fc, testing); //sampled
 
         list.add(new String[]{prefix, Integer.toString(counter), Double.toString(counter / Double.parseDouble(numRelease) * 100), String.valueOf(defTrain), String.valueOf(defTest),
-                classi, "Oversampling", "No Selection", String.valueOf(eval.truePositiveRate(1)),
+                classi, overS, noFeatureSel, String.valueOf(eval.truePositiveRate(1)),
                 String.valueOf(eval.falsePositiveRate(1)), String.valueOf(eval.trueNegativeRate(1)), String.valueOf(eval.falseNegativeRate(1)), Double.toString(eval.precision(1)),
                 Double.toString(eval.recall(1)), Double.toString(eval.areaUnderROC(1)), Double.toString(eval.kappa())});
 
@@ -376,7 +387,7 @@ public class WekaEngine {
         eval.evaluateModel(classifier, testingFiltered);
 
         list.add(new String[]{prefix, Integer.toString(counter), Double.toString(counter / Double.parseDouble(numRelease) * 100), String.valueOf(defTrain), String.valueOf(defTest),
-                classi, "Oversampling", "Best First", String.valueOf(eval.truePositiveRate(1)),
+                classi, overS, featureSel, String.valueOf(eval.truePositiveRate(1)),
                 String.valueOf(eval.falsePositiveRate(1)), String.valueOf(eval.trueNegativeRate(1)), String.valueOf(eval.falseNegativeRate(1)), Double.toString(eval.precision(1)),
                 Double.toString(eval.recall(1)), Double.toString(eval.areaUnderROC(1)), Double.toString(eval.kappa())});
 
@@ -385,14 +396,13 @@ public class WekaEngine {
     private void calculateClassifierSMOTE(Classifier classifier, ConverterUtils.DataSource train, ConverterUtils.DataSource test,
                                           int counter, List<String[]> list, String csvTest, String csvTrain) throws Exception {
 
-        String classi = "";
 
         if (classifier.getClass() == RandomForest.class) {
-            classi = "Random Forest";
+            classi = rndFrs;
         } else if (classifier.getClass() == NaiveBayes.class) {
-            classi = "Naive Bayes";
+            classi = nivBay;
         } else if (classifier.getClass() == IBk.class) {
-            classi = "IBK";
+            classi = ibk;
         }
 
         Instances testing = test.getDataSet();
@@ -428,7 +438,7 @@ public class WekaEngine {
         }
 
         list.add(new String[]{prefix, Integer.toString(counter), Double.toString(counter / Double.parseDouble(numRelease) * 100), String.valueOf(defTrain), String.valueOf(defTest),
-                classi, "SMOTE", "No Selection", String.valueOf(eval.truePositiveRate(1)),
+                classi, smt, noFeatureSel, String.valueOf(eval.truePositiveRate(1)),
                 String.valueOf(eval.falsePositiveRate(1)), String.valueOf(eval.trueNegativeRate(1)), String.valueOf(eval.falseNegativeRate(1)), Double.toString(eval.precision(1)),
                 Double.toString(eval.recall(1)), Double.toString(eval.areaUnderROC(1)), Double.toString(eval.kappa())});
 
@@ -457,7 +467,7 @@ public class WekaEngine {
         eval.evaluateModel(classifier, testingFiltered);
 
         list.add(new String[]{prefix, Integer.toString(counter), Double.toString(counter / Double.parseDouble(numRelease) * 100), String.valueOf(defTrain), String.valueOf(defTest),
-                classi, "SMOTE", "Best First", String.valueOf(eval.truePositiveRate(1)),
+                classi, smt, featureSel, String.valueOf(eval.truePositiveRate(1)),
                 String.valueOf(eval.falsePositiveRate(1)), String.valueOf(eval.trueNegativeRate(1)), String.valueOf(eval.falseNegativeRate(1)), Double.toString(eval.precision(1)),
                 Double.toString(eval.recall(1)), Double.toString(eval.areaUnderROC(1)), Double.toString(eval.kappa())});
 
