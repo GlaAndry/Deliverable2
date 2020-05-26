@@ -2,7 +2,6 @@ package milestone.uno.restandgit;
 
 import com.opencsv.CSVWriter;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -27,7 +26,7 @@ public class GetAffectedVersionFromJira {
     static String avPath = "";
     static String fvPath = "";
     static String projName = "";
-    static final String jsnField = "fields";
+    static final String FIELDS = "fields";
 
 
     public static void main(String[] args) throws IOException {
@@ -95,7 +94,7 @@ public class GetAffectedVersionFromJira {
              * Questi ulteriri array JSON sono stati necessari per accedere alle sottoliste presenti all'interno
              * di issues, cioè filed, che contiene sia FixVersions che version per determinare AV e FV.
              */
-            JSONArray fv = issues.getJSONObject(z).getJSONObject(jsnField).getJSONArray("fixVersions");
+            JSONArray fv = issues.getJSONObject(z).getJSONObject(FIELDS).getJSONArray("fixVersions");
             String fixVersion = "";
 
             /**
@@ -150,8 +149,8 @@ public class GetAffectedVersionFromJira {
              * Questi ulteriri array JSON sono stati necessari per accedere alle sottoliste presenti all'interno
              * di issues, cioè filed, che contiene sia FixVersions che version per determinare AV e FV.
              */
-            JSONArray fv = issues.getJSONObject(z).getJSONObject(jsnField).getJSONArray("fixVersions");
-            JSONArray av = issues.getJSONObject(z).getJSONObject(jsnField).getJSONArray("versions");
+            JSONArray fv = issues.getJSONObject(z).getJSONObject(FIELDS).getJSONArray("fixVersions");
+            JSONArray av = issues.getJSONObject(z).getJSONObject(FIELDS).getJSONArray("versions");
 
             String fixVersion = "";
             String affectedVersion = "";
