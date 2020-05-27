@@ -31,10 +31,14 @@ public class VersionDivisor {
     static String varCal = "";
     static int lenght;
 
-    ////Global var necessarie al metodo determineVar();
+
+
+    /**
+     * Variabili globali necessarie al metodo determineVar()
+     */
     Integer index = 0;
     String[] values = {"", "", ""}; //OV, FV, IV
-    //////////////////////////////////////////////////
+
 
 
     public static void main(String[] args) {
