@@ -168,47 +168,7 @@ public class GitBlameWithJava {
                 } else {
                     anno = str[0].substring(24) + "-";
                 }
-                switch (str[0].substring(4, 7)) {
-
-                    case ("Jan"):
-                        mese = "01-";
-                        break;
-                    case ("Feb"):
-                        mese = "02-";
-                        break;
-                    case ("Mar"):
-                        mese = "03-";
-                        break;
-                    case ("Apr"):
-                        mese = "04-";
-                        break;
-                    case ("May"):
-                        mese = "05-";
-                        break;
-                    case ("Jun"):
-                        mese = "06-";
-                        break;
-                    case ("Jul"):
-                        mese = "07-";
-                        break;
-                    case ("Aug"):
-                        mese = "08-";
-                        break;
-                    case ("Sep"):
-                        mese = "09-";
-                        break;
-                    case ("Oct"):
-                        mese = "10-";
-                        break;
-                    case ("Nov"):
-                        mese = "11-";
-                        break;
-                    case ("Dec"):
-                        mese = "12-";
-                        break;
-                    default:
-                        throw new IllegalStateException("Unexpected value: " + str[0].substring(4, 7));
-                }
+                mese = determineMonth(str[0].substring(4, 7));
 
                 giorno = str[0].substring(8, 10);
 
@@ -238,6 +198,39 @@ public class GitBlameWithJava {
             e.printStackTrace();
         }
 
+    }
+
+    private String determineMonth(String str){
+
+        String mese = "";
+        if(str.equals("Jan")){
+            mese = "01-";
+        }else if (str.equals("Feb")){
+            mese = "02-";
+        }else if (str.equals("Mar")){
+            mese = "03-";
+        }else if (str.equals("Apr")){
+            mese = "04-";
+        }else if (str.equals("May")){
+            mese = "05-";
+        }else if (str.equals("Jun")){
+            mese = "06-";
+        }else if (str.equals("Jul")){
+            mese = "07-";
+        }else if (str.equals("Aug")){
+            mese = "08-";
+        }else if (str.equals("Sep")){
+            mese = "09-";
+        }else if (str.equals("Oct")){
+            mese = "10-";
+        }else if (str.equals("Nov")){
+            mese = "11-";
+        }else if (str.equals("Dec")){
+            mese = "12-";
+        } else {
+            throw new IllegalStateException("Unexpected value: " + str);
+        }
+        return mese;
     }
 
 

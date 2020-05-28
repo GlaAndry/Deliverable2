@@ -78,7 +78,7 @@
       <command value="mvn clean" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.GetAffectedVersionFromJira">
+  <component name="RunManager" selected="Application.GitBlameWithJava">
     <configuration name="GetAffectedVersionFromJira" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="milestone.uno.restandgit.GetAffectedVersionFromJira" />
       <module name="Deliverable2" />
@@ -105,8 +105,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MetricsCalc" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="milestone.uno.engine.MetricsCalc" />
+    <configuration name="GitBlameWithJava" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="milestone.uno.engine.GitBlameWithJava" />
       <module name="Deliverable2" />
       <extension name="coverage">
         <pattern>
@@ -146,11 +146,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.GitBlameWithJava" />
         <item itemvalue="Application.GetAffectedVersionFromJira" />
         <item itemvalue="Application.GetReleaseInfo" />
         <item itemvalue="Application.WekaEngine" />
         <item itemvalue="Application.VersionDivisor" />
-        <item itemvalue="Application.MetricsCalc" />
       </list>
     </recent_temporary>
   </component>
@@ -203,7 +203,7 @@
       <workItem from="1590501236344" duration="6013000" />
       <workItem from="1590507697867" duration="9828000" />
       <workItem from="1590611855312" duration="4421000" />
-      <workItem from="1590651710205" duration="2282000" />
+      <workItem from="1590651710205" duration="3293000" />
     </task>
     <servers />
   </component>
@@ -215,31 +215,31 @@
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
     <state x="3645" y="409" key="#com.intellij.ide.util.MemberChooser/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1586637056707" />
-    <state x="3620" y="454" key="FileChooserDialogImpl" timestamp="1590616386640">
+    <state x="3620" y="454" key="FileChooserDialogImpl" timestamp="1590654220093">
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
     <state x="1060" y="454" key="FileChooserDialogImpl/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1590395787287" />
-    <state x="3620" y="454" key="FileChooserDialogImpl/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1590616386640" />
-    <state width="2517" height="298" key="GridCell.Tab.0.bottom" timestamp="1590652332561">
+    <state x="3620" y="454" key="FileChooserDialogImpl/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1590654220093" />
+    <state width="2517" height="298" key="GridCell.Tab.0.bottom" timestamp="1590655009331">
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="323" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1590353643325" />
-    <state width="2517" height="298" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1590652332561" />
-    <state width="2517" height="298" key="GridCell.Tab.0.center" timestamp="1590652332561">
+    <state width="2517" height="298" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1590655009331" />
+    <state width="2517" height="298" key="GridCell.Tab.0.center" timestamp="1590655009331">
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="323" key="GridCell.Tab.0.center/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1590353643325" />
-    <state width="2517" height="298" key="GridCell.Tab.0.center/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1590652332561" />
-    <state width="2517" height="298" key="GridCell.Tab.0.left" timestamp="1590652332560">
+    <state width="2517" height="298" key="GridCell.Tab.0.center/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1590655009331" />
+    <state width="2517" height="298" key="GridCell.Tab.0.left" timestamp="1590655009331">
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="323" key="GridCell.Tab.0.left/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1590353643325" />
-    <state width="2517" height="298" key="GridCell.Tab.0.left/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1590652332560" />
-    <state width="2517" height="298" key="GridCell.Tab.0.right" timestamp="1590652332561">
+    <state width="2517" height="298" key="GridCell.Tab.0.left/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1590655009331" />
+    <state width="2517" height="298" key="GridCell.Tab.0.right" timestamp="1590655009331">
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="323" key="GridCell.Tab.0.right/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1590353643325" />
-    <state width="2517" height="298" key="GridCell.Tab.0.right/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1590652332561" />
+    <state width="2517" height="298" key="GridCell.Tab.0.right/0.0.2560.1400/2560.0.2560.1400@2560.0.2560.1400" timestamp="1590655009331" />
     <state width="2517" height="323" key="GridCell.Tab.1.bottom" timestamp="1590615525857">
       <screen x="2560" y="0" width="2560" height="1400" />
     </state>

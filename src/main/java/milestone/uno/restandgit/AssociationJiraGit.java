@@ -23,9 +23,7 @@ public class AssociationJiraGit {
 
     static String blame = "";
     static String comm = "";
-    static String av = "";
     static String outAssCB = "";
-    static String bugTicket = "";
     static String outAssAB = "";
     static String bugAV = "";
     static String outAssOV = "";
@@ -55,9 +53,7 @@ public class AssociationJiraGit {
             if(value == 0){
                 blame = prop.getProperty("blameFinal");
                 comm = prop.getProperty("commitPath");
-                av = prop.getProperty("AVpath");
                 outAssCB = prop.getProperty("AssCB");
-                bugTicket = prop.getProperty("BugTicketFromJira");
                 outAssAB = prop.getProperty("AssAB");
                 bugAV = prop.getProperty("BugTicketAV");
                 outAssOV = prop.getProperty("AssOV");
@@ -66,9 +62,7 @@ public class AssociationJiraGit {
             if(value == 1){
                 blame = prop.getProperty("blameFinalTAJO");
                 comm = prop.getProperty("commitPathTAJO");
-                av = prop.getProperty("AVpathTAJO");
                 outAssCB = prop.getProperty("AssCBTAJO");
-                bugTicket = prop.getProperty("BugTicketFromJiraTAJO");
                 outAssAB = prop.getProperty("AssABTAJO");
                 bugAV = prop.getProperty("BugTicketAVTAJO");
                 outAssOV = prop.getProperty("AssOVTAJO");
