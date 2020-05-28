@@ -4,9 +4,10 @@ import com.opencsv.CSVWriter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.*;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -78,7 +79,7 @@ public class GetAffectedVersionFromJira {
                 "fixVersion%20!=%20null%20ORDER%20BY%20fixVersion%20ASC"
                 + ",created&startAt=0&maxResults=1000";
 
-        JSONObject json = readJsonFromUrl(urlAffectedVersion);
+        JSONObject json = new JSONMethods().readJsonFromUrl(urlAffectedVersion);
         JSONArray issues = json.getJSONArray("issues");
 
         int z;
@@ -133,7 +134,7 @@ public class GetAffectedVersionFromJira {
                 "fixVersion%20!=%20null%20AND%20affectedVersion%20!=%20null%20ORDER%20BY%20fixVersion,affectedVersion%20ASC"
                 + ",created&startAt=0&maxResults=1000";
 
-        JSONObject json = readJsonFromUrl(urlAffectedVersion);
+        JSONObject json = new JSONMethods().readJsonFromUrl(urlAffectedVersion);
         JSONArray issues = json.getJSONArray("issues");
 
         int z;
@@ -178,20 +179,4 @@ public class GetAffectedVersionFromJira {
         }
     }
 
-    public static JSONObject readJsonFromUrl(String url) throws IOException {
-        try (InputStream is = new URL(url).openStream()) {
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-            String jsonText = readAll(rd);
-            return new JSONObject(jsonText);
-        }
-    }
-
-    private static String readAll(Reader rd) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        int cp;
-        while ((cp = rd.read()) != -1) {
-            sb.append((char) cp);
-        }
-        return sb.toString();
-    }
 }

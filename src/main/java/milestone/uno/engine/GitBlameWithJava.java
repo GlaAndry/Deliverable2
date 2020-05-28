@@ -7,6 +7,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.blame.BlameResult;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
+
 import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -55,7 +56,7 @@ public class GitBlameWithJava {
             prop.load(input);
 
 
-            if(value == 0){
+            if (value == 0) {
                 path = prop.getProperty("gitDirBOOKPath");
                 commitPath = prop.getProperty("commitPath");
                 completePath = prop.getProperty("gitPathBOOK");
@@ -65,7 +66,7 @@ public class GitBlameWithJava {
                 finalBlames = prop.getProperty("blameFinal");
                 classesPath = prop.getProperty("classesPath");
             }
-            if(value == 1){
+            if (value == 1) {
                 path = prop.getProperty("gitDirTAJOPath");
                 commitPath = prop.getProperty("commitPathTAJO");
                 completePath = prop.getProperty("gitPathTAJO");
@@ -76,7 +77,6 @@ public class GitBlameWithJava {
                 classesPath = prop.getProperty("classesPathTAJO");
 
             }
-
 
 
         } catch (IOException e) {
@@ -145,7 +145,7 @@ public class GitBlameWithJava {
          * in quanto non sono utilizzabili per andare ad effettuare le stime.
          */
 
-        List<String[]> blames = new ArrayList<>();
+        List<String[]> blames;
         List<String[]> dates = new ArrayList<>();
 
         String data = "";

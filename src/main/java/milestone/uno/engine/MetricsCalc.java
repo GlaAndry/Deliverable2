@@ -29,7 +29,6 @@ public class MetricsCalc {
 
     /**
      * Questa classe è responsabile del calcolo delle metriche delle classi dei progetti.
-     * Le Nove metriche considerate sono...
      */
 
     private static final Logger LOGGER = Logger.getLogger(MetricsCalc.class.getName());

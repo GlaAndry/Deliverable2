@@ -3,9 +3,8 @@ package milestone.uno.restandgit;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.*;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class GetReleaseInfo {
         releases = new ArrayList<>();
         Integer i;
         String url = "https://issues.apache.org/jira/rest/api/2/project/" + projName;
-        JSONObject json = readJsonFromUrl(url);
+        JSONObject json = new JSONMethods().readJsonFromUrl(url);
         JSONArray versions = json.getJSONArray("versions");
         releaseNames = new HashMap<>();
         releaseID = new HashMap<> ();
@@ -102,22 +101,6 @@ public class GetReleaseInfo {
     }
 
 
-    public static JSONObject readJsonFromUrl(String url) throws IOException {
-        try (InputStream is = new URL(url).openStream()) {
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-            String jsonText = readAll(rd);
-            return new JSONObject(jsonText);
-        }
-    }
-
-    private static String readAll(Reader rd) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        int cp;
-        while ((cp = rd.read()) != -1) {
-            sb.append((char) cp);
-        }
-        return sb.toString();
-    }
 
 
 }

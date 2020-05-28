@@ -28,23 +28,21 @@ public class GetDefectedClasses {
 
 
     static String versionInfo = "";
-    static String assBlameComm = "";
     static String assBlameAV = "";
     static String assBlameOV = "";
     static String buggyPath = "";
     static String classPath = "";
     static String varP = "";
-    static String bAV = "";
     static String pValue = "";
 
     public static void main(String[] args) throws IOException {
 
         importResources(0);
 
-        List<String[]> avblm = new ArrayList<>();
-        List<String[]> classes = new ArrayList<>();
-        List<String[]> vers = new ArrayList<>();
-        List<String[]> ovBlame = new ArrayList<>();
+        List<String[]> avblm;
+        List<String[]> classes;
+        List<String[]> vers;
+        List<String[]> ovBlame;
 
         try (FileReader fileReader = new FileReader(assBlameAV);
              CSVReader csvReader = new CSVReader(fileReader);
@@ -83,24 +81,20 @@ public class GetDefectedClasses {
 
             if (value == 0) {
                 versionInfo = prop.getProperty("versionInfoBOOK");
-                assBlameComm = prop.getProperty("AssCB");
                 assBlameAV = prop.getProperty("AssAB");
                 buggyPath = prop.getProperty("buggyPath");
                 classPath = prop.getProperty("classesPath");
                 varP = prop.getProperty("variables");
-                bAV = prop.getProperty("BugTicketAV");
                 pValue = prop.getProperty("pValueBOOK");
                 assBlameOV = prop.getProperty("AssOV");
 
             }
             if (value == 1) {
                 versionInfo = prop.getProperty("versionInfoTAJO");
-                assBlameComm = prop.getProperty("AssCBTAJO");
                 assBlameAV = prop.getProperty("AssABTAJO");
                 buggyPath = prop.getProperty("buggyPathTAJO");
                 classPath = prop.getProperty("classesPathTAJO");
                 varP = prop.getProperty("variablesTAJO");
-                bAV = prop.getProperty("BugTicketAVTAJO");
                 pValue = prop.getProperty("pValueTAJO");
                 assBlameOV = prop.getProperty("AssOVTAJO");
 
