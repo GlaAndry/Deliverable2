@@ -1,6 +1,7 @@
 package milestone.uno.engine;
 
 import com.opencsv.CSVWriter;
+import writer.PropertiesWriter;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -33,13 +34,7 @@ public class CreateCSVPath {
          * 1 --> TAJO
          */
 
-        String prf = "";
-
-        if (value == 0) {
-            prf = "Book";
-        } else if (value == 1) {
-            prf = "Tajo";
-        }
+        String prf = new PropertiesWriter().determinePrefix(value);
 
         try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config" + prf + ".properties")) {
 

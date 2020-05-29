@@ -5,6 +5,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+import writer.PropertiesWriter;
 
 import java.io.*;
 import java.text.DateFormat;
@@ -33,13 +34,7 @@ public class DownloadCommit {
          * 1 --> TAJO
          */
         ////////////////carico i dati da config.properties
-        String prf = "";
-
-        if (value == 0) {
-            prf = "Book";
-        } else if (value == 1) {
-            prf = "Tajo";
-        }
+        String prf = new PropertiesWriter().determinePrefix(value);
 
         try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config" + prf + ".properties")) {
 

@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONPointerException;
+import writer.PropertiesWriter;
 
 public class RetrieveTicketID {
 
@@ -32,13 +33,7 @@ public class RetrieveTicketID {
          * 1 --> TAJO
          */
         ////////////////carico i dati da config.properties
-        String prf = "";
-
-        if (value == 0) {
-            prf = "Book";
-        } else if (value == 1) {
-            prf = "Tajo";
-        }
+        String prf = new PropertiesWriter().determinePrefix(value);
 
         try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config" + prf + ".properties")) {
 

@@ -3,6 +3,7 @@ package milestone.uno.restandgit;
 import com.opencsv.CSVWriter;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import writer.PropertiesWriter;
 
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -42,13 +43,7 @@ public class GetAffectedVersionFromJira {
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
          */
-        String prf = "";
-
-        if (value == 0) {
-            prf = "Book";
-        } else if (value == 1) {
-            prf = "Tajo";
-        }
+        String prf = new PropertiesWriter().determinePrefix(value);
 
         try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config" + prf + ".properties")) {
 

@@ -8,6 +8,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.blame.BlameResult;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
+import writer.PropertiesWriter;
 
 import java.io.*;
 import java.util.*;
@@ -50,13 +51,7 @@ public class GitBlameWithJava {
          * 0 --> BOOKKEEPER
          * 1 --> TAJO
          */
-        String prf = "";
-
-        if (value == 0) {
-            prf = "Book";
-        } else if (value == 1) {
-            prf = "Tajo";
-        }
+        String prf = new PropertiesWriter().determinePrefix(value);
 
         try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config" + prf + ".properties")) {
 

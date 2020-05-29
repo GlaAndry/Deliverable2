@@ -4,6 +4,7 @@ package milestone.due.engine;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
 import weka.core.converters.CSVLoader;
+import writer.PropertiesWriter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,20 +37,13 @@ public class CSV2Arff {
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
          */
-        String prf = "";
-
-        if (value == 0) {
-            prf = "Book";
-        } else if (value == 1) {
-            prf = "Tajo";
-        }
+        String prf = new PropertiesWriter().determinePrefix(value);
 
         try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config" + prf + ".properties")) {
 
             Properties prop = new Properties();
             // load a properties file
             prop.load(input);
-
 
             csvPathTraining = prop.getProperty("M1D2TRAIN");
             csvPathTesting = prop.getProperty("M1D2TEST");

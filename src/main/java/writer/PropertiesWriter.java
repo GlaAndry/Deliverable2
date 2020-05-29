@@ -11,6 +11,19 @@ public class PropertiesWriter {
 
     Properties prop = new Properties();
 
+    public String determinePrefix(int value){
+
+        String ret = "";
+
+        if (value == 0) {
+            ret = "Book";
+        } else if (value == 1) {
+            ret = "Tajo";
+        }
+
+        return ret;
+    }
+
     private void writeBookkeeper(){
 
 
