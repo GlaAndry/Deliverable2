@@ -1,7 +1,10 @@
 package utility;
 
+import java.util.logging.Logger;
+
 public class DateUtility {
 
+    private static final Logger LOGGER = Logger.getLogger(DateUtility.class.getName());
 
 
     public String determineMonth(String str){
@@ -36,6 +39,9 @@ public class DateUtility {
             case "Apr":
                 ret = "04-";
                 break;
+
+            default:
+                LOGGER.info("Non trovato");
         }
 
         return ret;
@@ -43,45 +49,49 @@ public class DateUtility {
 
     private String determineMonth2(String string){
 
-        String ret = "";
+        String ret1 = "";
         switch (string) {
             case "May":
-                ret = "05-";
+                ret1 = "05-";
                 break;
             case "Jun":
-                ret = "06-";
+                ret1 = "06-";
                 break;
             case "Jul":
-                ret = "07-";
+                ret1 = "07-";
                 break;
             case "Aug":
-                ret = "08-";
+                ret1 = "08-";
                 break;
+            default:
+                LOGGER.info("Non trovato");
         }
 
-        return ret;
+        return ret1;
 
     }
 
-    private String determineMonth3(String string){
+    private String determineMonth3(String string2){
 
-        String ret = "";
-        switch (string) {
+        String ret2 = "";
+        switch (string2) {
             case "Sep":
-                ret = "09-";
+                ret2 = "09-";
                 break;
             case "Oct":
-                ret = "10-";
+                ret2 = "10-";
                 break;
             case "Nov":
-                ret = "11-";
+                ret2 = "11-";
                 break;
             case "Dec":
-                ret = "12-";
+                ret2 = "12-";
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + string2);
 
         }
-        return ret;
+        return ret2;
 
     }
 }
