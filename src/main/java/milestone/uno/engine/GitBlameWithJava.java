@@ -1,5 +1,6 @@
 package milestone.uno.engine;
 
+import utility.DateUtility;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import org.eclipse.jgit.api.BlameCommand;
@@ -168,7 +169,7 @@ public class GitBlameWithJava {
                 } else {
                     anno = str[0].substring(24) + "-";
                 }
-                mese = determineMonth(str[0].substring(4, 7));
+                mese = new DateUtility().determineMonth(str[0].substring(4, 7));
 
                 giorno = str[0].substring(8, 10);
 
@@ -200,51 +201,6 @@ public class GitBlameWithJava {
 
     }
 
-    private String determineMonth(String str){
-
-        String ret;
-        switch (str) {
-            case "Jan":
-                ret = "01-";
-                break;
-            case "Feb":
-                ret = "02-";
-                break;
-            case "Mar":
-                ret = "03-";
-                break;
-            case "Apr":
-                ret = "04-";
-                break;
-            case "May":
-                ret = "05-";
-                break;
-            case "Jun":
-                ret = "06-";
-                break;
-            case "Jul":
-                ret = "07-";
-                break;
-            case "Aug":
-                ret = "08-";
-                break;
-            case "Sep":
-                ret = "09-";
-                break;
-            case "Oct":
-                ret = "10-";
-                break;
-            case "Nov":
-                ret = "11-";
-                break;
-            case "Dec":
-                ret = "12-";
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + str);
-        }
-        return ret;
-    }
 
 
     public void blame() throws GitAPIException {
