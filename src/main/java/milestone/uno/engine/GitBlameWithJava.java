@@ -202,48 +202,48 @@ public class GitBlameWithJava {
 
     private String determineMonth(String str){
 
-        String mese;
+        String ret;
         switch (str) {
             case "Jan":
-                mese = "01-";
+                ret = "01-";
                 break;
             case "Feb":
-                mese = "02-";
+                ret = "02-";
                 break;
             case "Mar":
-                mese = "03-";
+                ret = "03-";
                 break;
             case "Apr":
-                mese = "04-";
+                ret = "04-";
                 break;
             case "May":
-                mese = "05-";
+                ret = "05-";
                 break;
             case "Jun":
-                mese = "06-";
+                ret = "06-";
                 break;
             case "Jul":
-                mese = "07-";
+                ret = "07-";
                 break;
             case "Aug":
-                mese = "08-";
+                ret = "08-";
                 break;
             case "Sep":
-                mese = "09-";
+                ret = "09-";
                 break;
             case "Oct":
-                mese = "10-";
+                ret = "10-";
                 break;
             case "Nov":
-                mese = "11-";
+                ret = "11-";
                 break;
             case "Dec":
-                mese = "12-";
+                ret = "12-";
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + str);
         }
-        return mese;
+        return ret;
     }
 
 
