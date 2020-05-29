@@ -42,22 +42,25 @@ public class GetAffectedVersionFromJira {
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
          */
-        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config.properties")) {
+        String prf = "";
+
+        if (value == 0) {
+            prf = "Book";
+        } else if (value == 1) {
+            prf = "Tajo";
+        }
+
+        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config" + prf + ".properties")) {
 
             Properties prop = new Properties();
             // load a properties file
             prop.load(input);
 
-            if (value == 0) {
-                avPath = prop.getProperty("AVpath");
-                fvPath = prop.getProperty("FVpath");
-                projName = prop.getProperty("projectNameBOOK");
-            }
-            if (value == 1) {
-                avPath = prop.getProperty("AVpathTAJO");
-                fvPath = prop.getProperty("FVpathTAJO");
-                projName = prop.getProperty("projectNameTAJO");
-            }
+
+            avPath = prop.getProperty("AVpath");
+            fvPath = prop.getProperty("FVpath");
+            projName = prop.getProperty("projectName");
+
 
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, String.valueOf(e));
@@ -75,7 +78,7 @@ public class GetAffectedVersionFromJira {
 
         List<String[]> lista = new ArrayList<>();
 
-        String urlAffectedVersion = "https://issues.apache.org/jira/rest/api/2/search?jql=project%20=%20"+projName+"%20AND%20" +
+        String urlAffectedVersion = "https://issues.apache.org/jira/rest/api/2/search?jql=project%20=%20" + projName + "%20AND%20" +
                 "fixVersion%20!=%20null%20ORDER%20BY%20fixVersion%20ASC"
                 + ",created&startAt=0&maxResults=1000";
 
@@ -130,7 +133,7 @@ public class GetAffectedVersionFromJira {
 
         List<String[]> lista = new ArrayList<>();
 
-        String urlAffectedVersion = "https://issues.apache.org/jira/rest/api/2/search?jql=project%20=%20"+projName+"%20AND%20" +
+        String urlAffectedVersion = "https://issues.apache.org/jira/rest/api/2/search?jql=project%20=%20" + projName + "%20AND%20" +
                 "fixVersion%20!=%20null%20AND%20affectedVersion%20!=%20null%20ORDER%20BY%20fixVersion,affectedVersion%20ASC"
                 + ",created&startAt=0&maxResults=1000";
 

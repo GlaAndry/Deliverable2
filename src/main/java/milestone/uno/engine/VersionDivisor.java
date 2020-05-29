@@ -32,13 +32,11 @@ public class VersionDivisor {
     static int lenght;
 
 
-
     /**
      * Variabili globali necessarie al metodo determineVar()
      */
     Integer index = 0;
     String[] values = {"", "", ""}; //OV, FV, IV
-
 
 
     public static void main(String[] args) {
@@ -54,32 +52,28 @@ public class VersionDivisor {
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
          */
-        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config.properties")) {
+        String prf = "";
+
+        if (value == 0) {
+            prf = "Book";
+        } else if (value == 1) {
+            prf = "Tajo";
+        }
+
+        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config" + prf + ".properties")) {
 
             Properties prop = new Properties();
             // load a properties file
             prop.load(input);
 
-            if (value == 0) {
-                avPath = prop.getProperty("AVpath");
-                bugPath = prop.getProperty("BugTicketFromJira");
-                outRM = prop.getProperty("BugTicketAV");
-                version = prop.getProperty("versionInfoBOOK");
-                varCal = prop.getProperty("variables");
-                assAVB = prop.getProperty("AssAB");
-                lenght = Integer.parseInt(prop.getProperty("nameLenghtBOOK"));
 
-            }
-            if (value == 1) {
-                avPath = prop.getProperty("AVpathTAJO");
-                bugPath = prop.getProperty("BugTicketFromJiraTAJO");
-                outRM = prop.getProperty("BugTicketAVTAJO");
-                version = prop.getProperty("versionInfoTAJO");
-                varCal = prop.getProperty("variablesTAJO");
-                assAVB = prop.getProperty("AssABTAJO");
-                lenght = Integer.parseInt(prop.getProperty("nameLenghtTAJO"));
-
-            }
+            avPath = prop.getProperty("AVpath");
+            bugPath = prop.getProperty("BugTicketFromJira");
+            outRM = prop.getProperty("BugTicketAV");
+            version = prop.getProperty("versionInfo");
+            varCal = prop.getProperty("variables");
+            assAVB = prop.getProperty("AssAB");
+            lenght = Integer.parseInt(prop.getProperty("nameLenght"));
 
 
         } catch (IOException e) {

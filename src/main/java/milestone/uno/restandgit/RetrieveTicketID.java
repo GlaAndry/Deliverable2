@@ -20,10 +20,10 @@ public class RetrieveTicketID {
     public static final Logger LOGGER = Logger.getLogger(RetrieveTicketID.class.getName());
 
     private static String path = "";
-    public static  String proj ="";
+    public static String proj = "";
 
 
-    private static void importResources(int value){
+    private static void importResources(int value) {
         /**
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
@@ -32,20 +32,23 @@ public class RetrieveTicketID {
          * 1 --> TAJO
          */
         ////////////////carico i dati da config.properties
-        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config.properties")) {
+        String prf = "";
+
+        if (value == 0) {
+            prf = "Book";
+        } else if (value == 1) {
+            prf = "Tajo";
+        }
+
+        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config" + prf + ".properties")) {
 
             Properties prop = new Properties();
             // load a properties file
             prop.load(input);
 
-            if(value == 0){
-                path = prop.getProperty("BugTicketFromJira");
-                proj = prop.getProperty("projectNameBOOK");
-            }
-            if (value == 1){
-                path = prop.getProperty("BugTicketFromJiraTAJO");
-                proj = prop.getProperty("projectNameTAJO");
-            }
+            path = prop.getProperty("BugTicketFromJira");
+            proj = prop.getProperty("projectName");
+
 
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, String.valueOf(e));
@@ -66,11 +69,11 @@ public class RetrieveTicketID {
     public static JSONArray readJsonArrayFromUrl(String url) throws IOException {
         InputStream is = new URL(url).openStream();
         JSONArray json;
-        try(BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+        try (BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
             String jsonText = readAll(rd);
             json = new JSONArray(jsonText);
             return json;
-        } catch (IOException e){
+        } catch (IOException e) {
             LOGGER.log(Level.WARNING, String.valueOf(e));
         }
         return null;
@@ -79,17 +82,17 @@ public class RetrieveTicketID {
     public static JSONObject readJsonFromUrl(String url) throws IOException {
         InputStream is = new URL(url).openStream();
         JSONObject json;
-        try(BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+        try (BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
             String jsonText = readAll(rd);
             json = new JSONObject(jsonText);
             return json;
-        } catch (IOException e){
+        } catch (IOException e) {
             LOGGER.log(Level.WARNING, String.valueOf(e));
         }
         return null;
     }
 
-    public void retreive(){
+    public void retreive() {
 
         /**
          * Questo metodo restituisce un file CSV contenente tutti i ticket Bug restituiti dalla
@@ -123,20 +126,19 @@ public class RetrieveTicketID {
                 total = json.getInt("total");
                 for (; i < total && i < j; i++) {
                     //Iterate through each bug
-                    String key = issues.getJSONObject(i%1000).get("key").toString();
+                    String key = issues.getJSONObject(i % 1000).get("key").toString();
                     //Aggiungo i dati alla lista.
-                    data.add(new String[] {key});
+                    data.add(new String[]{key});
                 }
-            } catch (NullPointerException | IOException | JSONPointerException e){
+            } catch (NullPointerException | IOException | JSONPointerException e) {
                 LOGGER.log(Level.WARNING, String.valueOf(e));
             }
 
-            try(FileWriter outputfile = new FileWriter(file); CSVWriter writer = new CSVWriter(outputfile)) {
+            try (FileWriter outputfile = new FileWriter(file); CSVWriter writer = new CSVWriter(outputfile)) {
                 //Scrivo i Dati ricavati sul file csv
                 writer.writeAll(data);
                 writer.flush();
-            }
-            catch (IOException | JSONException e) {
+            } catch (IOException | JSONException e) {
                 LOGGER.log(Level.WARNING, String.valueOf(e));
             }
 

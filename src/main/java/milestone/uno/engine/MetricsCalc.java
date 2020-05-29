@@ -96,37 +96,30 @@ public class MetricsCalc {
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
          */
-        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config.properties")) {
+        String prf = "";
+
+        if(value == 0){
+            prf = "Book";
+        } else if (value == 1){
+            prf = "Tajo";
+        }
+
+        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config"+prf+".properties")) {
 
             Properties prop = new Properties();
             // load a properties file
             prop.load(input);
 
-            if (value == 0) {
-                classPath = prop.getProperty("classesPath");
-                gitPath = prop.getProperty("gitPathBOOK");
-                version = prop.getProperty("versionInfoBOOK");
-                assCoBlm = prop.getProperty("AssCB");
-                outLoc = prop.getProperty("outLocClasses");
+            classPath = prop.getProperty("classesPath");
+            gitPath = prop.getProperty("gitPath");
+            version = prop.getProperty("versionInfo");
+            assCoBlm = prop.getProperty("AssCB");
+            outLoc = prop.getProperty("outLocClasses");
 
-                nBugFixPath = prop.getProperty("numBugFix");
-                nRevAndAuthPath = prop.getProperty("numRevAuth");
-                locMetricsPath = prop.getProperty("locMetrics");
-                sizeAndAgePath = prop.getProperty("sizeAndAge");
-
-            }
-            if (value == 1) {
-                classPath = prop.getProperty("classesPathTAJO");
-                gitPath = prop.getProperty("gitPathTAJO");
-                version = prop.getProperty("versionInfoTAJO");
-                assCoBlm = prop.getProperty("AssCBTAJO");
-                outLoc = prop.getProperty("outLocClassesTAJO");
-
-                nBugFixPath = prop.getProperty("numBugFixTAJO");
-                nRevAndAuthPath = prop.getProperty("numRevAuthTAJO");
-                locMetricsPath = prop.getProperty("locMetricsTAJO");
-                sizeAndAgePath = prop.getProperty("sizeAndAgeTAJO");
-            }
+            nBugFixPath = prop.getProperty("numBugFix");
+            nRevAndAuthPath = prop.getProperty("numRevAuth");
+            locMetricsPath = prop.getProperty("locMetrics");
+            sizeAndAgePath = prop.getProperty("sizeAndAge");
 
 
         } catch (IOException e) {

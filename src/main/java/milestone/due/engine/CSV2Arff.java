@@ -36,36 +36,30 @@ public class CSV2Arff {
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
          */
-        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config.properties")) {
+        String prf = "";
+
+        if (value == 0) {
+            prf = "Book";
+        } else if (value == 1) {
+            prf = "Tajo";
+        }
+
+        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config" + prf + ".properties")) {
 
             Properties prop = new Properties();
             // load a properties file
             prop.load(input);
 
 
-            if (value == 0) {
-                csvPathTraining = prop.getProperty("M1D2TRAINBOOK");
-                csvPathTesting = prop.getProperty("M1D2TESTBOOK");
+            csvPathTraining = prop.getProperty("M1D2TRAIN");
+            csvPathTesting = prop.getProperty("M1D2TEST");
 
-                arffPathTraining = prop.getProperty("BOOKARFFTRAINING");
-                arffPathTesting = prop.getProperty("BOOKARFFTESTING");
+            arffPathTraining = prop.getProperty("ARFFTRAINING");
+            arffPathTesting = prop.getProperty("ARFFTESTING");
 
-                prefix = prop.getProperty("prefixBOOK");
-                numRelease = prop.getProperty("NUMBOOK");
+            prefix = prop.getProperty("prefix");
+            numRelease = prop.getProperty("NUM");
 
-
-            } else {
-                csvPathTraining = prop.getProperty("M1D2TRAINTAJO");
-                csvPathTesting = prop.getProperty("M1D2TESTTAJO");
-
-                arffPathTraining = prop.getProperty("TAJOARFFTRAINING");
-                arffPathTesting = prop.getProperty("TAJOARFFTESTING");
-
-                prefix = prop.getProperty("prefixTAJO");
-                numRelease = prop.getProperty("NUMTAJO");
-
-
-            }
 
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, String.valueOf(e));

@@ -71,31 +71,28 @@ public class WekaEngine {
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
          */
-        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config.properties")) {
+        String prf = "";
 
+        if (value == 0) {
+            prf = "Book";
+        } else if (value == 1) {
+            prf = "Tajo";
+        }
+
+        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config" + prf + ".properties")) {
             Properties prop = new Properties();
             // load a properties file
             prop.load(input);
 
 
-            if (value == 0) {
-                m1d2Test = prop.getProperty("BOOKARFFTESTING");
-                m1d2Train = prop.getProperty("BOOKARFFTRAINING");
-                m1d2TestCSV = prop.getProperty("M1D2TESTBOOK");
-                m1d2TrainCSV = prop.getProperty("M1D2TRAINBOOK");
-                prefix = prop.getProperty("prefixBOOK");
-                out = prop.getProperty("OUTBOOK");
-                numRelease = prop.getProperty("NUMBOOK");
-            } else {
-                m1d2Test = prop.getProperty("TAJOARFFTESTING");
-                m1d2Train = prop.getProperty("TAJOARFFTRAINING");
-                m1d2TestCSV = prop.getProperty("M1D2TESTTAJO");
-                m1d2TrainCSV = prop.getProperty("M1D2TRAINTAJO");
-                prefix = prop.getProperty("prefixTAJO");
-                out = prop.getProperty("OUTTAJO");
-                numRelease = prop.getProperty("NUMTAJO");
+            m1d2Test = prop.getProperty("ARFFTESTING");
+            m1d2Train = prop.getProperty("ARFFTRAINING");
+            m1d2TestCSV = prop.getProperty("M1D2TEST");
+            m1d2TrainCSV = prop.getProperty("M1D2TRAIN");
+            prefix = prop.getProperty("prefix");
+            out = prop.getProperty("OUT");
+            numRelease = prop.getProperty("NUM");
 
-            }
 
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, String.valueOf(e));
@@ -125,12 +122,12 @@ public class WekaEngine {
 
         Evaluation eval = null;
 
-        if(mode == 0){ //No Filter///////////
+        if (mode == 0) { //No Filter///////////
             eval = new Evaluation(testing);
             eval.evaluateModel(classifier, testing);
             return new Object[]{eval, defTrain, defTest};
 
-        } else if (mode == 1){ //Undersampling
+        } else if (mode == 1) { //Undersampling
 
             Resample resample = new Resample();
             resample.setInputFormat(training);
@@ -150,7 +147,7 @@ public class WekaEngine {
 
             return new Object[]{eval, defTrain, defTest};
 
-        } else if (mode == 2){ //Oversampling
+        } else if (mode == 2) { //Oversampling
 
             Resample resample = new Resample();
             resample.setInputFormat(training);
@@ -171,7 +168,7 @@ public class WekaEngine {
 
             return new Object[]{eval, defTrain, defTest};
 
-        } else if (mode == 3){ //SMOTE
+        } else if (mode == 3) { //SMOTE
 
             Resample resample = new Resample();
             resample.setInputFormat(training);
@@ -250,32 +247,32 @@ public class WekaEngine {
             RandomForest randomForest = new RandomForest();
             determineClassifierName(randomForest);
 
-            calculateClassifierNoSampling(randomForest,  tr, ts, i, ret, tstCSV, trnCSV);
-            calculateClassifierOversampling(randomForest,  tr, ts, i, ret, tstCSV, trnCSV);
-            calculateClassifierUndersampling(randomForest,  tr, ts, i, ret, tstCSV, trnCSV);
-            calculateClassifierSMOTE(randomForest,  tr, ts, i, ret, tstCSV, trnCSV);
+            calculateClassifierNoSampling(randomForest, tr, ts, i, ret, tstCSV, trnCSV);
+            calculateClassifierOversampling(randomForest, tr, ts, i, ret, tstCSV, trnCSV);
+            calculateClassifierUndersampling(randomForest, tr, ts, i, ret, tstCSV, trnCSV);
+            calculateClassifierSMOTE(randomForest, tr, ts, i, ret, tstCSV, trnCSV);
 
             NaiveBayes naiveBayes = new NaiveBayes();
             determineClassifierName(naiveBayes);
 
-            calculateClassifierNoSampling(naiveBayes,  tr, ts, i, ret, tstCSV, trnCSV);
-            calculateClassifierOversampling(naiveBayes,  tr, ts, i, ret, tstCSV, trnCSV);
-            calculateClassifierUndersampling(naiveBayes,  tr, ts, i, ret, tstCSV, trnCSV);
-            calculateClassifierSMOTE(naiveBayes,  tr, ts, i, ret, tstCSV, trnCSV);
+            calculateClassifierNoSampling(naiveBayes, tr, ts, i, ret, tstCSV, trnCSV);
+            calculateClassifierOversampling(naiveBayes, tr, ts, i, ret, tstCSV, trnCSV);
+            calculateClassifierUndersampling(naiveBayes, tr, ts, i, ret, tstCSV, trnCSV);
+            calculateClassifierSMOTE(naiveBayes, tr, ts, i, ret, tstCSV, trnCSV);
 
             IBk iBk = new IBk();
             determineClassifierName(iBk);
 
-            calculateClassifierNoSampling(iBk,  tr, ts, i, ret, tstCSV, trnCSV);
-            calculateClassifierOversampling(iBk,  tr, ts, i, ret, tstCSV, trnCSV);
-            calculateClassifierUndersampling(iBk,  tr, ts, i, ret, tstCSV, trnCSV);
-            calculateClassifierSMOTE(iBk,  tr, ts, i, ret, tstCSV, trnCSV);
+            calculateClassifierNoSampling(iBk, tr, ts, i, ret, tstCSV, trnCSV);
+            calculateClassifierOversampling(iBk, tr, ts, i, ret, tstCSV, trnCSV);
+            calculateClassifierUndersampling(iBk, tr, ts, i, ret, tstCSV, trnCSV);
+            calculateClassifierSMOTE(iBk, tr, ts, i, ret, tstCSV, trnCSV);
         }
 
         return ret;
     }
 
-    private static void determineClassifierName(Classifier classifier){
+    private static void determineClassifierName(Classifier classifier) {
 
         if (classifier.getClass() == RandomForest.class) {
             classi = RANDOM_FOREST;
@@ -290,7 +287,7 @@ public class WekaEngine {
     private void calculateClassifierNoSampling(Classifier classifier, ConverterUtils.DataSource train, ConverterUtils.DataSource test,
                                                int counter, List<String[]> list, String csvTest, String csvTrain) throws Exception {
 
-        Object[] obj = calculateNoFilter(classifier,train,test,csvTest,csvTrain,0, counter);
+        Object[] obj = calculateNoFilter(classifier, train, test, csvTest, csvTrain, 0, counter);
 
         Instances testing = test.getDataSet();
         Instances training = train.getDataSet();
@@ -317,7 +314,7 @@ public class WekaEngine {
                                                   int counter, List<String[]> list, String csvTest, String csvTrain) throws Exception {
 
 
-        Object[] obj = calculateNoFilter(classifier,train,test,csvTest,csvTrain,1, counter);
+        Object[] obj = calculateNoFilter(classifier, train, test, csvTest, csvTrain, 1, counter);
 
         Instances testing = test.getDataSet();
         Instances training = train.getDataSet();
@@ -344,7 +341,7 @@ public class WekaEngine {
                                                  int counter, List<String[]> list, String csvTest, String csvTrain) throws Exception {
 
 
-        Object[] obj = calculateNoFilter(classifier,train,test,csvTest,csvTrain,2, counter);
+        Object[] obj = calculateNoFilter(classifier, train, test, csvTest, csvTrain, 2, counter);
 
         Instances testing = test.getDataSet();
         Instances training = train.getDataSet();
@@ -371,7 +368,7 @@ public class WekaEngine {
                                           int counter, List<String[]> list, String csvTest, String csvTrain) throws Exception {
 
 
-        Object[] obj = calculateNoFilter(classifier,train,test,csvTest,csvTrain,3, counter);
+        Object[] obj = calculateNoFilter(classifier, train, test, csvTest, csvTrain, 3, counter);
 
         Instances testing = test.getDataSet();
         Instances training = train.getDataSet();

@@ -50,35 +50,28 @@ public class GitBlameWithJava {
          * 0 --> BOOKKEEPER
          * 1 --> TAJO
          */
-        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config.properties")) {
+        String prf = "";
+
+        if (value == 0) {
+            prf = "Book";
+        } else if (value == 1) {
+            prf = "Tajo";
+        }
+
+        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config" + prf + ".properties")) {
 
             Properties prop = new Properties();
             // load a properties file
             prop.load(input);
 
-
-            if (value == 0) {
-                path = prop.getProperty("gitDirBOOKPath");
-                commitPath = prop.getProperty("commitPath");
-                completePath = prop.getProperty("gitPathBOOK");
-                gitUrl = prop.getProperty("gitUrlBOOK");
-                blamePath = prop.getProperty("blameRes");
-                blameNew = prop.getProperty("blameNew");
-                finalBlames = prop.getProperty("blameFinal");
-                classesPath = prop.getProperty("classesPath");
-            }
-            if (value == 1) {
-                path = prop.getProperty("gitDirTAJOPath");
-                commitPath = prop.getProperty("commitPathTAJO");
-                completePath = prop.getProperty("gitPathTAJO");
-                gitUrl = prop.getProperty("gitUrlTAJO");
-                blamePath = prop.getProperty("blameResTAJO");
-                blameNew = prop.getProperty("blameNewTAJO");
-                finalBlames = prop.getProperty("blameFinalTAJO");
-                classesPath = prop.getProperty("classesPathTAJO");
-
-            }
-
+            path = prop.getProperty("gitDirPath");
+            commitPath = prop.getProperty("commitPath");
+            completePath = prop.getProperty("gitPath");
+            gitUrl = prop.getProperty("gitUrl");
+            blamePath = prop.getProperty("blameRes");
+            blameNew = prop.getProperty("blameNew");
+            finalBlames = prop.getProperty("blameFinal");
+            classesPath = prop.getProperty("classesPath");
 
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, String.valueOf(e));
@@ -200,7 +193,6 @@ public class GitBlameWithJava {
         }
 
     }
-
 
 
     public void blame() throws GitAPIException {

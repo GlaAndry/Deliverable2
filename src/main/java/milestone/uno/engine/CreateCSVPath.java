@@ -24,7 +24,7 @@ public class CreateCSVPath {
     static String classes = "";
     static ArrayList<String[]> pathAndName = new ArrayList<>();
 
-    private static void importResources(int value){
+    private static void importResources(int value) {
         /**
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
@@ -32,20 +32,23 @@ public class CreateCSVPath {
          * 0 --> BOOK
          * 1 --> TAJO
          */
-        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config.properties")) {
+
+        String prf = "";
+
+        if (value == 0) {
+            prf = "Book";
+        } else if (value == 1) {
+            prf = "Tajo";
+        }
+
+        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config" + prf + ".properties")) {
 
             Properties prop = new Properties();
             // load a properties file
             prop.load(input);
 
-            if(value == 0){
-                path = prop.getProperty("gitDirBOOKPath");
-                classes = prop.getProperty("classesPath");
-            }
-            if(value == 1){
-                path = prop.getProperty("gitDirTAJOPath");
-                classes = prop.getProperty("classesPathTAJO");
-            }
+            path = prop.getProperty("gitDirPath");
+            classes = prop.getProperty("classesPath");
 
 
         } catch (IOException e) {
@@ -54,7 +57,7 @@ public class CreateCSVPath {
     }
 
 
-    private ArrayList<String[]> retrievePath(File folder, StringBuilder pathName, StringBuilder className){
+    private ArrayList<String[]> retrievePath(File folder, StringBuilder pathName, StringBuilder className) {
 
         /**funzione ricorsiva che ricostruisce il path di tutti i file ".java" all'interno della cartella
          * git.
@@ -66,12 +69,12 @@ public class CreateCSVPath {
             throw new IllegalArgumentException("Non e' una cartella!");
         }
 
-        for(File file : Objects.requireNonNull(folder.listFiles())){
-            if (!file.isDirectory()){
+        for (File file : Objects.requireNonNull(folder.listFiles())) {
+            if (!file.isDirectory()) {
 
                 pathName.append(file.getPath());
                 className.append(file.getAbsoluteFile().getName());
-                if(pathName.toString().contains(".java")){
+                if (pathName.toString().contains(".java")) {
                     pathAndName.add(new String[]{pathName.toString().replace("\\", "/"),
                             pathName.toString().substring(86).replace("\\", "/"),
                             className.toString()});
@@ -82,27 +85,26 @@ public class CreateCSVPath {
                      * Nel CSV vengono considerati solamente i file ".java".
                      */
                 }
-                pathName.delete(0,pathName.length());
-                className.delete(0,className.length());
+                pathName.delete(0, pathName.length());
+                className.delete(0, className.length());
 
-            }
-            else{
+            } else {
                 retrievePath(file, pathName, className);
             }
         }
 
-    return pathAndName;
+        return pathAndName;
     }
 
-    private void writeCSV(ArrayList<String[]> list){
+    private void writeCSV(ArrayList<String[]> list) {
 
         /**
          * Scrive gli elementi nella lista in formato CSV.
          * le colonne del file saranno formate dal path completo, path ridotto e nome
          * della classe java.
          */
-        try(FileWriter fileWriter = new FileWriter(classes);
-            CSVWriter csvWriter = new CSVWriter(fileWriter)) {
+        try (FileWriter fileWriter = new FileWriter(classes);
+             CSVWriter csvWriter = new CSVWriter(fileWriter)) {
 
             csvWriter.writeAll(list);
             csvWriter.flush();
@@ -115,7 +117,7 @@ public class CreateCSVPath {
     }
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
         importResources(1);
         File dir = new File(path);

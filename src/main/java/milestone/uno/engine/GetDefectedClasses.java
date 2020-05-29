@@ -73,38 +73,34 @@ public class GetDefectedClasses {
          * Attraverso config.properties andiamo a caricare i valori delle stringhe per le open e le write dei file.
          * Necessario al fine di evitare copie inutili dello stesso codice in locazioni diverse della classe.
          */
-        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config.properties")) {
+        String prf = "";
+
+        if (value == 0) {
+            prf = "Book";
+        } else if (value == 1) {
+            prf = "Tajo";
+        }
+
+        try (InputStream input = new FileInputStream("C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\config" + prf + ".properties")) {
 
             Properties prop = new Properties();
             // load a properties file
             prop.load(input);
 
-            if (value == 0) {
-                versionInfo = prop.getProperty("versionInfoBOOK");
-                assBlameAV = prop.getProperty("AssAB");
-                buggyPath = prop.getProperty("buggyPath");
-                classPath = prop.getProperty("classesPath");
-                varP = prop.getProperty("variables");
-                pValue = prop.getProperty("pValueBOOK");
-                assBlameOV = prop.getProperty("AssOV");
-
-            }
-            if (value == 1) {
-                versionInfo = prop.getProperty("versionInfoTAJO");
-                assBlameAV = prop.getProperty("AssABTAJO");
-                buggyPath = prop.getProperty("buggyPathTAJO");
-                classPath = prop.getProperty("classesPathTAJO");
-                varP = prop.getProperty("variablesTAJO");
-                pValue = prop.getProperty("pValueTAJO");
-                assBlameOV = prop.getProperty("AssOVTAJO");
+            versionInfo = prop.getProperty("versionInfo");
+            assBlameAV = prop.getProperty("AssAB");
+            buggyPath = prop.getProperty("buggyPath");
+            classPath = prop.getProperty("classesPath");
+            varP = prop.getProperty("variables");
+            pValue = prop.getProperty("pValue");
+            assBlameOV = prop.getProperty("AssOV");
 
 
-            }
-
-
-        } catch (IOException e) {
+        } catch (
+                IOException e) {
             LOGGER.log(Level.WARNING, String.valueOf(e));
         }
+
     }
 
     private List<String[]> calculateProportion() {
