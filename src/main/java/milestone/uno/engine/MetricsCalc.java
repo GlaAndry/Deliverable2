@@ -40,10 +40,10 @@ public class MetricsCalc {
     static String assCoBlm = "";
     static String outLoc = "";
 
-    static String nBugFixPath = ""; //prova2
-    static String nRevAndAuthPath = ""; //prova
-    static String locMetricsPath = ""; //prova3
-    static String sizeAndAgePath = ""; //prova4
+    static String nBugFixPath = "";
+    static String nRevAndAuthPath = "";
+    static String locMetricsPath = "";
+    static String sizeAndAgePath = "";
 
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -155,10 +155,10 @@ public class MetricsCalc {
          * out --> Csv con colonne [INDEX VERSION,CLASSE,BUGFIXNUM]
          */
 
-        List<String[]> cls = new ArrayList<>();
-        List<String[]> ver = new ArrayList<>();
-        List<String[]> ver2 = new ArrayList<>();
-        List<String[]> assCommBlm = new ArrayList<>();
+        List<String[]> cls;
+        List<String[]> ver;
+        List<String[]> ver2;
+        List<String[]> assCommBlm;
         List<String[]> bugFixNum = new ArrayList<>();
 
         int commitCounter = 0;
