@@ -64,6 +64,7 @@ public class PropertiesWriter {
             prop.setProperty("out", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\bookkeeper\\M1D2.csv");
             prop.setProperty("pValue", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\fileBOOK\\valueOfP.csv");
 
+            prop.setProperty("tmp", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\tempCommit.csv");
 
 
             ////////////////////////MILESTONE 2///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -128,6 +129,8 @@ public class PropertiesWriter {
             prop.setProperty("sizeAndAge", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\fileTAJO\\sizeAndAgeTAJO.csv");
             prop.setProperty("out", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\outputMilestone1\\tajo\\M1D2TAJO.csv");
             prop.setProperty("pValue", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\fileTAJO\\valueOfPTAJO.csv");
+
+            prop.setProperty("tmp", "C:\\Users\\Alessio Mazzola\\Desktop\\Prove ISW2\\Deliverable2\\src\\main\\resources\\tempCommit.csv");
 
 
             ////////////////////////MILESTONE 2///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

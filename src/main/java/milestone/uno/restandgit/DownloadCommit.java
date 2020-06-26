@@ -1,5 +1,7 @@
 package milestone.uno.restandgit;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
@@ -8,8 +10,12 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import writer.PropertiesWriter;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +27,7 @@ public class DownloadCommit {
     static String projName = "";
     static String path = "";
     static String commitPath = "";
+    static String commitTmp = "";
     static String completePath = "";
     static String gitUrl = "";
     static int lenght;
@@ -48,6 +55,7 @@ public class DownloadCommit {
             gitUrl = prop.getProperty("gitUrl");
             projName = prop.getProperty("projectName");
             lenght = Integer.parseInt(prop.getProperty("nameLenght"));
+            commitTmp = prop.getProperty("tmp");
 
 
         } catch (IOException ex) {
@@ -79,7 +87,7 @@ public class DownloadCommit {
             LOGGER.info("Eseguire nuovamente per scaricare tutti i commit.\n");
         }
 
-        try (FileWriter fileWriter = new FileWriter(commitPath)) {
+        try (FileWriter fileWriter = new FileWriter(commitTmp)) {
 
             //Impostazione di Git e della repo.
             Git git = Git.open(new File(completePath));
@@ -131,11 +139,44 @@ public class DownloadCommit {
 
     }
 
-    public static void main(String[] args) throws GitAPIException {
+    private void removeBlankSpace() {
+        /**
+         * Questa funzione elimina possibile righe vuote dal CSV (il problema è presente su Tajo
+         * ma non su Bookkeeper).
+         */
+
+        List<String[]> commits;
+        List<String[]> res = new ArrayList<>();
+
+        try (FileReader b = new FileReader(commitTmp);
+             CSVReader csvReader = new CSVReader(b);
+             FileWriter fileWriter = new FileWriter(commitPath);
+             CSVWriter csvWriter = new CSVWriter(fileWriter)) {
+
+            commits = csvReader.readAll();
+            for (String[] str : commits) {
+                if (str.length > 1) {
+                    res.add(new String[]{str[0], str[1], str[2]});
+                }
+            }
+            csvWriter.writeAll(res);
+            csvWriter.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) throws GitAPIException, IOException {
 
         importResources(1);
         LOGGER.info("Scrivo tutti i commit eseguiti fino a questo momento all'interno del file.\n");
         new DownloadCommit().getAllCommits();
+        new DownloadCommit().removeBlankSpace();
+
+        //delete tempCommit
+        Files.deleteIfExists(Paths.get(commitTmp));
+
         LOGGER.info("Fatto!!\n");
     }
 }
