@@ -105,6 +105,8 @@ public class WekaEngine {
 
         classifier.buildClassifier(training);
 
+        double percentage;
+
         try (FileReader fileReader = new FileReader(csvTest);
              FileReader fileReader1 = new FileReader(csvTrain);
              CSVReader csvReader = new CSVReader(fileReader);
@@ -150,7 +152,7 @@ public class WekaEngine {
 
             fc.setClassifier(classifier);
 
-            double percentage = (1 - (2 * (counter / (double) numAttr))) * 100;
+            percentage = (1 - defTrain) * 100;
 
             String[] opts = new String[]{"-B", "1.0", "-Z", String.valueOf(percentage)};
             resample.setOptions(opts);
@@ -231,7 +233,7 @@ public class WekaEngine {
         ret.add(new String[]{"Dataset", "#TrainingRelease", "%Training", "%DefectiveInTraining", "%DefectiveInTesting", "Classifier", "Balancing",
                 "Feature Selection", "TruePositive", "FalsePositive", "TrueNegative", "FalseNegative", "Precision", "Recall", "AUC", "Kappa"});
 
-        for (int i = 2; i < numOfSteps; i++) {
+        for (int i = 2; i <= numOfSteps; i++) {
             tst = m1d2Test + subPrefix + prefix + i + "testing.arff";
             trn = m1d2Train + subPrefix + prefix + i + "training.arff";
             tstCSV = m1d2TestCSV + subPrefix + prefix + i + "testing.csv";
@@ -422,7 +424,7 @@ public class WekaEngine {
 
     public static void main(String[] args) throws Exception {
 
-        importResources(1);
+        importResources(0); //0 Bookkeeper, 1 Tajo
         new WekaEngine().writeCSV(new WekaEngine().walkForwardValidation(Integer.parseInt(numRelease)));
     }
 }
