@@ -94,7 +94,7 @@ public class WekaEngine {
         }
     }
 
-    private Object[] calculateNoFilter(Classifier classifier, ConverterUtils.DataSource train, ConverterUtils.DataSource test, String csvTest, String csvTrain, int mode, int counter) throws Exception {
+    private Object[] calculateNoFilter(Classifier classifier, ConverterUtils.DataSource train, ConverterUtils.DataSource test, String csvTest, String csvTrain, int mode) throws Exception {
 
         Instances testing = test.getDataSet();
         Instances training = train.getDataSet();
@@ -284,7 +284,7 @@ public class WekaEngine {
     private void calculateClassifierNoSampling(Classifier classifier, ConverterUtils.DataSource train, ConverterUtils.DataSource test,
                                                int counter, List<String[]> list, String csvTest, String csvTrain) throws Exception {
 
-        Object[] obj = calculateNoFilter(classifier, train, test, csvTest, csvTrain, 0, counter);
+        Object[] obj = calculateNoFilter(classifier, train, test, csvTest, csvTrain, 0);
 
         Instances testing = test.getDataSet();
         Instances training = train.getDataSet();
@@ -311,7 +311,7 @@ public class WekaEngine {
                                                   int counter, List<String[]> list, String csvTest, String csvTrain) throws Exception {
 
 
-        Object[] obj = calculateNoFilter(classifier, train, test, csvTest, csvTrain, 1, counter);
+        Object[] obj = calculateNoFilter(classifier, train, test, csvTest, csvTrain, 1);
 
         Instances testing = test.getDataSet();
         Instances training = train.getDataSet();
@@ -338,7 +338,7 @@ public class WekaEngine {
                                                  int counter, List<String[]> list, String csvTest, String csvTrain) throws Exception {
 
 
-        Object[] obj = calculateNoFilter(classifier, train, test, csvTest, csvTrain, 2, counter);
+        Object[] obj = calculateNoFilter(classifier, train, test, csvTest, csvTrain, 2);
 
         Instances testing = test.getDataSet();
         Instances training = train.getDataSet();
@@ -365,7 +365,7 @@ public class WekaEngine {
                                           int counter, List<String[]> list, String csvTest, String csvTrain) throws Exception {
 
 
-        Object[] obj = calculateNoFilter(classifier, train, test, csvTest, csvTrain, 3, counter);
+        Object[] obj = calculateNoFilter(classifier, train, test, csvTest, csvTrain, 3);
 
         Instances testing = test.getDataSet();
         Instances training = train.getDataSet();

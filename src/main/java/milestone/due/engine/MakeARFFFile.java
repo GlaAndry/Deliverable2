@@ -10,6 +10,10 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Classe non utilizzata e sostituita con CSV2Arff
+ */
+
 public class MakeARFFFile {
     /**
      * Questa classe è necessaria al fine di trasformare un file CSV da analizzare
